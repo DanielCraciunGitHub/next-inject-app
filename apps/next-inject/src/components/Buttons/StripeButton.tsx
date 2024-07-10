@@ -1,28 +1,36 @@
 // Rendered inside page.tsx
 "use client"
 
-import { useRouter } from "next/navigation"
+import { ReactNode } from "react"
+import { usePathname, useRouter } from "next/navigation"
+import { api } from "@/server/client"
 
 import { Button, ButtonProps } from "@/components/ui/button"
-import { getStripeUrl } from "@/app/_actions/stripe"
 
 interface StripeButtonProps extends ButtonProps {
-  name: string
+  children: ReactNode
   priceId: string
 }
 
 const StripeButton = ({
   className,
-  name,
+  children,
   priceId,
   ...restProps
 }: StripeButtonProps) => {
   const router = useRouter()
+  const pathname = usePathname()
+
+  const { data: url } = api.paymentRouter.getStripeUrl.useQuery(
+    { priceId, pathname },
+    {
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+    }
+  )
 
   const onSubmit = async () => {
-    // calling our server action to retrieve the checkout session url
-    const url = await getStripeUrl(priceId)
-
     if (url) {
       router.push(url)
     } else {
@@ -36,7 +44,7 @@ const StripeButton = ({
       className={className}
       {...restProps}
     >
-      {name}
+      {children}
     </Button>
   )
 }

@@ -1,8 +1,11 @@
 import { headers } from "next/headers"
+import { db } from "@/db"
+import { transactions } from "@/db/schema"
+import { env } from "@/env.mjs"
 import Stripe from "stripe"
+import { object } from "zod"
 
 import { stripe } from "@/lib/stripe"
-import { env } from "@/env.mjs"
 
 export const dynamic = "force-dynamic"
 
@@ -16,8 +19,9 @@ export async function POST(req: Request) {
     event = stripe.webhooks.constructEvent(
       body,
       signature,
-      process.env.NODE_ENV === "development" ? env.STRIPE_WEBHOOK_TEST_SECRET : env.STRIPE_WEBHOOK_SECRET
-
+      process.env.NODE_ENV === "development"
+        ? env.STRIPE_WEBHOOK_TEST_SECRET
+        : env.STRIPE_WEBHOOK_SECRET
     )
   } catch (error: any) {
     return new Response(`Webhook Error: ${error.message}`, { status: 400 })
@@ -26,8 +30,23 @@ export async function POST(req: Request) {
   const session = event.data.object as Stripe.Checkout.Session
 
   if (event.type === "checkout.session.completed") {
-    console.log(session)
-    // Confirmation email logic here...
+    const { data } = await stripe.checkout.sessions.listLineItems(session.id)
+
+    const priceId = data[0].price!.id
+    const userId = session.metadata!.userId
+    const paymentIntent = session.payment_intent!.toString()
+
+    console.log({
+      paymentIntent,
+      userId,
+      priceId,
+    })
+
+    await db.insert(transactions).values({
+      paymentIntent,
+      priceId,
+      userId,
+    })
   }
 
   return new Response(null, { status: 200 })

@@ -4,8 +4,8 @@ import { z } from "zod"
 
 import { map } from "../../.map"
 
-const frontmatterSchema = defaultSchemas.frontmatter.extend({
-  priceId: z.string(),
+export const frontmatterSchema = defaultSchemas.frontmatter.extend({
+  priceId: z.union([z.string().regex(/^price_.+$/), z.enum(["Undefined"])]),
 })
 
 export const { getPage, getPages, pageTree } = loader({

@@ -54,3 +54,10 @@ export const verificationTokens = sqliteTable(
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
   })
 )
+export const transactions = sqliteTable("transactions", {
+  paymentIntent: text("paymentIntent").notNull().primaryKey(),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id),
+  priceId: text("priceId").notNull(),
+})
