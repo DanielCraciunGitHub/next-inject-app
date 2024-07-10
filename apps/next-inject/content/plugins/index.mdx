@@ -1,8 +1,16 @@
 ---
-title: Get Started
+title: Quick Start
 priceId: Undefined
 ---
 
-```js
-console.log("Hello World")
-```
+import Link from "fumadocs-core/link"
+import { Callout } from "fumadocs-ui/components/callout"
+
+import { siteConfig } from "../../src/config/index"
+
+<Callout title="Welcome 👋">
+  <Link target={undefined} href={`${siteConfig.url}/login`}>
+    **Login**
+  </Link>
+  to access our wide range of Next.js plugins
+</Callout>

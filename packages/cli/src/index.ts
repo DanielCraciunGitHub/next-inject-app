@@ -4,6 +4,7 @@ import { Command } from "commander"
 import figlet from "figlet"
 
 import { add } from "./commands/add"
+import { auth } from "./commands/auth"
 import { getPackageInfo } from "./utils/get-package-info"
 
 process.on("SIGINT", () => process.exit(0))
@@ -23,7 +24,7 @@ async function main() {
       "display the version number"
     )
 
-  program.addCommand(add)
+  program.addCommand(add).addCommand(auth)
 
   program.parse()
 }

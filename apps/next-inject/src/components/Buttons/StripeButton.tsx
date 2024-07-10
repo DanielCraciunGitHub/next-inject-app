@@ -11,7 +11,12 @@ interface StripeButtonProps extends ButtonProps {
   priceId: string
 }
 
-const StripeButton = ({ className, name, priceId }: StripeButtonProps) => {
+const StripeButton = ({
+  className,
+  name,
+  priceId,
+  ...restProps
+}: StripeButtonProps) => {
   const router = useRouter()
 
   const onSubmit = async () => {
@@ -25,7 +30,12 @@ const StripeButton = ({ className, name, priceId }: StripeButtonProps) => {
     }
   }
   return (
-    <Button type="submit" onClick={onSubmit} className={className}>
+    <Button
+      type="submit"
+      onClick={onSubmit}
+      className={className}
+      {...restProps}
+    >
       {name}
     </Button>
   )

@@ -2,10 +2,15 @@
   "name": "next-inject-app",
   "private": true,
   "scripts": {
-    "build": "turbo build",
+    "web:build": "turbo --filter=next-inject-web build",
+    "web:start": "turbo --filter=next-inject-web start",
+    "web:dev": "turbo --filter=next-inject-web dev",
     "cli:dev": "turbo --filter=next-inject dev",
     "cli:build": "turbo --filter=next-inject build",
     "cli:start": "turbo --filter=next-inject start",
+    "template:dev": "turbo --filter=next-template dev",
+    "template:build": "turbo --filter=next-template build",
+    "template:start": "turbo --filter=next-template start",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
