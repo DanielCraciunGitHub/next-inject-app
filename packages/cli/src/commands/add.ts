@@ -7,6 +7,9 @@ import { handleError } from "../utils/handle-error"
 import { logger } from "../utils/logger"
 import { metadata } from "./metadata"
 
+import { db } from "@/src/db"
+import { transactions } from "@/src/db/schema"
+
 const addOptionsSchema = z.object({
   plugin: z.string().optional(),
   //   yes: z.boolean(),
@@ -22,6 +25,7 @@ export const add = new Command()
   .argument("plugin", "the plugin to inject")
   .action(async (plugin, opts) => {
     try {
+      await authenticate()
       const options = addOptionsSchema.parse({
         plugin,
         ...opts,
@@ -39,3 +43,9 @@ export const add = new Command()
   })
   // ! Add new commands here
   .addCommand(metadata)
+
+const authenticate = async () => {
+  const x = await db.select().from(transactions)
+
+  console.log(x)
+}

@@ -21,9 +21,12 @@ export default function RootDocsLayout({ children }: { children: ReactNode }) {
         banner: (
           <Link
             href={"/dashboard"}
-            className={cn("font-bold", buttonVariants({ variant: "outline" }))}
+            className={cn(
+              "font-bold",
+              buttonVariants({ className: "bg-yellow-600 dark:bg-yellow-400" })
+            )}
           >
-            Account
+            Dashboard
           </Link>
         ),
       }}

@@ -8,6 +8,7 @@
     "cli:dev": "turbo --filter=next-inject dev",
     "cli:build": "turbo --filter=next-inject build",
     "cli:start": "turbo --filter=next-inject start",
+    "cli:plugin": "turbo --filter=next-inject plugin",
     "cli:release": "pnpm --filter=next-inject pub:release",
     "template:dev": "turbo --filter=next-template dev",
     "template:build": "turbo --filter=next-template build",

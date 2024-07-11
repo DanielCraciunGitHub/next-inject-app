@@ -36,6 +36,10 @@
     "start": {
       "dependsOn": ["^build"],
       "cache": false
+    },
+    "plugin": {
+      "dependsOn": ["^build"],
+      "cache": false
     }
   }
 }

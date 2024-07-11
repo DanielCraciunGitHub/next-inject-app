@@ -22,7 +22,7 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
     "typecheck": "tsc --noEmit",
     "dev": "tsup --watch",
-    "start:plugin": "sh -c 'node dist/index.js \"$@\" -c ../../apps/next-inject'",
+    "plugin": "sh -c 'node dist/index.js \"$@\" -c ../../apps/next-inject' --",
     "start": "node dist/index.js",
     "pub:release": "pnpm build && pnpm publish --access public",
     "release": "changeset version",
@@ -39,10 +39,15 @@
   },
   "dependencies": {
     "@antfu/ni": "^0.21.12",
+    "@auth/core": "^0.28.2",
+    "@libsql/client": "^0.6.0",
     "axios": "^1.7.2",
     "chalk": "^5.3.0",
     "commander": "^12.1.0",
     "dotenv": "^16.4.5",
+    "dotenv-expand": "^11.0.6",
+    "drizzle-kit": "^0.20.17",
+    "drizzle-orm": "^0.30.8",
     "fast-glob": "^3.3.2",
     "figlet": "^1.7.0",
     "fs-extra": "^11.2.0",
@@ -50,6 +55,7 @@
     "ora": "^8.0.1",
     "prompts": "^2.4.2",
     "type-fest": "^4.21.0",
+    "ulid": "^2.3.0",
     "zod": "^3.23.8"
   }
 }
