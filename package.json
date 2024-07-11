@@ -8,6 +8,7 @@
     "cli:dev": "turbo --filter=next-inject dev",
     "cli:build": "turbo --filter=next-inject build",
     "cli:start": "turbo --filter=next-inject start",
+    "cli:release": "pnpm --filter=next-inject pub:release",
     "template:dev": "turbo --filter=next-template dev",
     "template:build": "turbo --filter=next-template build",
     "template:start": "turbo --filter=next-template start",
@@ -22,5 +23,8 @@
   "packageManager": "pnpm@8.15.6",
   "engines": {
     "node": ">=18"
+  },
+  "dependencies": {
+    "changeset": "^0.2.6"
   }
 }

@@ -3,7 +3,6 @@ import { db } from "@/db"
 import { transactions } from "@/db/schema"
 import { env } from "@/env.mjs"
 import Stripe from "stripe"
-import { object } from "zod"
 
 import { stripe } from "@/lib/stripe"
 
@@ -32,6 +31,9 @@ export async function POST(req: Request) {
   if (event.type === "checkout.session.completed") {
     const { data } = await stripe.checkout.sessions.listLineItems(session.id)
 
+    const { name: productName } = await stripe.products.retrieve(
+      data[0].price!.product.toString()
+    )
     const priceId = data[0].price!.id
     const userId = session.metadata!.userId
     const paymentIntent = session.payment_intent!.toString()
@@ -40,12 +42,14 @@ export async function POST(req: Request) {
       paymentIntent,
       userId,
       priceId,
+      productName,
     })
 
     await db.insert(transactions).values({
       paymentIntent,
       priceId,
       userId,
+      productName,
     })
   }
 

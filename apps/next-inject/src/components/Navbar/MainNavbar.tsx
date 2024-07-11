@@ -1,5 +1,5 @@
 import { siteConfig } from "@/config"
-import { BsLightningCharge } from "react-icons/bs"
+import { BsLightningChargeFill } from "react-icons/bs"
 
 import { NavItem } from "./NavItem"
 
@@ -17,7 +17,7 @@ export const MainNavbar = () => {
             className="text-xl font-bold"
             tabIndex={0}
           />
-          <BsLightningCharge size={20} />
+          <BsLightningChargeFill fill={"yellow"} size={20} />
         </div>
         <div className="flex divide-x-2 divide-primary">
           {restLinks.map((item) => (

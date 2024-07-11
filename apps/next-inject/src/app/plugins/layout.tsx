@@ -4,13 +4,13 @@ import { siteConfig } from "@/config"
 import { DocsLayout } from "fumadocs-ui/layout"
 
 import { cn } from "@/lib/utils"
-import { Button, buttonVariants } from "@/components/ui/button"
-import { pageTree } from "@/app/source"
+import { buttonVariants } from "@/components/ui/button"
+import { plugins } from "@/app/source"
 
 export default function RootDocsLayout({ children }: { children: ReactNode }) {
   return (
     <DocsLayout
-      tree={pageTree}
+      tree={plugins.pageTree}
       nav={{ title: "Home" }}
       links={siteConfig.socialLinks.map((link) => ({
         url: link.href,

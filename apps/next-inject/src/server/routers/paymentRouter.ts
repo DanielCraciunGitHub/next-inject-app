@@ -8,11 +8,16 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc"
 
 export const paymentRouter = createTRPCRouter({
   getStripeUrl: protectedProcedure
-    .input(z.object({ priceId: z.string(), pathname: z.string() }))
+    .input(
+      z.object({
+        priceId: z.string(),
+        pathname: z.string(),
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         const stripeSession = await stripe.checkout.sessions.create({
-          success_url: `${siteConfig.url}${input.pathname}?purchase=success`,
+          success_url: `${siteConfig.url}/dashboard`,
           cancel_url: `${siteConfig.url}${input.pathname}`,
           payment_method_types: ["card", "paypal"],
           mode: "payment",
@@ -38,14 +43,14 @@ export const paymentRouter = createTRPCRouter({
     .query(async ({ input }) => {
       try {
         if (input.priceId === "Undefined") {
-          return "Undefined"
+          return undefined
         } else {
           const price = await stripe.prices.retrieve(input.priceId)
 
           return formatPluginPrice(price.currency, price.unit_amount! / 100)
         }
       } catch (error) {
-        return "Free"
+        return undefined
       }
     }),
 })

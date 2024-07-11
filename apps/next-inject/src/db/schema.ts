@@ -60,4 +60,5 @@ export const transactions = sqliteTable("transactions", {
     .notNull()
     .references(() => users.id),
   priceId: text("priceId").notNull(),
+  productName: text("productName").notNull(),
 })

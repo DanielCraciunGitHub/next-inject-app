@@ -5,16 +5,17 @@ import { DocsBody, DocsPage } from "fumadocs-ui/page"
 import { BsLightningChargeFill } from "react-icons/bs"
 
 import StripeButton from "@/components/Buttons/StripeButton"
+import { LoginModal } from "@/components/LoginModal"
 import VerifiedSvg from "@/components/SVG/VerifiedSvg"
 import { Tooltip } from "@/components/Tooltip"
-import { getPage, getPages } from "@/app/source"
+import { plugins } from "@/app/source"
 
 export default async function Page({
   params,
 }: {
   params: { slug?: string[] }
 }) {
-  const page = getPage(params.slug)
+  const page = plugins.getPage(params.slug)
 
   if (page == null) {
     notFound()
@@ -25,18 +26,39 @@ export default async function Page({
   const price = await api.paymentRouter.getPluginPrice({
     priceId: page.data.priceId,
   })
-  console.log("PRICE ID: " + page.data.priceId)
+  const session = await api.authRouter.getSession()
 
-  const hasPlugin = await api.pluginRouter.hasPlugin({
-    priceId: page.data.priceId,
-  })
+  let hasPlugin
+  try {
+    hasPlugin = await api.pluginRouter.hasPlugin({
+      priceId: page.data.priceId,
+    })
+  } catch (error) {
+    hasPlugin = false
+  }
 
   const PaymentButton = () => {
-    switch (price) {
-      case "Undefined":
-        break
-      default:
-        return (
+    if (!price) {
+      return null
+    }
+    if (session) {
+      return (
+        <StripeButton
+          priceId={page.data.priceId}
+          className="space-x-1 bg-muted-foreground"
+        >
+          <BsLightningChargeFill fill={"yellow"} size={16} />
+          <div>
+            Get Plugin |{" "}
+            <span className="font-bold italic text-green-400 dark:text-green-700">
+              {price}
+            </span>
+          </div>
+        </StripeButton>
+      )
+    } else {
+      return (
+        <LoginModal>
           <StripeButton
             priceId={page.data.priceId}
             className="space-x-1 bg-muted-foreground"
@@ -49,7 +71,8 @@ export default async function Page({
               </span>
             </div>
           </StripeButton>
-        )
+        </LoginModal>
+      )
     }
   }
 
@@ -77,13 +100,13 @@ export default async function Page({
 }
 
 export async function generateStaticParams() {
-  return getPages().map((page) => ({
+  return plugins.getPages().map((page) => ({
     slug: page.slugs,
   }))
 }
 
 export function generateMetadata({ params }: { params: { slug?: string[] } }) {
-  const page = getPage(params.slug)
+  const page = plugins.getPage(params.slug)
 
   if (page == null) notFound()
 

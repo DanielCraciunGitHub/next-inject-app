@@ -6,6 +6,11 @@ import { twMerge } from "tailwind-merge"
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
+// React Email Plugin
+
+export function stripePluginNameToCliName(name: string): string {
+  return name.replace(" Plugin", "").toLowerCase().trim().replace(" ", "-")
+}
 export function nameToPath(name: string): string {
   return `/${name.toLowerCase().replaceAll(" ", "_")}`
 }

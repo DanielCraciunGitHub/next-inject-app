@@ -8,8 +8,13 @@ export const frontmatterSchema = defaultSchemas.frontmatter.extend({
   priceId: z.union([z.string().regex(/^price_.+$/), z.enum(["Undefined"])]),
 })
 
-export const { getPage, getPages, pageTree } = loader({
+export const plugins = loader({
   baseUrl: "/plugins",
   rootDir: "plugins",
   source: createMDXSource(map, { schema: { frontmatter: frontmatterSchema } }),
+})
+export const dashboard = loader({
+  baseUrl: "/dashboard",
+  rootDir: "dashboard",
+  source: createMDXSource(map),
 })

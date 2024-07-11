@@ -1,7 +1,13 @@
 import "./src/env.mjs"
-import createMDX from 'fumadocs-mdx/config';
- 
-const withMDX = createMDX();
+
+import { remarkInstall } from "fumadocs-docgen"
+import createMDX from "fumadocs-mdx/config"
+
+const withMDX = createMDX({
+  mdxOptions: {
+    remarkPlugins: [remarkInstall],
+  },
+})
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {

@@ -17,13 +17,13 @@ import { Button } from "./ui/button"
 import { Separator } from "./ui/separator"
 
 interface LoginModalProps {
-  buttonNode: ReactNode
+  children: ReactNode
 }
 
-export const LoginModal = ({ buttonNode }: LoginModalProps) => {
+export const LoginModal = ({ children }: LoginModalProps) => {
   return (
     <Dialog>
-      <DialogTrigger asChild>{buttonNode}</DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="flex flex-col border-muted">
         <DialogHeader>
           <DialogTitle className="text-4xl font-bold">Login</DialogTitle>

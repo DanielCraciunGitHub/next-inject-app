@@ -1,0 +1,78 @@
+import { api } from "@/server/server"
+import Link from "fumadocs-core/link"
+import { Callout } from "fumadocs-ui/components/callout"
+import { Heading } from "fumadocs-ui/components/heading"
+import { Step, Steps } from "fumadocs-ui/components/steps"
+
+export { withArticle as default } from "fumadocs-ui/page"
+
+<Steps>
+
+<Step>
+
+## Install the CLI 🖥️
+
+```package-install
+npm i -g next-inject
+```
+
+<Callout title="Info" type="info">
+  Restart your terminal after running this command
+</Callout>
+
+</Step>
+<Step>
+
+## Configure your API Key 🔑
+
+<Callout title="Warning" type="warn">
+  Leaking this API key may lead to security breaches.
+
+  <ApiKeyCommand />
+</Callout>
+
+</Step>
+
+<Step>
+## Inject your plugins ⚡
+
+<PluginCommands />
+</Step>
+
+<Step>
+## Start Building! 🛠️
+
+</Step>
+
+</Steps>
+
+export async function ApiKeyCommand() {
+  return (
+    <pre>
+      <code>
+        {`next-inject auth -k ${(await api.pluginRouter.getApiKey()).toString()}`}
+      </code>
+    </pre>
+  )
+}
+
+export async function PluginCommands() {
+  const plugins = await api.pluginRouter.getOwnedPlugins()
+
+return plugins.map(function (plugin) {
+return (
+
+<>
+
+<div key={plugin.originalName}>
+  <Link href={`/plugins/${plugin.parsedName}`}>
+    <Heading as="h3">{plugin.originalName}</Heading>
+  </Link>
+  <pre>
+    <code>{`next-inject add ${plugin.parsedName}`}</code>
+  </pre>
+  <hr />
+</div>
+
+</>
+)}) }
