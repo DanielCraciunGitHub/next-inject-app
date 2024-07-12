@@ -2,6 +2,7 @@
   "name": "next-inject-app",
   "private": true,
   "scripts": {
+    "build": "turbo build",
     "web:build": "turbo --filter=next-inject-web build",
     "web:start": "turbo --filter=next-inject-web start",
     "web:dev": "turbo --filter=next-inject-web dev",

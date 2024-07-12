@@ -52,11 +52,13 @@ function deleteKey() {
     logger.error("No key found to delete.")
   }
 }
-function loadKey() {
+export function loadKey(): string {
   if (fs.existsSync(CONFIG_FILE)) {
     dotenv.config({ path: CONFIG_FILE })
-    logger.info("Loaded user key:", process.env.USER_KEY)
+
+    return process.env.USER_KEY!
   } else {
     logger.error("No key found. Please authenticate first.")
   }
+  return "nothing"
 }

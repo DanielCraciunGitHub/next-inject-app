@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation"
 import { api } from "@/server/server"
 import Link from "fumadocs-core/link"
 import { Callout } from "fumadocs-ui/components/callout"
@@ -47,17 +48,29 @@ npm i -g next-inject
 </Steps>
 
 export async function ApiKeyCommand() {
-  return (
-    <pre>
-      <code>
-        {`next-inject auth -k ${(await api.pluginRouter.getApiKey()).toString()}`}
-      </code>
-    </pre>
-  )
+  let key
+  try {
+    key = (await api.pluginRouter.getApiKey()).toString()
+  } catch (error) {
+    redirect("/login")
+  }
+
+return (
+
+<pre>
+  <code>{`next-inject auth -k ${key}`}</code>
+</pre>
+
+)
 }
 
 export async function PluginCommands() {
-  const plugins = await api.pluginRouter.getOwnedPlugins()
+  let plugins
+  try {
+    plugins = await api.pluginRouter.getOwnedPlugins()
+  } catch (error) {
+    redirect("/login")
+  }
 
 return plugins.map(function (plugin) {
 return (

@@ -9,8 +9,17 @@ export function cn(...inputs: ClassValue[]) {
 // React Email Plugin
 
 export function stripePluginNameToCliName(name: string): string {
-  return name.replace(" Plugin", "").toLowerCase().trim().replace(" ", "-")
+  return name.replace(" Plugin", "").toLowerCase().trim().replace(/ /g, "-")
 }
+export function cliNameToStripePluginName(name: string): string {
+  return (
+    name
+      .replace("-", " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase())
+      .trim() + " Plugin"
+  )
+}
+
 export function nameToPath(name: string): string {
   return `/${name.toLowerCase().replaceAll(" ", "_")}`
 }
