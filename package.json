@@ -14,6 +14,9 @@
     "template:dev": "turbo --filter=next-template dev",
     "template:build": "turbo --filter=next-template build",
     "template:start": "turbo --filter=next-template start",
+    "base:dev": "turbo --filter=next-base-template dev",
+    "base:build": "turbo --filter=next-base-template build",
+    "base:start": "turbo --filter=next-base-template start",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },

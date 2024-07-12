@@ -33,10 +33,6 @@ const getQueryClient = () => {
 export type RouterInputs = inferRouterInputs<AppRouter>
 export type RouterOutputs = inferRouterOutputs<AppRouter>
 
-export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>
-}
-
 export function Provider({ children, ...props }: ThemeProviderProps) {
   const queryClient = getQueryClient()
 

@@ -1,12 +1,15 @@
 import axios from "axios"
 
+import dotenv from "dotenv"
+dotenv.config()
+
 import { handleError } from "./handle-error"
 
-export const GITHUB_BASE_RAW_URL =
-  "https://raw.githubusercontent.com/DanielCraciunGitHub/nextjs-template/master/"
+export const GITHUB_BASE_RAW_URL = `https://${process.env.GITHUB_PERSONAL_ACCESS_TOKEN}@raw.githubusercontent.com/DanielCraciunGitHub/next-inject-app/master/apps/nextjs-template/`
 
 export async function fetchRawFileFromGithub(filePath: string) {
   const url = `${GITHUB_BASE_RAW_URL}${filePath}`
+
   try {
     const response = await axios.get(url)
 
