@@ -23,7 +23,8 @@
         "STRIPE_WEBHOOK_TEST_SECRET",
         "STRIPE_WEBHOOK_SECRET",
         "STRIPE_PUBLIC_KEY",
-        "STRIPE_SECRET_KEY"
+        "STRIPE_SECRET_KEY",
+        "GITHUB_PERSONAL_ACCESS_TOKEN"
       ]
     },
     "lint": {
