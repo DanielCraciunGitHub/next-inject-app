@@ -19,14 +19,18 @@ export async function injectFileContent(
 
   fs.writeFileSync(targetPath, fileContent, "utf-8")
 }
-export async function injectGithubFileContent(cwd: string, filePath: string) {
+export async function injectGithubFileContent(
+  cwd: string,
+  filePath: string,
+  branch: string
+) {
   if (!existsSync(cwd)) {
     logger.error(`The path ${cwd} does not exist. Please try again.`)
     process.exit(1)
   }
 
   const targetPath = path.resolve(cwd, filePath)
-  const fileContent = await fetchRawFileFromGithub(filePath)
+  const fileContent = await fetchRawFileFromGithub(filePath, branch)
 
   fs.writeFileSync(targetPath, fileContent, "utf-8")
 }

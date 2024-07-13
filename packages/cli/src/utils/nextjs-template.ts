@@ -5,10 +5,11 @@ dotenv.config()
 
 import { handleError } from "./handle-error"
 
-export const GITHUB_BASE_RAW_URL = `https://${process.env.GITHUB_PERSONAL_ACCESS_TOKEN}@raw.githubusercontent.com/DanielCraciunGitHub/next-inject-app/master/apps/nextjs-template/`
-
-export async function fetchRawFileFromGithub(filePath: string) {
-  const url = `${GITHUB_BASE_RAW_URL}${filePath}`
+export async function fetchRawFileFromGithub(
+  filePath: string,
+  branch: string = "master"
+) {
+  const url = `https://${process.env.GITHUB_PERSONAL_ACCESS_TOKEN}@raw.githubusercontent.com/DanielCraciunGitHub/nextjs-base-template/${branch}/${filePath}`
 
   try {
     const response = await axios.get(url)
