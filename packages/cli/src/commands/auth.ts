@@ -60,5 +60,5 @@ export function loadKey(): string {
   } else {
     logger.error("No key found. Please authenticate first.")
   }
-  return "nothing"
+  return "undefined"
 }

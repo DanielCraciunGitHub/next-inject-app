@@ -6,6 +6,7 @@ import figlet from "figlet"
 import { add } from "./commands/add"
 import { auth } from "./commands/auth"
 import { getPackageInfo } from "./utils/get-package-info"
+import { init } from "./commands/init"
 
 process.on("SIGINT", () => process.exit(0))
 process.on("SIGTERM", () => process.exit(0))
@@ -24,7 +25,7 @@ async function main() {
       "display the version number"
     )
 
-  program.addCommand(add).addCommand(auth)
+  program.addCommand(add).addCommand(auth).addCommand(init)
 
   program.parse()
 }

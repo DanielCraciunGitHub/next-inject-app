@@ -33,9 +33,9 @@ export const metadata = new Command()
       const mainPageFile = "src/app/(Navigation)/page.tsx"
       const mainLayoutFile = "src/app/layout.tsx"
 
-      await injectGithubFileContent(cwd, metadataFile)
-      await injectGithubFileContent(cwd, mainPageFile)
-      await injectGithubFileContent(cwd, mainLayoutFile)
+      await injectGithubFileContent(cwd, metadataFile, this.name())
+      await injectGithubFileContent(cwd, mainPageFile, this.name())
+      await injectGithubFileContent(cwd, mainLayoutFile, this.name())
 
       spinner.stopAndPersist()
       logger.success(`Successfully Injected the ${this.name()} plugin!`)
