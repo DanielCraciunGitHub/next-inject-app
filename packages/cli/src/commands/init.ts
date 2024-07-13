@@ -9,6 +9,10 @@ import ora from "ora"
 import { z } from "zod"
 import { execa } from "execa"
 
+import dotenv from "dotenv"
+import { CONFIG_FILE } from "../utils/config-info"
+dotenv.config({ path: CONFIG_FILE })
+
 const optionsSchema = z.object({
   cwd: z.string(),
 })
@@ -69,10 +73,16 @@ export const init = new Command()
       spinner.text = `Cloning github repository...`
       const git = simpleGit()
       await git.clone(
-        "https://github.com/DanielCraciunGitHub/nextjs-base-template.git",
+        `https://${process.env.ACCESS_KEY}@github.com/DanielCraciunGitHub/nextjs-base-template.git`,
         projectPath,
         ["--branch", "master"]
       )
+
+      await execa("rm -rf .git", { cwd: projectPath })
+      await execa("git init", { cwd: projectPath })
+      await execa("git add .", { cwd: projectPath })
+      await execa(`git commit -m "init"`, { cwd: projectPath })
+
       logger.info("Repository cloned successfully")
 
       let installCommand: string = "pnpm i"

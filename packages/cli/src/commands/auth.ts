@@ -6,13 +6,11 @@ import { logger } from "../utils/logger"
 
 import { z } from "zod"
 import fs from "fs"
-import path from "path"
-import os from "os"
-import dotenv from "dotenv"
 
-const HOME_DIR = os.homedir()
-const CONFIG_DIR = path.join(HOME_DIR, ".next-inject")
-const CONFIG_FILE = path.join(CONFIG_DIR, "config")
+import dotenv from "dotenv"
+import axios from "axios"
+import { CONFIG_DIR, CONFIG_FILE, NEXTJS_APP_URL } from "../utils/config-info"
+import { handleError } from "../utils/handle-error"
 
 const optionsSchema = z.object({
   key: z.string().optional(),
@@ -32,17 +30,28 @@ export const auth = new Command()
     if (options.delete) {
       deleteKey()
     } else if (options.key) {
-      saveKey(options.key)
+      configKeys(options.key)
     } else {
       logger.error("Please provide a key using -k or --key option.")
     }
   })
-function saveKey(key: string) {
+async function configKeys(key: string) {
   if (!fs.existsSync(CONFIG_DIR)) {
     fs.mkdirSync(CONFIG_DIR, { recursive: true })
   }
-  fs.writeFileSync(CONFIG_FILE, `USER_KEY=${key}`)
-  logger.info("Key saved successfully.")
+  const res = await axios.get(`${NEXTJS_APP_URL}/api/cli`, {
+    headers: {
+      Authorization: `Bearer ${key}`,
+    },
+  })
+
+  if (res.status === 200) {
+    const { accessKey }: { accessKey: string } = res.data
+    fs.writeFileSync(CONFIG_FILE, `USER_KEY=${key}\nACCESS_KEY=${accessKey}`)
+    logger.info("Key saved successfully.")
+  } else {
+    handleError(res.statusText)
+  }
 }
 function deleteKey() {
   if (fs.existsSync(CONFIG_FILE)) {
@@ -52,7 +61,7 @@ function deleteKey() {
     logger.error("No key found to delete.")
   }
 }
-export function loadKey(): string {
+export function loadUserKey(): string {
   if (fs.existsSync(CONFIG_FILE)) {
     dotenv.config({ path: CONFIG_FILE })
 

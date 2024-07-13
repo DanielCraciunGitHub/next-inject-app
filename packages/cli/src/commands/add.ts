@@ -4,7 +4,9 @@ import { handleError } from "../utils/handle-error"
 
 import { metadata } from "./metadata"
 
-import { loadKey } from "./auth"
+import { loadUserKey } from "./auth"
+import axios from "axios"
+import { logger } from "../utils/logger"
 
 export const add = new Command()
   .name("add")
@@ -12,18 +14,17 @@ export const add = new Command()
   .argument("plugin", "the plugin to inject")
   .hook("preSubcommand", async (thisCommand: Command, subCommand: Command) => {
     try {
-      const res = await fetch("http://next-inject.vercel.app/api/cli", {
-        method: "POST",
-        body: JSON.stringify({
-          pluginName: cliNameToStripePluginName(subCommand.name()),
-          authKey: loadKey(),
-        }),
+      const res = await axios.post("https://next-inject.vercel.app/api/cli", {
+        pluginName: cliNameToStripePluginName(subCommand.name()),
+        authKey: loadUserKey(),
       })
 
       if (res.status !== 200) {
+        logger.error("STATUS ERROR")
         throw new Error(res.statusText)
       }
     } catch (error) {
+      logger.error("RESPONSE ERROR")
       handleError(error)
     }
   })

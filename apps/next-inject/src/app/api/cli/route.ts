@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/db"
-import { transactions } from "@/db/schema"
+import { transactions, users } from "@/db/schema"
+import { env } from "@/env.mjs"
 import { and, eq } from "drizzle-orm"
 import { z } from "zod"
 
@@ -46,4 +47,28 @@ export async function POST(req: NextRequest) {
       statusText: "An unknown error has occured",
     })
   }
+}
+export async function GET(req: NextRequest) {
+  const authorizationHeader = req.headers.get("Authorization")
+  const token = authorizationHeader?.replace("Bearer ", "")
+
+  if (token) {
+    const [user] = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.id, token))
+
+    if (user) {
+      return NextResponse.json(
+        { accessKey: env.GITHUB_PERSONAL_ACCESS_TOKEN },
+        {
+          status: 200,
+        }
+      )
+    }
+  }
+  return NextResponse.json("Please pass in a valid user id", {
+    status: 404,
+    statusText: "Please pass in a valid user id",
+  })
 }

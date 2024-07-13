@@ -31,6 +31,8 @@ export const env = createEnv({
     STRIPE_PUBLIC_KEY: z.string().min(1),
     STRIPE_SECRET_KEY: z.string().min(1),
     STRIPE_WEBHOOK_SECRET: z.string().min(1),
+
+    GITHUB_PERSONAL_ACCESS_TOKEN: z.string().min(1),
   },
   experimental__runtimeEnv: {
     NEXT_PUBLIC_RECAPTCHA_SITE_KEY: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
