@@ -11,13 +11,13 @@ import { init } from "./commands/init"
 process.on("SIGINT", () => process.exit(0))
 process.on("SIGTERM", () => process.exit(0))
 
-console.log(chalk.red(figlet.textSync("Next Inject")))
+console.log(chalk.yellow(figlet.textSync("Next Inject")))
 
 async function main() {
   const program = new Command()
     .name("next-inject")
     .description("Inject plugins into your next.js project")
-    .version("1.0.8", "-v, --version", "display the version number")
+    .version("1.0.9", "-v, --version", "display the version number")
 
   program.addCommand(add).addCommand(auth).addCommand(init)
 

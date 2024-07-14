@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation"
 import { api } from "@/server/server"
 import Link from "fumadocs-core/link"
+import { Accordion, Accordions } from "fumadocs-ui/components/accordion"
 import { Callout } from "fumadocs-ui/components/callout"
 import { Heading } from "fumadocs-ui/components/heading"
 import { Step, Steps } from "fumadocs-ui/components/steps"
@@ -20,6 +21,25 @@ npm i -g next-inject
 <Callout title="Info" type="info">
   Restart your terminal after running this command
 </Callout>
+
+</Step>
+<Step>
+
+## Intialize the base template 📰
+
+```bash
+next-inject init
+```
+
+<Accordions>
+<Accordion title="What does this command do?">
+1. You will receive prompts to choose a project name and your preferred package manager.
+2. Install the required dependencies using your package manager.
+3. Initialize a new git repository.
+4. Create an "init" commit.
+
+</Accordion>
+</Accordions>
 
 </Step>
 <Step>
@@ -57,9 +77,7 @@ export async function ApiKeyCommand() {
 
 return (
 
-<pre>
-  <code>{`next-inject auth -k ${key}`}</code>
-</pre>
+<CodeBlock lang="bash" code={`next-inject auth -k ${key}`} />
 
 )
 }
@@ -81,9 +99,8 @@ return (
   <Link href={`/plugins/${plugin.parsedName}`}>
     <Heading as="h3">{plugin.originalName}</Heading>
   </Link>
-  <pre>
-    <code>{`next-inject add ${plugin.parsedName}`}</code>
-  </pre>
+  <CodeBlock lang="bash" code={`next-inject add ${plugin.parsedName}`} />
+
   <hr />
 </div>
 

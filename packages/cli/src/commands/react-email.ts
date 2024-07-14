@@ -5,8 +5,8 @@ import { injectGithubFileContent } from "../utils/file-manager"
 import { handleError } from "../utils/handle-error"
 import { optionsSchema } from "./add"
 
-export const metadata = new Command()
-  .name("metadata")
+export const reactEmail = new Command()
+  .name("react-email")
   .description("Inject metadata into your app")
   .action(async function (this: Command, opts) {
     try {

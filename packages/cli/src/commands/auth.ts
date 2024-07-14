@@ -6,7 +6,7 @@ import { logger } from "../utils/logger"
 
 import { z } from "zod"
 import fs from "fs"
-
+import ora from "ora"
 import dotenv from "dotenv"
 import axios from "axios"
 import { CONFIG_DIR, CONFIG_FILE, NEXTJS_APP_URL } from "../utils/config-info"
@@ -23,42 +23,51 @@ export const auth = new Command()
   .option("-k, --key <key>", "store your personal api key for this cli")
   .option("-d, --delete", "delete your saved api key")
   .action(async (opts) => {
-    const options = optionsSchema.parse({
-      ...opts,
-    })
+    try {
+      const spinner = ora("Configuring API key...").start()
+      const options = optionsSchema.parse({
+        ...opts,
+      })
 
-    if (options.delete) {
-      deleteKey()
-    } else if (options.key) {
-      configKeys(options.key)
-    } else {
-      logger.error("Please provide a key using -k or --key option.")
+      if (options.delete) {
+        deleteKey()
+        spinner.succeed("Key deleted successfully!")
+      } else if (options.key) {
+        configKeys(options.key)
+        spinner.succeed("Configuration success!")
+      } else {
+        spinner.fail("Please provide a key using -k or --key option.")
+      }
+    } catch (error) {
+      handleError(error)
     }
   })
 async function configKeys(key: string) {
   if (!fs.existsSync(CONFIG_DIR)) {
     fs.mkdirSync(CONFIG_DIR, { recursive: true })
   }
-  const res = await axios.get(`${NEXTJS_APP_URL}/api/cli`, {
-    headers: {
-      Authorization: `Bearer ${key}`,
-    },
-  })
+  try {
+    const res = await axios.get(`${NEXTJS_APP_URL}/api/cli`, {
+      headers: {
+        Authorization: `Bearer ${key}`,
+      },
+    })
 
-  if (res.status === 200) {
-    const { accessKey }: { accessKey: string } = res.data
-    fs.writeFileSync(CONFIG_FILE, `USER_KEY=${key}\nACCESS_KEY=${accessKey}`)
-    logger.info("Key saved successfully.")
-  } else {
-    handleError(res.statusText)
+    if (res.status === 200) {
+      const { accessKey }: { accessKey: string } = res.data
+      fs.writeFileSync(CONFIG_FILE, `USER_KEY=${key}\nACCESS_KEY=${accessKey}`)
+    } else {
+      handleError(res.statusText)
+    }
+  } catch (error) {
+    handleError(error)
   }
 }
 function deleteKey() {
   if (fs.existsSync(CONFIG_FILE)) {
     fs.unlinkSync(CONFIG_FILE)
-    logger.info("Key deleted successfully.")
   } else {
-    logger.error("No key found to delete.")
+    handleError("No key exists, deletion failed.")
   }
 }
 export function loadUserKey(): string {
