@@ -1,0 +1,91 @@
+---
+title: The Base Template
+priceId: Undefined
+---
+
+import Link from "fumadocs-core/link"
+import { Callout } from "fumadocs-ui/components/callout"
+
+import { siteConfig } from "../../src/config/index"
+
+import { File, Folder, Files } from 'fumadocs-ui/components/files';
+
+
+## The Project Structure 📂
+
+Below is the project structure that we use at _Next Inject⚡_
+
+
+
+
+<Callout title="Info" type="info">
+  This folder structure does **not** contain every file.
+  
+  These are only the most important files, everything else is an added bonus! 😉
+</Callout>
+
+<Files>
+  <Folder name="public">
+    <File name="site.webmanifest" />
+  </Folder>
+  <Folder name="src">
+    <Folder name="app">
+      <Folder name="_actions" defaultOpen />
+      <Folder name="(Navigation)">
+        <File name="layout.tsx" />
+        <File name="page.tsx" />
+      </Folder>
+      <Folder name="api" defaultOpen />
+      <File name="layout.tsx" />
+      <File name="robots.ts" />
+      <File name="sitemap.ts" />
+    </Folder>
+    <Folder name="components">
+      <Folder name="Buttons">
+        <File name="DarkModeButton.tsx" />
+      </Folder>
+      <Folder name="Navbar">
+        <File name="MainNavbar.tsx" />
+        <File name="MobileNavbar.tsx" />
+        <File name="Navbar.tsx" />
+        <File name="NavItem.tsx" />
+      </Folder>
+      <Folder name="SVG" defaultOpen />
+      <Folder name="ui" defaultOpen />
+        <File name="Footer.tsx" />
+        <File name="providers.tsx" />
+    </Folder>
+    <Folder name="config">
+      <File name="index.tsx" />
+    </Folder>
+    <Folder name="db" defaultOpen />
+    <Folder name="hooks" defaultOpen />
+    <Folder name="lib">
+      <File name="utils.tsx" />
+    </Folder>
+    <Folder name="server" defaultOpen />
+    <Folder name="styles">
+      <File name="globals.css" />
+    </Folder>
+    <Folder name="types">
+      <File name="index.ts" />
+    </Folder>
+  </Folder>
+  
+  <File name=".env.local" />
+  <File name=".gitignore" />
+  <File name="components.json" />
+  <File name="next.config.mjs" />
+  <File name="package.json" />
+  <File name="postcss.config.js" />
+  <File name="tailwind.config.js" />
+  <File name="tsconfig.json" />
+</Files>
+
+<Callout title="Warning" type="warn">
+  We recommend you keep this base structure consistent to ensure full compatibility with all plugins.
+
+  Only renaming, relocating, or deleting files or folders may lead to plugin injection failure.
+
+  **If you are encountering issues or have any questions, please [_email us_](mailto:danielcracbusiness@gmail.com) directly.**
+</Callout>

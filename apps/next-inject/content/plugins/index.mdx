@@ -1,16 +1,74 @@
 ---
-title: Quick Start
+title: Getting Started
 priceId: Undefined
 ---
 
 import Link from "fumadocs-core/link"
 import { Callout } from "fumadocs-ui/components/callout"
+import { Accordion, Accordions } from "fumadocs-ui/components/accordion"
+import {ApiKeyCommand} from "../../src/app/(Navigation)/dashboard/page.mdx"
 
 import { siteConfig } from "../../src/config/index"
 
-<Callout title="Welcome 👋">
-  <Link target={undefined} href={`${siteConfig.url}/login`}>
-    **Login**
-  </Link>
-  to access our wide range of Next.js plugins
+Start Injecting Plugins with **_Next Inject⚡_** by following these steps:
+
+<Steps>
+<Step>
+## Login 🔑
+  
+[**Login here**](/login) to be able to access our wide range of plugins.
+
+  
+</Step>
+<Step>
+
+## Install the CLI 🖥️
+
+Install our custom CLI tool which will help you install your favorite plugins.
+
+```package-install
+npm i -g next-inject
+```
+
+<Callout title="Info" type="info">
+  Restart your terminal after running this command
 </Callout>
+
+</Step>
+<Step>
+## Download our Base Template 🔽
+
+Download our plugin-compatible [base template](/plugins/base-template) with this simple command:
+
+```bash
+next-inject init
+```
+
+<Accordions>
+<Accordion title="What does this command do?">
+1. You will receive prompts to select a project name and package manager.
+2. Install the required dependencies with your chosen package manager.
+3. Initialize a new git repository with `git init`.
+4. Run `git commit -m "init"`.
+
+</Accordion>
+</Accordions>
+  </Step>
+<Step>
+## Authenticate with Next Inject 🔑
+
+Run this command to authenticate with the CLI:
+
+<Callout title="Warning" type="warn">
+  Leaking your API key may lead to security breaches.
+
+  You can find your API key in the [dashboard](/dashboard)
+
+  ```bash
+    next-inject auth -k API_KEY
+  ```
+</Callout>
+
+</Step>
+
+</Steps>

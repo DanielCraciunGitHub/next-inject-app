@@ -78,7 +78,13 @@ export const init = new Command()
         ["--branch", "master"]
       )
 
-      await execa("rm -rf .git", { cwd: projectPath })
+      process.chdir(projectPath)
+      fs.rmSync(".git", {
+        force: true,
+        recursive: true,
+      })
+      fs.renameSync(".env.example", ".env.local")
+      
       await execa("git init", { cwd: projectPath })
       await execa("git add .", { cwd: projectPath })
       await execa(`git commit -m "init"`, { cwd: projectPath })
