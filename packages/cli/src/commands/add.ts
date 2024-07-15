@@ -14,7 +14,7 @@ import { z } from "zod"
 import path from "path"
 import { execa } from "execa"
 
-const spinner = ora()
+export const addSpinner = ora()
 
 export const optionsSchema = z.object({
   cwd: z.string(),
@@ -59,7 +59,7 @@ export const add = new Command()
   })
   .hook("preAction", async (thisCommand: Command, subCommand: Command) => {
     logger.break()
-    spinner.start(`Injecting ${subCommand.name()} plugin...`)
+    addSpinner.start(`Injecting ${subCommand.name()} plugin...`)
   })
   .hook("postAction", async (thisCommand: Command, subCommand: Command) => {
     const options = optionsSchema.parse({
@@ -67,7 +67,7 @@ export const add = new Command()
     })
     const cwd = path.resolve(options.cwd)
 
-    spinner.succeed(`⚡ Finished injecting the ${subCommand.name()} plugin!`)
+    addSpinner.succeed(`⚡ Finished injecting the ${subCommand.name()} plugin!`)
     logger.info(`⚡ Injected at ${cwd}`)
 
     await execa("git add .", { cwd })

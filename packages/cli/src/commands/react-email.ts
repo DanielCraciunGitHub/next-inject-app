@@ -1,7 +1,7 @@
 import path from "path"
 import { Command } from "commander"
 
-import { injectGithubFileContent } from "../utils/file-manager"
+import { injectGithubFile } from "../utils/file-injection"
 import { handleError } from "../utils/handle-error"
 import { optionsSchema } from "./add"
 
@@ -20,9 +20,9 @@ export const reactEmail = new Command()
       const mainPageFile = "src/app/(Navigation)/page.tsx"
       const mainLayoutFile = "src/app/layout.tsx"
 
-      await injectGithubFileContent(cwd, metadataFile, this.name())
-      await injectGithubFileContent(cwd, mainPageFile, this.name())
-      await injectGithubFileContent(cwd, mainLayoutFile, this.name())
+      // await injectGithubFile(cwd, metadataFile, this.name())
+      // await injectGithubFile(cwd, mainPageFile, this.name())
+      // await injectGithubFile(cwd, mainLayoutFile, this.name())
     } catch (error) {
       handleError(error)
     }
