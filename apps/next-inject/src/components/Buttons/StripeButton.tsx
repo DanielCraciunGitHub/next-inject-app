@@ -3,7 +3,7 @@
 
 import { ReactNode } from "react"
 import { usePathname, useRouter } from "next/navigation"
-import { api } from "@/server/client"
+import { api } from "@/server/react"
 
 import { Button, ButtonProps } from "@/components/ui/button"
 
