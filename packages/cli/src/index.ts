@@ -17,7 +17,7 @@ async function main() {
   const program = new Command()
     .name("next-inject")
     .description("Inject plugins into your next.js project")
-    .version("1.0.9", "-v, --version", "display the version number")
+    .version("1.1.0", "-v, --version", "display the version number")
 
   program.addCommand(add).addCommand(auth).addCommand(init)
 

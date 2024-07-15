@@ -1,21 +1,9 @@
-import { Metadata, Viewport } from "next"
+import { Metadata } from "next"
 
-import { baseMetadata, baseViewport } from "@/config/metadata"
+import { staticMetadata } from "@/config/metadata"
 
 export const metadata: Metadata = {
-  ...baseMetadata,
-  title: { absolute: "Daniel Craciun" },
-  openGraph: {
-    ...baseMetadata.openGraph,
-    title: { absolute: "Daniel Craciun" },
-  },
-  twitter: {
-    ...baseMetadata.twitter,
-    title: { absolute: "Daniel Craciun" },
-  },
-}
-export const viewport: Viewport = {
-  ...baseViewport,
+  ...staticMetadata.mainPage,
 }
 
 export default async function Home() {

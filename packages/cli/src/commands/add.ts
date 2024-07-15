@@ -69,8 +69,6 @@ export const add = new Command()
 
     addSpinner.succeed(`⚡ Finished injecting the ${subCommand.name()} plugin!`)
     logger.info(`⚡ Injected at ${cwd}`)
-
-    await execa("git add .", { cwd })
   })
   .action(async (plugin, opts) => {
     try {
