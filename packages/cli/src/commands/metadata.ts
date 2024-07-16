@@ -1,4 +1,3 @@
-import path from "path"
 import { Command } from "commander"
 
 import {
@@ -6,80 +5,80 @@ import {
   injectGithubFiles,
   omitLinesFile,
   mergeFileContent,
+  injectFile,
 } from "../utils/file-injection"
 import {
   extractGithubFileContentLines,
   extractFileContentBetweenLines,
+  fileExists,
+  getLocalAndRemoteFile,
+  extractFileContentLines,
+  extractFileContentLinesRegex,
 } from "../utils/file-extraction"
 import { handleError } from "../utils/handle-error"
-import { addSpinner, optionsSchema } from "./add"
+import { addSpinner } from "./add"
 import { installDeps } from "../utils/package-management"
 
 export const metadata = new Command()
   .name("metadata")
   .description("Inject metadata into your app")
-  .action(async function (this: Command, opts) {
+  .action(async function (this: Command) {
     try {
-      const options = optionsSchema.parse({
-        ...opts,
-      })
-      const cwd = path.resolve(options.cwd)
-      const branch = this.name()
+      addSpinner.start("Installing dependencies...")
+      await installDeps(["next-seo"])
+      addSpinner.succeed("Dependencies successfully installed!")
 
-      addSpinner.text = "Installing dependencies..."
-      await installDeps(["next-seo"], cwd)
-
-      addSpinner.text = "Injecting files..."
+      addSpinner.start("Injecting files...")
       const metadataFile = "src/config/metadata.tsx"
       const sitemap = "src/app/sitemap.ts"
       const robots = "src/app/robots.ts"
       const manifest = "src/app/manifest.ts"
       await injectGithubFiles({
-        cwd,
         filePaths: [metadataFile, sitemap, robots, manifest],
-        branch,
       })
 
-      const mainLayoutFile = "src/app/layout.tsx"
-      omitLinesFile({
-        filePath: mainLayoutFile,
-        cwd,
-        searchString: "import",
+      const mainLayoutPath = "src/app/layout.tsx"
+      let { rc: remoteLayout, lc: localLayout } =
+        await getLocalAndRemoteFile(mainLayoutPath)
+
+      const layoutImports = extractFileContentLinesRegex({
+        fileContent: remoteLayout,
+        regex: /^import\s+\{.*metadata.*/i,
       })
-      const { og: ogLayout, parsed: layoutImports } =
-        await extractGithubFileContentLines({
-          filePath: mainLayoutFile,
-          branch,
-          searchString: "import",
-        })
       const layoutMetadataExports = extractFileContentBetweenLines({
-        fileContent: ogLayout,
+        fileContent: remoteLayout,
         startString: "export const metadata",
-      })
-      injectContentOuter({
-        content: mergeFileContent(layoutImports, layoutMetadataExports),
-        cwd,
-        filePath: mainLayoutFile,
-        direction: "above",
       })
 
-      const mainPageFile = "src/app/(Navigation)/page.tsx"
-      const { og: ogPage, parsed: pageImports } =
-        await extractGithubFileContentLines({
-          filePath: mainPageFile,
-          branch,
-          searchString: "import",
+      localLayout = mergeFileContent(
+        layoutImports,
+        localLayout,
+        layoutMetadataExports
+      )
+
+      injectFile(mainLayoutPath, localLayout)
+
+      const mainPagePath = "src/app/(Navigation)/page.tsx"
+      if (fileExists(mainPagePath)) {
+        let { rc: remotePage, lc: localPage } =
+          await getLocalAndRemoteFile(mainPagePath)
+
+        const pageImports = extractFileContentLinesRegex({
+          fileContent: remotePage,
+          regex: /^import\s+\{.*metadata.*/i,
         })
-      const pageMetadataExports = extractFileContentBetweenLines({
-        fileContent: ogPage,
-        startString: "export const metadata",
-      })
-      injectContentOuter({
-        content: mergeFileContent(pageImports, pageMetadataExports),
-        cwd,
-        filePath: mainPageFile,
-        direction: "above",
-      })
+        const pageMetadataExports = extractFileContentBetweenLines({
+          fileContent: remotePage,
+          startString: "export const metadata",
+        })
+        localPage = mergeFileContent(
+          pageImports,
+          localPage,
+          pageMetadataExports
+        )
+
+        injectFile(mainPagePath, localPage)
+      }
     } catch (error) {
       handleError(error)
     }

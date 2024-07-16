@@ -1,7 +1,7 @@
-import fs, { existsSync, stat } from "fs"
+import { existsSync } from "fs"
+import fs from "fs-extra"
 import path from "path"
 
-import { logger } from "./logger"
 import {
   ExtractContentProps,
   fetchRawFileFromGithub,
@@ -9,52 +9,38 @@ import {
 } from "./file-extraction"
 import { handleError } from "./handle-error"
 import { readFileContent } from "./file-extraction"
+import { cwd } from "../commands/add"
 
 interface InjectContentProps {
   content: string
   insertPoint: string
   direction: "above" | "below"
   filePath: string
-  cwd: string
 }
 
-export async function injectGithubFile({
-  cwd,
-  filePath,
-  branch,
-}: GithubFunctionProps & { cwd: string }) {
+export async function injectGithubFile({ filePath }: GithubFunctionProps) {
   if (!existsSync(cwd)) {
     handleError(`The path ${cwd} does not exist. Please try again.`)
   }
 
   const targetPath = path.resolve(cwd, filePath)
-  const fileContent = await fetchRawFileFromGithub({ filePath, branch })
+  const fileContent = await fetchRawFileFromGithub({ filePath })
 
-  fs.writeFileSync(targetPath, fileContent, "utf-8")
+  injectFile(targetPath, fileContent)
 }
 export async function injectGithubFiles({
-  cwd,
   filePaths,
-  branch,
 }: Omit<GithubFunctionProps, "filePath"> & {
-  cwd: string
   filePaths: string[]
 }) {
   for (const filePath of filePaths) {
-    await injectGithubFile({ cwd, branch, filePath })
+    await injectGithubFile({ filePath })
   }
 }
-export async function injectFile(
-  cwd: string,
-  filePath: string,
-  fileContent: string
-) {
-  if (!existsSync(cwd)) {
-    logger.error(`The path ${cwd} does not exist. Please try again.`)
-    process.exit(1)
-  }
-
+export async function injectFile(filePath: string, fileContent: string) {
   const targetPath = path.resolve(cwd, filePath)
+
+  fs.ensureDirSync(path.dirname(targetPath))
 
   fs.writeFileSync(targetPath, fileContent, "utf-8")
 }
@@ -64,10 +50,9 @@ export async function injectContentInner({
   insertPoint,
   direction = "below",
   filePath,
-  cwd = process.cwd(),
 }: InjectContentProps) {
   try {
-    const fileContent = readFileContent(cwd, filePath)
+    const fileContent = readFileContent(filePath)
 
     const lines = fileContent.split("\n")
     let insertIndex = -1
@@ -95,19 +80,18 @@ export async function injectContentInner({
     const modifiedContent = lines.join("\n")
     const targetPath = path.resolve(cwd, filePath)
 
-    fs.writeFileSync(targetPath, modifiedContent, "utf8")
+    injectFile(targetPath, modifiedContent)
   } catch (error) {
     handleError(error)
   }
 }
-export async function injectContentOuter({
+export function injectContentOuter({
   content,
   direction = "below",
   filePath,
-  cwd = process.cwd(),
 }: Omit<InjectContentProps, "insertPoint">) {
   try {
-    const fileContent = readFileContent(cwd, filePath)
+    const fileContent = readFileContent(filePath)
 
     const lines = fileContent.split("\n")
     let insertIndex = -1
@@ -124,9 +108,11 @@ export async function injectContentOuter({
     const modifiedContent = lines.join("\n")
     const targetPath = path.resolve(cwd, filePath)
 
-    fs.writeFileSync(targetPath, modifiedContent, "utf8")
+    injectFile(targetPath, modifiedContent)
+    return modifiedContent
   } catch (error) {
     handleError(error)
+    return ""
   }
 }
 export function omitLinesContent(params: ExtractContentProps): string {
@@ -143,19 +129,18 @@ export function omitLinesContent(params: ExtractContentProps): string {
 
   return result
 }
+
 export function omitLinesFile({
-  cwd,
   filePath,
   searchString,
 }: Pick<ExtractContentProps, "searchString"> & {
   filePath: string
-  cwd: string
 }) {
-  const fileContent = readFileContent(cwd, filePath)
+  const fileContent = readFileContent(filePath)
 
   const parsedFileContent = omitLinesContent({ fileContent, searchString })
 
-  injectFile(cwd, filePath, parsedFileContent)
+  injectFile(filePath, parsedFileContent)
 }
 export function mergeFileContent(...filesContent: string[]) {
   let finalFileContent: string = ""
@@ -163,4 +148,18 @@ export function mergeFileContent(...filesContent: string[]) {
     finalFileContent += `${fileContent}\n`
   }
   return finalFileContent
+}
+
+export function searchAndReplaceFileContent(
+  fileContent: string,
+  targetString: string,
+  newContent: string
+) {
+  // Replace the target string with the new content
+  const newFileContent = fileContent.replace(
+    new RegExp(targetString, "g"),
+    newContent
+  )
+
+  return newFileContent
 }

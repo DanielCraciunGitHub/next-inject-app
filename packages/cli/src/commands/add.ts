@@ -12,9 +12,19 @@ import ora from "ora"
 import { reactEmail } from "./react-email"
 import { z } from "zod"
 import path from "path"
-import { execa } from "execa"
+import { isNextInjectProject, isNextjsProject } from "../utils/get-package-info"
+import prompts from "prompts"
+import { bootstrap } from "./bootstrap"
+import { init } from "./init"
+import chalk from "chalk"
 
 export const addSpinner = ora()
+export let branch: string = "master"
+
+export let cwd: string = process.cwd()
+export function setGlobalCwd(inputCwd: string) {
+  cwd = inputCwd
+}
 
 export const optionsSchema = z.object({
   cwd: z.string(),
@@ -33,7 +43,10 @@ export const add = new Command()
     )
 
     try {
-      const res = await axios.post("https://next-inject.vercel.app/api/cli", {
+      addSpinner.start(
+        `Checking for permission to install the ${subCommand.name()} plugin...`
+      )
+      const res = await axios.post(`${NEXTJS_APP_URL}/api/cli`, {
         pluginName: cliNameToStripePluginName(subCommand.name()),
         authKey: loadUserKey(),
       })
@@ -47,6 +60,8 @@ export const add = new Command()
         )
         handleError(res.statusText)
       }
+
+      addSpinner.succeed("Permission Granted!")
     } catch (error) {
       logger.error(
         `Please purchase this plugin from here: ${NEXTJS_APP_URL}/plugins/${subCommand.name()}`
@@ -58,17 +73,50 @@ export const add = new Command()
     }
   })
   .hook("preAction", async (thisCommand: Command, subCommand: Command) => {
-    logger.break()
-    addSpinner.start(`Injecting ${subCommand.name()} plugin...`)
-  })
-  .hook("postAction", async (thisCommand: Command, subCommand: Command) => {
     const options = optionsSchema.parse({
       ...subCommand.opts(),
     })
-    const cwd = path.resolve(options.cwd)
+    cwd = path.resolve(options.cwd)
+    branch = subCommand.name()
 
-    addSpinner.succeed(`⚡ Finished injecting the ${subCommand.name()} plugin!`)
-    logger.info(`⚡ Injected at ${cwd}`)
+    if (!isNextjsProject()) {
+      const { createProject } = await prompts([
+        {
+          name: "createProject",
+          type: "confirm",
+          message:
+            "Next.js project has not been detected, should we create one for you?",
+        },
+      ])
+      if (createProject) {
+        await init.parseAsync()
+      } else {
+        process.exit(1)
+      }
+    } else if (!isNextInjectProject()) {
+      const { bootstrapProject } = await prompts([
+        {
+          name: "bootstrapProject",
+          type: "confirm",
+          message:
+            "Next Inject has not been bootstrapped to this application, should we do this for you?",
+        },
+      ])
+      if (bootstrapProject) {
+        await bootstrap.parseAsync()
+      } else {
+        process.exit(1)
+      }
+    }
+
+    logger.break()
+    addSpinner.start(`Injecting ${subCommand.name()} plugin...`)
+    addSpinner.stopAndPersist()
+  })
+  .hook("postAction", async (thisCommand: Command, subCommand: Command) => {
+    addSpinner.succeed(
+      `⚡ Finished injecting the ${chalk.green(subCommand.name())} plugin!`
+    )
   })
   .action(async (plugin, opts) => {
     try {

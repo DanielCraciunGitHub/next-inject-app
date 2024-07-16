@@ -10,10 +10,10 @@ import fs, { existsSync } from "fs"
 
 import path from "path"
 import { omitLinesContent } from "./file-injection"
+import { branch, cwd } from "../commands/add"
 
 export interface GithubFunctionProps {
   filePath: string
-  branch: string
 }
 
 export type ExtractContentProps = {
@@ -31,7 +31,6 @@ export type ExtractContentBetweenProps = Omit<
 
 export async function fetchRawFileFromGithub({
   filePath,
-  branch,
 }: GithubFunctionProps) {
   try {
     const url = `https://${process.env.ACCESS_KEY}@raw.githubusercontent.com/DanielCraciunGitHub/nextjs-base-template/${branch}/${filePath}`
@@ -42,33 +41,22 @@ export async function fetchRawFileFromGithub({
     handleError(error)
   }
 }
+
 export async function fetchRawFilesFromGithub({
   filePaths,
-  branch,
 }: Omit<GithubFunctionProps, "filePath"> & {
   filePaths: string[]
 }) {
   let files: string[] = []
 
   for (const filePath of filePaths) {
-    const fileContent = await fetchRawFileFromGithub({ filePath, branch })
+    const fileContent = await fetchRawFileFromGithub({ filePath })
     files.push(fileContent)
   }
 
   return files
 }
 
-export function readFileContent(cwd: string, filePath: string) {
-  if (!existsSync(cwd)) {
-    handleError(`The path ${cwd} does not exist. Please try again.`)
-  }
-
-  const targetPath = path.resolve(cwd, filePath)
-
-  const fileContent = fs.readFileSync(targetPath)
-
-  return fileContent.toString("utf-8")!
-}
 export function extractFileContentLines({
   searchString,
   fileContent,
@@ -86,6 +74,24 @@ export function extractFileContentLines({
     return result
   } catch (error) {
     handleError(error)
+    return ""
+  }
+}
+export function extractFileContentLinesRegex({
+  regex,
+  fileContent,
+}: {
+  regex: RegExp
+  fileContent: string
+}) {
+  try {
+    return fileContent
+      .split(/\r?\n/)
+      .filter((line) => regex.test(line))
+      .join("\n")
+  } catch (error) {
+    handleError(error)
+    return ""
   }
 }
 export function extractFileContentBetweenLines({
@@ -128,12 +134,12 @@ export function extractFileContentBetweenLines({
   }
   return ""
 }
+
 export async function extractGithubFileContentLines({
   searchString,
   filePath,
-  branch,
 }: GithubFunctionProps & Pick<ExtractContentProps, "searchString">) {
-  const fileContent = await fetchRawFileFromGithub({ filePath, branch })
+  const fileContent = await fetchRawFileFromGithub({ filePath })
 
   const parsedFileContent = extractFileContentLines({
     searchString,
@@ -145,9 +151,8 @@ export async function extractGithubFileContentLines({
 export async function extractGithubFileContentOmitLines({
   searchString,
   filePath,
-  branch,
 }: GithubFunctionProps & Pick<ExtractContentProps, "searchString">) {
-  const fileContent = await fetchRawFileFromGithub({ filePath, branch })
+  const fileContent = await fetchRawFileFromGithub({ filePath })
 
   const parsedFileContent = omitLinesContent({
     searchString,
@@ -158,12 +163,11 @@ export async function extractGithubFileContentOmitLines({
 }
 export async function extractGitHubFileContentBetweenLines({
   filePath,
-  branch,
   startString,
   endString,
 }: GithubFunctionProps &
   Pick<ExtractContentBetweenProps, "endString" | "startString">) {
-  const fileContent: string = await fetchRawFileFromGithub({ filePath, branch })
+  const fileContent: string = await fetchRawFileFromGithub({ filePath })
 
   const parsedFileContent = extractFileContentBetweenLines({
     fileContent,
@@ -172,4 +176,33 @@ export async function extractGitHubFileContentBetweenLines({
   })
 
   return parsedFileContent!
+}
+
+export function readFileContent(filePath: string) {
+  if (!existsSync(cwd)) {
+    handleError(`The path ${cwd} does not exist. Please try again.`)
+  }
+
+  const targetPath = path.resolve(cwd, filePath)
+
+  const fileContent = fs.readFileSync(targetPath)
+
+  return fileContent.toString("utf-8")!
+}
+export function fileExists(filePath: string) {
+  const targetPath = path.resolve(cwd, filePath)
+
+  if (!existsSync(targetPath)) {
+    return false
+  }
+  return true
+}
+export function fileContentToLines(fileContent: string): string[] {
+  return fileContent.split(/\r?\n/)
+}
+export async function getLocalAndRemoteFile(filePath: string) {
+  const lc = readFileContent(filePath)
+  const rc = await fetchRawFileFromGithub({ filePath })
+
+  return { lc, rc } as { lc: string; rc: string }
 }

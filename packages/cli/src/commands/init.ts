@@ -7,10 +7,11 @@ import fs from "fs"
 import simpleGit from "simple-git"
 import ora from "ora"
 import { z } from "zod"
-import { execa } from "execa"
 
 import dotenv from "dotenv"
 import { CONFIG_FILE } from "../utils/config-info"
+import { cwd, setGlobalCwd } from "./add"
+import { execa } from "execa"
 dotenv.config({ path: CONFIG_FILE })
 
 const optionsSchema = z.object({
@@ -34,7 +35,8 @@ export const init = new Command()
       const options = optionsSchema.parse({
         ...opts,
       })
-      const cwd = path.resolve(options.cwd)
+
+      setGlobalCwd(path.resolve(options.cwd))
 
       const { projectName, packageManager } = await prompts([
         {
@@ -56,40 +58,37 @@ export const init = new Command()
         },
       ])
 
-      spinner.text = `Creating project ${projectName}...\n`
-      spinner.start()
-
       if (!projectName) {
         throw new Error("Project name cannot be empty.")
       }
 
-      const projectPath = path.join(cwd, projectName)
+      setGlobalCwd(path.join(cwd, projectName))
 
-      if (fs.existsSync(projectPath)) {
+      if (fs.existsSync(cwd)) {
         throw new Error(`Directory "${projectName}" already exists.`)
       }
-      fs.mkdirSync(projectPath)
+      fs.mkdirSync(cwd)
 
-      spinner.text = `Cloning github repository...`
-      const git = simpleGit()
+      spinner.start(`Cloning github repository...`)
+      const git = simpleGit({ baseDir: cwd })
       await git.clone(
         `https://${process.env.ACCESS_KEY}@github.com/DanielCraciunGitHub/nextjs-base-template.git`,
-        projectPath,
+        cwd,
         ["--branch", "master"]
       )
 
-      process.chdir(projectPath)
+      process.chdir(cwd)
       fs.rmSync(".git", {
         force: true,
         recursive: true,
       })
       fs.renameSync(".env.example", ".env.local")
-      
-      await execa("git init", { cwd: projectPath })
-      await execa("git add .", { cwd: projectPath })
-      await execa(`git commit -m "init"`, { cwd: projectPath })
 
-      logger.info("Repository cloned successfully")
+      await git.init()
+      await git.add(".")
+      await git.commit("init")
+
+      spinner.succeed("Repository cloned successfully!")
 
       let installCommand: string = "pnpm i"
       switch (packageManager) {
@@ -110,11 +109,12 @@ export const init = new Command()
       }
 
       try {
-        spinner.text = `Installing Dependencies...\n`
+        spinner.start(`Installing Dependencies...\n`)
         spinner.stopAndPersist()
-        await execa(installCommand, { cwd: projectPath, stdio: "inherit" })
 
-        logger.info("Dependencies installed successfully.")
+        await execa(installCommand, { cwd, stdio: "inherit" })
+
+        spinner.succeed("Dependencies installed successfully.")
       } catch (error: any) {
         throw new Error(error.message)
       }

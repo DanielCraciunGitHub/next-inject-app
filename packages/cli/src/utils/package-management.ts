@@ -3,28 +3,29 @@ import { detect } from "@antfu/ni"
 import { execa } from "execa"
 
 import { handleError } from "./handle-error"
+import { cwd } from "../commands/add"
 
-export async function installDeps(packages: string[], cwd: string) {
+export async function installDeps(packages: string[]) {
   const packageManager = await getPackageManager(cwd)
 
   const parsedPackages = packages.join(" ")
   try {
     await execa(
-      `${packageManager} ${packageManager === "yarn" ? "add" : "i"} ${parsedPackages}`,
-      { cwd }
+      `${packageManager} ${packageManager === "npm" ? "i" : "add"} ${parsedPackages}`,
+      { cwd, stdin: "inherit" }
     )
   } catch (error) {
     handleError(error)
   }
 }
-export async function installDevDeps(packages: string[], cwd: string) {
+export async function installDevDeps(packages: string[]) {
   const packageManager = await getPackageManager(cwd)
 
   const parsedPackages = packages.join(" ")
   try {
     await execa(
       `${packageManager} ${packageManager === "yarn" ? "add" : "i"} ${parsedPackages} -D`,
-      { cwd }
+      { cwd, stdin: "inherit" }
     )
   } catch (error) {
     handleError(error)

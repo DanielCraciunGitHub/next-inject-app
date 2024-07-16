@@ -7,6 +7,7 @@ import { add } from "./commands/add"
 import { auth } from "./commands/auth"
 import { getPackageInfo } from "./utils/get-package-info"
 import { init } from "./commands/init"
+import { bootstrap } from "./commands/bootstrap"
 
 process.on("SIGINT", () => process.exit(0))
 process.on("SIGTERM", () => process.exit(0))
@@ -19,7 +20,11 @@ async function main() {
     .description("Inject plugins into your next.js project")
     .version("1.1.0", "-v, --version", "display the version number")
 
-  program.addCommand(add).addCommand(auth).addCommand(init)
+  program
+    .addCommand(add)
+    .addCommand(auth)
+    .addCommand(init)
+    .addCommand(bootstrap)
 
   program.parse()
 }
