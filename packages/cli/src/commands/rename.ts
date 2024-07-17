@@ -1,14 +1,14 @@
 import { Command } from "commander"
 
 import { handleError } from "../utils/handle-error"
-import { cwd, optionsSchema, setGlobalCwd } from "./add"
+import { optionsSchema, setGlobalCwd } from "./add"
 
 import path from "path"
-import replaceInFile from "replace-in-file"
+
 import prompts from "prompts"
 import {
-  getNextInjectConfig,
   isNextInjectProject,
+  renameNextInjectProject,
 } from "../utils/get-package-info"
 import ora from "ora"
 
@@ -42,19 +42,11 @@ export const rename = new Command()
           message: "Enter your new project name:",
         },
       ])
-      const config = getNextInjectConfig()
 
       spinner.start(`Renaming...`)
 
-      await replaceInFile({
-        files: [path.join(cwd, "*"), path.join(cwd, "src/**")],
-        from: [new RegExp(`${config.name}`, "g")],
-        to: [projectName],
-        ignore: [path.join(cwd, "node_modules/**/*")],
-        glob: {
-          windowsPathsNoEscape: true,
-        },
-      })
+      await renameNextInjectProject(projectName)
+
       spinner.succeed(`Done!`)
     } catch (error) {
       handleError(error)

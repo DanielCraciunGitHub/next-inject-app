@@ -1,18 +1,14 @@
 import { Command } from "commander"
 
 import {
-  injectContentOuter,
   injectGithubFiles,
-  omitLinesFile,
   mergeFileContent,
   injectFile,
 } from "../utils/file-injection"
 import {
-  extractGithubFileContentLines,
   extractFileContentBetweenLines,
   fileExists,
   getLocalAndRemoteFile,
-  extractFileContentLines,
   extractFileContentLinesRegex,
 } from "../utils/file-extraction"
 import { handleError } from "../utils/handle-error"
@@ -24,7 +20,8 @@ export const metadata = new Command()
   .description("Inject metadata into your app")
   .action(async function (this: Command) {
     try {
-      addSpinner.start("Installing dependencies...")
+      addSpinner.start("Installing dependencies...\n")
+      addSpinner.stopAndPersist()
       await installDeps(["next-seo"])
       addSpinner.succeed("Dependencies successfully installed!")
 
