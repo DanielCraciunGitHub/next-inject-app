@@ -6,10 +6,12 @@ import {
   injectFile,
 } from "../utils/file-injection"
 import {
-  extractFileContentBetweenLines,
+  extractBetweenMatchedLines,
   fileExists,
   getLocalAndRemoteFile,
-  extractFileContentLinesRegex,
+  extractMatchedLines,
+  fetchRawFileFromGithub,
+  readFileContent,
 } from "../utils/file-extraction"
 import { handleError } from "../utils/handle-error"
 import { addSpinner } from "./add"
@@ -26,23 +28,65 @@ export const metadata = new Command()
       addSpinner.succeed("Dependencies successfully installed!")
 
       addSpinner.start("Injecting files...")
-      const metadataFile = "src/config/metadata.tsx"
-      const sitemap = "src/app/sitemap.ts"
-      const robots = "src/app/robots.ts"
-      const manifest = "src/app/manifest.ts"
-      await injectGithubFiles({
-        filePaths: [metadataFile, sitemap, robots, manifest],
+      const metadataPath = "src/config/metadata.tsx"
+      let metadataFile = await fetchRawFileFromGithub({
+        filePath: metadataPath,
       })
+
+      // ! THE order here matters, because we search and replace content from start-EOF.
+      const manifest = "src/app/manifest.ts"
+      if (fileExists(manifest)) {
+        const manifestContent = readFileContent(manifest)
+        metadataFile = mergeFileContent(
+          metadataFile,
+          `// MOVED FROM ${manifest}`,
+          manifestContent
+        )
+      } else {
+        await injectGithubFiles({
+          filePaths: [manifest],
+        })
+      }
+
+      const robots = "src/app/robots.ts"
+      if (fileExists(robots)) {
+        const robotsContent = readFileContent(robots)
+        metadataFile = mergeFileContent(
+          metadataFile,
+          `// MOVED FROM ${robots}`,
+          robotsContent
+        )
+      } else {
+        await injectGithubFiles({
+          filePaths: [robots],
+        })
+      }
+
+      const sitemap = "src/app/sitemap.ts"
+      if (fileExists(sitemap)) {
+        const sitemapContent = readFileContent(sitemap)
+        metadataFile = mergeFileContent(
+          metadataFile,
+          `// MOVED FROM ${sitemap}`,
+          sitemapContent
+        )
+      } else {
+        await injectGithubFiles({
+          filePaths: [sitemap],
+        })
+      }
+
+      injectFile(metadataPath, metadataFile)
 
       const mainLayoutPath = "src/app/layout.tsx"
       let { rc: remoteLayout, lc: localLayout } =
         await getLocalAndRemoteFile(mainLayoutPath)
 
-      const layoutImports = extractFileContentLinesRegex({
+      const layoutImports = extractMatchedLines({
         fileContent: remoteLayout,
-        regex: /^import\s+\{.*metadata.*/i,
+        searchString: /^import\s+\{.*metadata.*/i,
       })
-      const layoutMetadataExports = extractFileContentBetweenLines({
+      const layoutMetadataExports = extractBetweenMatchedLines({
         fileContent: remoteLayout,
         startString: "export const metadata",
       })
@@ -60,11 +104,11 @@ export const metadata = new Command()
         let { rc: remotePage, lc: localPage } =
           await getLocalAndRemoteFile(mainPagePath)
 
-        const pageImports = extractFileContentLinesRegex({
+        const pageImports = extractMatchedLines({
           fileContent: remotePage,
-          regex: /^import\s+\{.*metadata.*/i,
+          searchString: /^import\s+\{.*metadata.*/i,
         })
-        const pageMetadataExports = extractFileContentBetweenLines({
+        const pageMetadataExports = extractBetweenMatchedLines({
           fileContent: remotePage,
           startString: "export const metadata",
         })

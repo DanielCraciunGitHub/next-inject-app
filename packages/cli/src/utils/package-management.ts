@@ -8,12 +8,12 @@ import { cwd } from "../commands/add"
 export async function installDeps(packages: string[]) {
   const packageManager = await getPackageManager(cwd)
 
-  const parsedPackages = packages.join(" ")
   try {
-    await execa(
-      `${packageManager} ${packageManager === "npm" ? "i" : "add"} ${parsedPackages}`,
-      { cwd, stdio: "inherit" }
-    )
+    const installCommand = packageManager
+    const installArgs = [packageManager === "npm" ? "i" : "add", ...packages]
+
+    console.log(cwd)
+    await execa(installCommand, installArgs, { cwd, stdio: "inherit" })
   } catch (error) {
     handleError(error)
   }

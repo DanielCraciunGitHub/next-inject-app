@@ -3,13 +3,13 @@ import { Command } from "commander"
 import {
   injectGithubFiles,
   mergeFileContent,
-  searchAndReplaceFileContent,
+  searchAndReplace,
   injectFile,
 } from "../utils/file-injection"
 import {
-  extractFileContentBetweenLines,
+  extractBetweenMatchedLines,
   getLocalAndRemoteFile,
-  extractFileContentLines,
+  extractMatchedLines,
 } from "../utils/file-extraction"
 import { handleError } from "../utils/handle-error"
 import { addSpinner, cwd, optionsSchema, setGlobalCwd } from "./add"
@@ -60,23 +60,23 @@ export const bootstrap = new Command()
       let { rc: remoteLayout, lc: localLayout } =
         await getLocalAndRemoteFile(mainLayoutPath)
 
-      const nextInjectImport = extractFileContentLines({
+      const nextInjectImport = extractMatchedLines({
         fileContent: remoteLayout,
         searchString: "import { NextInjectProvider",
       })!
       localLayout = mergeFileContent(nextInjectImport, localLayout)
 
-      const layoutProvider = extractFileContentBetweenLines({
+      const layoutProvider = extractBetweenMatchedLines({
         fileContent: remoteLayout,
         startString: "<NextInjectProvider",
         endString: "</NextInjectProvider>",
       })
 
-      const finalContent = searchAndReplaceFileContent(
-        localLayout,
-        "{children}",
-        layoutProvider
-      )
+      const finalContent = searchAndReplace({
+        fileContent: localLayout,
+        targetString: "{children}",
+        newContent: layoutProvider,
+      })
 
       injectFile(mainLayoutPath, finalContent)
 

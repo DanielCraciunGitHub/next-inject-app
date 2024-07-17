@@ -9,7 +9,6 @@ import { CONFIG_FILE } from "./config-info"
 import fs, { existsSync } from "fs"
 
 import path from "path"
-import { omitLinesContent } from "./file-injection"
 import { branch, cwd } from "../commands/add"
 
 export interface GithubFunctionProps {
@@ -18,15 +17,15 @@ export interface GithubFunctionProps {
 
 export type ExtractContentProps = {
   fileContent: string
-  searchString: string
+  searchString: RegExp | string
 }
 
 export type ExtractContentBetweenProps = Omit<
   ExtractContentProps,
   "searchString"
 > & {
-  startString?: string
-  endString?: string
+  startString?: string | RegExp
+  endString?: string | RegExp
 }
 
 export async function fetchRawFileFromGithub({
@@ -57,7 +56,7 @@ export async function fetchRawFilesFromGithub({
   return files
 }
 
-export function extractFileContentLines({
+export function extractMatchedLines({
   searchString,
   fileContent,
 }: ExtractContentProps) {
@@ -65,8 +64,10 @@ export function extractFileContentLines({
     // Split the content into lines
     const lines = fileContent.split("\n")
 
+    const regex = new RegExp(searchString)
+
     // Filter lines that contain the search string
-    const filteredLines = lines.filter((line) => line.includes(searchString))
+    const filteredLines = lines.filter((line) => regex.test(line))
 
     // Combine the filtered lines into a single string separated by '\n'
     const result = filteredLines.join("\n")
@@ -77,24 +78,8 @@ export function extractFileContentLines({
     return ""
   }
 }
-export function extractFileContentLinesRegex({
-  regex,
-  fileContent,
-}: {
-  regex: RegExp
-  fileContent: string
-}) {
-  try {
-    return fileContent
-      .split(/\r?\n/)
-      .filter((line) => regex.test(line))
-      .join("\n")
-  } catch (error) {
-    handleError(error)
-    return ""
-  }
-}
-export function extractFileContentBetweenLines({
+
+export function extractBetweenMatchedLines({
   fileContent,
   startString,
   endString,
@@ -113,13 +98,15 @@ export function extractFileContentBetweenLines({
   if (!startString) {
     startIndex = 0
   } else {
-    startIndex = lines.findIndex((line) => line.includes(startString))
+    const regex = new RegExp(startString)
+    startIndex = lines.findIndex((line) => regex.test(line))
   }
 
   if (!endString) {
     endIndex = lines.length - 1
   } else {
-    endIndex = lines.findIndex((line) => line.includes(endString))
+    const regex = new RegExp(endString)
+    endIndex = lines.findIndex((line) => regex.test(line))
   }
 
   // Ensure both strings are found and start index is before end index
@@ -133,49 +120,6 @@ export function extractFileContentBetweenLines({
     handleError("Start string or end string not found, or out of order.")
   }
   return ""
-}
-
-export async function extractGithubFileContentLines({
-  searchString,
-  filePath,
-}: GithubFunctionProps & Pick<ExtractContentProps, "searchString">) {
-  const fileContent = await fetchRawFileFromGithub({ filePath })
-
-  const parsedFileContent = extractFileContentLines({
-    searchString,
-    fileContent,
-  })
-
-  return { og: fileContent as string, parsed: parsedFileContent! }
-}
-export async function extractGithubFileContentOmitLines({
-  searchString,
-  filePath,
-}: GithubFunctionProps & Pick<ExtractContentProps, "searchString">) {
-  const fileContent = await fetchRawFileFromGithub({ filePath })
-
-  const parsedFileContent = omitLinesContent({
-    searchString,
-    fileContent,
-  })
-
-  return { og: fileContent as string, parsed: parsedFileContent }
-}
-export async function extractGitHubFileContentBetweenLines({
-  filePath,
-  startString,
-  endString,
-}: GithubFunctionProps &
-  Pick<ExtractContentBetweenProps, "endString" | "startString">) {
-  const fileContent: string = await fetchRawFileFromGithub({ filePath })
-
-  const parsedFileContent = extractFileContentBetweenLines({
-    fileContent,
-    startString,
-    endString,
-  })
-
-  return parsedFileContent!
 }
 
 export function readFileContent(filePath: string) {
@@ -197,7 +141,7 @@ export function fileExists(filePath: string) {
   }
   return true
 }
-export function fileContentToLines(fileContent: string): string[] {
+export function getLines(fileContent: string): string[] {
   return fileContent.split(/\r?\n/)
 }
 export async function getLocalAndRemoteFile(filePath: string) {

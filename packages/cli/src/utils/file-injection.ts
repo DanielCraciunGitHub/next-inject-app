@@ -8,14 +8,13 @@ import {
   GithubFunctionProps,
 } from "./file-extraction"
 import { handleError } from "./handle-error"
-import { readFileContent } from "./file-extraction"
 import { cwd } from "../commands/add"
 
 interface InjectContentProps {
-  content: string
-  insertPoint: string
+  insertContent: string
+  insertPoint: string | RegExp
   direction: "above" | "below"
-  filePath: string
+  fileContent: string
 }
 
 export async function injectGithubFile({ filePath }: GithubFunctionProps) {
@@ -45,21 +44,20 @@ export async function injectFile(filePath: string, fileContent: string) {
   fs.writeFileSync(targetPath, fileContent, "utf-8")
 }
 
-export async function injectContentInner({
-  content,
+export function injectContentInner({
+  insertContent,
   insertPoint,
   direction = "below",
-  filePath,
+  fileContent,
 }: InjectContentProps) {
   try {
-    const fileContent = readFileContent(filePath)
-
     const lines = fileContent.split("\n")
     let insertIndex = -1
 
     // Find the insert point line
+    const regex = new RegExp(insertPoint)
     for (let i = 0; i < lines.length; i++) {
-      if (lines[i].includes(insertPoint)) {
+      if (regex.test(lines[i])) {
         insertIndex = i
         break
       }
@@ -72,57 +70,31 @@ export async function injectContentInner({
 
     // Insert new content above or below the insert point
     if (direction === "above") {
-      lines.splice(insertIndex - 1, 0, content)
+      lines.splice(insertIndex - 1, 0, insertContent)
     } else {
-      lines.splice(insertIndex, 0, content)
+      lines.splice(insertIndex, 0, insertContent)
     }
 
     const modifiedContent = lines.join("\n")
-    const targetPath = path.resolve(cwd, filePath)
 
-    injectFile(targetPath, modifiedContent)
-  } catch (error) {
-    handleError(error)
-  }
-}
-export function injectContentOuter({
-  content,
-  direction = "below",
-  filePath,
-}: Omit<InjectContentProps, "insertPoint">) {
-  try {
-    const fileContent = readFileContent(filePath)
-
-    const lines = fileContent.split("\n")
-    let insertIndex = -1
-
-    // Find the insert point line
-    if (direction === "above") {
-      insertIndex = 0
-    } else {
-      insertIndex = lines.length - 1
-    }
-
-    lines.splice(insertIndex, 0, content)
-
-    const modifiedContent = lines.join("\n")
-    const targetPath = path.resolve(cwd, filePath)
-
-    injectFile(targetPath, modifiedContent)
     return modifiedContent
   } catch (error) {
     handleError(error)
     return ""
   }
 }
-export function omitLinesContent(params: ExtractContentProps): string {
-  const { fileContent, searchString } = params
 
+export function omitLinesContent({
+  fileContent,
+  searchString,
+}: ExtractContentProps): string {
   // Split the content into lines
   const lines = fileContent.split("\n")
 
+  const regex = new RegExp(searchString)
+
   // Filter out lines that contain the search string
-  const filteredLines = lines.filter((line) => !line.includes(searchString))
+  const filteredLines = lines.filter((line) => regex.test(line))
 
   // Combine the filtered lines into a single string separated by '\n'
   const result = filteredLines.join("\n")
@@ -130,18 +102,6 @@ export function omitLinesContent(params: ExtractContentProps): string {
   return result
 }
 
-export function omitLinesFile({
-  filePath,
-  searchString,
-}: Pick<ExtractContentProps, "searchString"> & {
-  filePath: string
-}) {
-  const fileContent = readFileContent(filePath)
-
-  const parsedFileContent = omitLinesContent({ fileContent, searchString })
-
-  injectFile(filePath, parsedFileContent)
-}
 export function mergeFileContent(...filesContent: string[]) {
   let finalFileContent: string = ""
   for (const fileContent of filesContent) {
@@ -150,16 +110,51 @@ export function mergeFileContent(...filesContent: string[]) {
   return finalFileContent
 }
 
-export function searchAndReplaceFileContent(
-  fileContent: string,
-  targetString: string,
+export function searchAndReplace({
+  fileContent,
+  targetString,
+  newContent,
+}: {
+  fileContent: string
+  targetString: string | RegExp
   newContent: string
-) {
+}) {
   // Replace the target string with the new content
   const newFileContent = fileContent.replace(
-    new RegExp(targetString, "g"),
+    new RegExp(targetString),
     newContent
   )
 
   return newFileContent
+}
+
+export function injectContentOuter({
+  insertContent,
+  direction = "below",
+  fileContent,
+}: Omit<InjectContentProps, "insertPoint">) {
+  try {
+    const lines = fileContent.split("\n")
+    let insertIndex = -1
+
+    // Find the insert point line
+    if (direction === "above") {
+      if (lines[0].includes("use client")) {
+        insertIndex = 1
+      } else {
+        insertIndex = 0
+      }
+    } else {
+      insertIndex = lines.length - 1
+    }
+
+    lines.splice(insertIndex, 0, insertContent)
+
+    const modifiedContent = lines.join("\n")
+
+    return modifiedContent
+  } catch (error) {
+    handleError(error)
+    return ""
+  }
 }

@@ -17,6 +17,7 @@ import prompts from "prompts"
 import { bootstrap } from "./bootstrap"
 import { init } from "./init"
 import chalk from "chalk"
+import { nextAuth } from "./next-auth"
 
 export const addSpinner = ora()
 export let branch: string = "master"
@@ -53,10 +54,10 @@ export const add = new Command()
 
       if (res.status !== 200) {
         logger.error(
-          `Please authenticate and purchase this plugin here:\n${NEXTJS_APP_URL}/plugins/${subCommand.name()}`
+          `\nERROR: Please authenticate and purchase this plugin here:\n${NEXTJS_APP_URL}/plugins/${subCommand.name()}`
         )
         logger.warn(
-          `Find configuration instructions at ${NEXTJS_APP_URL}/dashboard`
+          `Also, find configuration instructions at ${NEXTJS_APP_URL}/dashboard`
         )
         handleError(res.statusText)
       }
@@ -117,6 +118,9 @@ export const add = new Command()
     addSpinner.succeed(
       `⚡ Finished injecting the ${chalk.green(subCommand.name())} plugin!`
     )
+    logger.success(
+      `Please review the documentation for this plugin here:\n${NEXTJS_APP_URL}/plugins/${subCommand.name()}`
+    )
   })
   .action(async (plugin, opts) => {
     try {
@@ -128,6 +132,7 @@ export const add = new Command()
   // ! Add new commands here
   .addCommand(metadata)
   .addCommand(reactEmail)
+  .addCommand(nextAuth)
 
 export function cliNameToStripePluginName(name: string): string {
   return (
