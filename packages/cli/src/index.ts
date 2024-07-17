@@ -8,6 +8,7 @@ import { auth } from "./commands/auth"
 import { getPackageInfo } from "./utils/get-package-info"
 import { init } from "./commands/init"
 import { bootstrap } from "./commands/bootstrap"
+import { rename } from "./commands/rename"
 
 process.on("SIGINT", () => process.exit(0))
 process.on("SIGTERM", () => process.exit(0))
@@ -18,13 +19,14 @@ async function main() {
   const program = new Command()
     .name("next-inject")
     .description("Inject plugins into your next.js project")
-    .version("1.1.0", "-v, --version", "display the version number")
+    .version("1.1.1", "-v, --version", "display the version number")
 
   program
     .addCommand(add)
     .addCommand(auth)
     .addCommand(init)
     .addCommand(bootstrap)
+    .addCommand(rename)
 
   program.parse()
 }

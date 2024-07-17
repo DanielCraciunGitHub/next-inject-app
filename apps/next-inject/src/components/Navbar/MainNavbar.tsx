@@ -17,7 +17,7 @@ export const MainNavbar = () => {
             className="text-xl font-bold"
             tabIndex={0}
           />
-          <BsLightningChargeFill fill={"yellow"} size={20} />
+          <BsLightningChargeFill fill={"green"} size={20} />
         </div>
         <div className="flex divide-x-2 divide-primary">
           {restLinks.map((item) => (

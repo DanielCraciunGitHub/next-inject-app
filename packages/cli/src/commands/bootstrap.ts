@@ -1,28 +1,23 @@
 import { Command } from "commander"
 
 import {
-  injectContentOuter,
   injectGithubFiles,
-  omitLinesFile,
   mergeFileContent,
-  injectContentInner,
   searchAndReplaceFileContent,
   injectFile,
 } from "../utils/file-injection"
 import {
-  extractGithubFileContentLines,
   extractFileContentBetweenLines,
-  fileExists,
-  readFileContent,
-  fileContentToLines,
-  fetchRawFileFromGithub,
   getLocalAndRemoteFile,
   extractFileContentLines,
 } from "../utils/file-extraction"
 import { handleError } from "../utils/handle-error"
-import { addSpinner, branch, optionsSchema, setGlobalCwd } from "./add"
+import { addSpinner, cwd, optionsSchema, setGlobalCwd } from "./add"
 import { installDeps } from "../utils/package-management"
 import path from "path"
+import simpleGit from "simple-git"
+import { initNextInjectConfig } from "../utils/get-package-info"
+import prompts from "prompts"
 
 export const bootstrap = new Command()
   .name("bootstrap")
@@ -39,6 +34,14 @@ export const bootstrap = new Command()
       })
       setGlobalCwd(path.resolve(options.cwd))
 
+      const { projectName } = await prompts([
+        {
+          type: "text",
+          name: "projectName",
+          message: "Enter the desired project name:",
+        },
+      ])
+
       addSpinner.start("Installing dependencies...\n")
       addSpinner.stopAndPersist()
 
@@ -53,9 +56,9 @@ export const bootstrap = new Command()
         filePaths: [indexConfig, providers, nextInjectConfig, types],
       })
 
-      const mainLayoutFile = "src/app/layout.tsx"
+      const mainLayoutPath = "src/app/layout.tsx"
       let { rc: remoteLayout, lc: localLayout } =
-        await getLocalAndRemoteFile(mainLayoutFile)
+        await getLocalAndRemoteFile(mainLayoutPath)
 
       const nextInjectImport = extractFileContentLines({
         fileContent: remoteLayout,
@@ -75,7 +78,13 @@ export const bootstrap = new Command()
         layoutProvider
       )
 
-      injectFile(mainLayoutFile, finalContent)
+      injectFile(mainLayoutPath, finalContent)
+
+      initNextInjectConfig({ projectName })
+
+      const git = simpleGit({ baseDir: cwd })
+      await git.init()
+      git.add([indexConfig, mainLayoutPath, providers, types, nextInjectConfig])
 
       addSpinner.succeed("Finished bootstrapping next-inject!")
     } catch (error) {

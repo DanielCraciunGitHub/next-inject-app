@@ -1,6 +1,6 @@
+import React from "react"
 import { AppRouter } from "@/server"
 import { inferRouterInputs, inferRouterOutputs } from "@trpc/server"
-import React from "react"
 
 export type NavItem = {
   href: string
@@ -23,6 +23,8 @@ export type ActionResponse = {
   error?: string
   code?: number
 }
+
+export type FAQ = { questionName: string; acceptedAnswerText: string }[]
 
 export type RouterInputs = inferRouterInputs<AppRouter>
 export type RouterOutputs = inferRouterOutputs<AppRouter>

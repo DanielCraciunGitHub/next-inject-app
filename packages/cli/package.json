@@ -1,6 +1,6 @@
 {
   "name": "next-inject",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -49,6 +49,7 @@
     "open": "^10.1.0",
     "ora": "^8.0.1",
     "prompts": "^2.4.2",
+    "replace-in-file": "^8.1.0",
     "simple-git": "^3.25.0",
     "type-fest": "^4.21.0",
     "ulid": "^2.3.0",

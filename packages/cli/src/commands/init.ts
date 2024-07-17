@@ -12,6 +12,7 @@ import dotenv from "dotenv"
 import { CONFIG_FILE } from "../utils/config-info"
 import { cwd, setGlobalCwd } from "./add"
 import { execa } from "execa"
+import { initNextInjectConfig } from "../utils/get-package-info"
 dotenv.config({ path: CONFIG_FILE })
 
 const optionsSchema = z.object({
@@ -83,6 +84,7 @@ export const init = new Command()
         recursive: true,
       })
       fs.renameSync(".env.example", ".env.local")
+      initNextInjectConfig({ projectName })
 
       await git.init()
       await git.add(".")

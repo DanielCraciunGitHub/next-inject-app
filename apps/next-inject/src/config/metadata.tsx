@@ -20,51 +20,89 @@
 import { Metadata, MetadataRoute, Viewport } from "next"
 import { siteConfig } from "@/config"
 
+import { plugins } from "@/app/source"
+
 export const baseMetadata: Metadata = {
   title: {
-    default: "<APPNAME>",
-    template: `%s | <APPNAME>`,
+    default: "Next Inject",
+    template: `%s | Next Inject`,
   },
-  description: "<APPNAME> - Amazing Product",
-  keywords: [],
-  applicationName: "<APPNAME>",
+  description:
+    "Discover Next Inject, the ultimate solution for seamless plugin integration in your Next.js applications. Simplify the setup of essential features with our user-friendly CLI, enabling automatic configuration of metadata, SEO, analytics, and more. Enhance your development workflow and elevate your projects with Next Inject's robust and easy-to-use plugins.",
+  keywords: [
+    "Next.js",
+    "Next Inject",
+    "Next.js plugins",
+    "Next.js integration",
+    "Next.js CLI tools",
+    "Next.js automatic setup",
+    "Next.js metadata",
+    "Next.js SEO",
+    "Next.js analytics",
+    "Next.js Stripe integration",
+    "Next.js e-commerce",
+    "Next.js plugin marketplace",
+    "Next.js development tools",
+    "Next.js feature setup",
+    "Next.js project enhancement",
+    "Next.js productivity tools",
+    "Easy Next.js plugins",
+    "Next.js plugin installation",
+    "Next.js authentication",
+    "Next.js CMS integration",
+    "Next.js image optimization",
+    "Next.js performance tools",
+    "Next.js security plugins",
+    "Next.js database integration",
+    "Next.js payment gateways",
+    "Next.js deployment tools",
+    "Next.js API integration",
+    "Next.js serverless functions",
+    "Next.js headless CMS",
+    "Next.js real-time updates",
+    "Next.js static site generation",
+    "Next.js dynamic routing",
+  ],
+  applicationName: "Next Inject",
   metadataBase: new URL(siteConfig.url),
   alternates: {
     canonical: "./",
   },
   openGraph: {
     title: {
-      default: "<APPNAME>",
-      template: `%s | <APPNAME>`,
+      default: "Next Inject",
+      template: `%s | Next Inject`,
     },
-    description: "<APPNAME> - Amazing product",
+    description:
+      "Discover Next Inject, the ultimate solution for seamless plugin integration in your Next.js applications. Simplify the setup of essential features with our user-friendly CLI, enabling automatic configuration of metadata, SEO, analytics, and more. Enhance your development workflow and elevate your projects with Next Inject's robust and easy-to-use plugins.",
     url: "/",
     type: "website",
     images: [
       {
-        url: `${siteConfig.url}/images/<APPNAME>-og.png`,
-        type: "image/png",
+        url: `${siteConfig.url}/images/next-inject-og.webp`,
+        type: "image/webp",
         width: 1200,
         height: 630,
-        alt: "",
+        alt: "Next Inject",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     title: {
-      default: "<APPNAME>",
-      template: `%s | <APPNAME>`,
+      default: "Next Inject",
+      template: `%s | Next Inject`,
     },
-    description: "<APPNAME> - Amazing product",
-    creator: "@<APPNAME> - TWITTER",
+    description:
+      "Discover Next Inject, the ultimate solution for seamless plugin integration in your Next.js applications. Simplify the setup of essential features with our user-friendly CLI, enabling automatic configuration of metadata, SEO, analytics, and more. Enhance your development workflow and elevate your projects with Next Inject's robust and easy-to-use plugins.",
+    creator: "@craciun_07",
     images: [
       {
-        url: `${siteConfig.url}/images/<APPNAME>-og.png`,
-        type: "image/png",
+        url: `${siteConfig.url}/images/next-inject-og.webp`,
+        type: "image/webp",
         width: 1200,
         height: 630,
-        alt: "",
+        alt: "Next Inject",
       },
     ],
   },
@@ -87,14 +125,14 @@ export const baseViewport: Viewport = {
 export const staticMetadata = {
   ...baseMetadata,
   mainPage: {
-    title: { absolute: "<APPNAME>" },
+    title: { absolute: "Next Inject" },
     openGraph: {
       ...baseMetadata.openGraph,
-      title: { absolute: "<APPNAME>" },
+      title: { absolute: "Next Inject" },
     },
     twitter: {
       ...baseMetadata.twitter,
-      title: { absolute: "<APPNAME>" },
+      title: { absolute: "Next Inject" },
     },
   } satisfies Metadata,
   // ! Write page-specific static metadata configurations here...
@@ -105,8 +143,14 @@ export async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...siteConfig.navLinks.map((page) => ({
       url: siteConfig.url + page.href,
       lastModified: new Date(),
-      changeFrequency: "daily",
+      changeFrequency: "weekly",
       priority: 0.9,
+    })),
+    ...plugins.getPages().map((page) => ({
+      url: siteConfig.url + "/" + page.slugs,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.8,
     })),
     // ! Render dynamic sitemap entries here...
   ] as MetadataRoute.Sitemap
@@ -119,6 +163,7 @@ export function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
+      disallow: "/dashboard",
     },
     sitemap: `${siteConfig.url}/sitemap.xml`,
   }
@@ -127,9 +172,10 @@ export function robots(): MetadataRoute.Robots {
 // ! These are the most important manifest properties, make sure to add additional properties as you see fit.
 export function manifest(): MetadataRoute.Manifest {
   return {
-    name: "<APPNAME>",
-    short_name: "<APPNAME>",
-    description: "<APPNAME> - A Great Product",
+    name: "Next Inject",
+    short_name: "Next Inject",
+    description:
+      "Discover Next Inject, the ultimate solution for seamless plugin integration in your Next.js applications. Simplify the setup of essential features with our user-friendly CLI, enabling automatic configuration of metadata, SEO, analytics, and more. Enhance your development workflow and elevate your projects with Next Inject's robust and easy-to-use plugins.",
     background_color: "#FFFFFF",
     theme_color: "#FFFFFF",
     display: "standalone",
@@ -141,44 +187,24 @@ export function manifest(): MetadataRoute.Manifest {
     // ! Feel free to remove the icon sizes you don't need.
     icons: [
       {
-        src: "/images/icon-72x72.png",
+        src: "/images/icon-72x72.webp",
         sizes: "72x72",
-        type: "image/png",
+        type: "image/webp",
       },
       {
-        src: "/images/icon-96x96.png",
+        src: "/images/icon-96x96.webp",
         sizes: "96x96",
-        type: "image/png",
+        type: "image/webp",
       },
       {
-        src: "/images/icon-128x128.png",
-        sizes: "128x128",
-        type: "image/png",
-      },
-      {
-        src: "/images/icon-144x144.png",
-        sizes: "144x144",
-        type: "image/png",
-      },
-      {
-        src: "/images/icon-152x152.png",
-        sizes: "152x152",
-        type: "image/png",
-      },
-      {
-        src: "/images/icon-192x192.png",
+        src: "/images/icon-192x192.webp",
         sizes: "192x192",
-        type: "image/png",
+        type: "image/webp",
       },
       {
-        src: "/images/icon-384x384.png",
-        sizes: "384x384",
-        type: "image/png",
-      },
-      {
-        src: "/images/icon-512x512.png",
+        src: "/images/icon-512x512.webp",
         sizes: "512x512",
-        type: "image/png",
+        type: "image/webp",
       },
     ],
   }

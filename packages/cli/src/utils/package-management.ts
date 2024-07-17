@@ -12,7 +12,7 @@ export async function installDeps(packages: string[]) {
   try {
     await execa(
       `${packageManager} ${packageManager === "npm" ? "i" : "add"} ${parsedPackages}`,
-      { cwd, stdin: "inherit" }
+      { cwd, stdio: "inherit" }
     )
   } catch (error) {
     handleError(error)

@@ -47,7 +47,7 @@ export default async function Page({
           priceId={page.data.priceId}
           className="space-x-1 bg-muted-foreground"
         >
-          <BsLightningChargeFill fill={"yellow"} size={16} />
+          <BsLightningChargeFill fill={"green"} size={16} />
           <div>
             Get Plugin |{" "}
             <span className="font-bold italic text-green-400 dark:text-green-700">
@@ -63,7 +63,7 @@ export default async function Page({
             priceId={page.data.priceId}
             className="space-x-1 bg-muted-foreground"
           >
-            <BsLightningChargeFill fill={"yellow"} size={16} />
+            <BsLightningChargeFill fill={"green"} size={16} />
             <div>
               Get Plugin |{" "}
               <span className="font-bold italic text-green-400 dark:text-green-700">
