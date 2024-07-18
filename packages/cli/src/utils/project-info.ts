@@ -35,9 +35,9 @@ export function isNextInjectProject(): boolean {
 
   return false
 }
-export function getNextInjectConfig() {
+export async function getNextInjectConfig() {
   const configFilePath = path.join(cwd, "next-inject.json")
-  const data = readFileContent(configFilePath)
+  const data = await readFileContent(configFilePath)
 
   const json = data ? JSON.parse(data) : {}
   return json
@@ -50,5 +50,5 @@ export async function initNextInjectConfig(data: { projectName: string }) {
 
   await renameNextInjectProject(data.projectName)
 
-  injectFile({ filePath: configFilePath, fileContent: jsonData })
+  await injectFile({ filePath: configFilePath, fileContent: jsonData })
 }

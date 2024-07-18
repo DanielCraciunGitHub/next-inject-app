@@ -38,12 +38,8 @@ export const bootstrap = new Command()
         },
       ])
 
-      addSpinner.start("Installing dependencies...\n")
-      addSpinner.stopAndPersist()
-
       await installDeps(["next-themes", "react-icons"])
 
-      addSpinner.text = "Injecting files..."
       const indexConfig = "src/config/next-inject.tsx"
       const providers = "src/components/next-inject-providers.tsx"
       const types = "src/types/next-inject.ts"
@@ -74,9 +70,9 @@ export const bootstrap = new Command()
         newContent: layoutProvider,
       })
 
-      injectFile({ filePath: mainLayoutPath, fileContent: finalContent })
+      await injectFile({ filePath: mainLayoutPath, fileContent: finalContent })
 
-      initNextInjectConfig({ projectName })
+      await initNextInjectConfig({ projectName })
 
       const git = simpleGit({ baseDir: cwd })
       await git.init()

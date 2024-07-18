@@ -4,7 +4,7 @@ import { injectFile, injectGithubFiles } from "../../utils/file-injection"
 import { injectOuter, searchAndReplace } from "@/src/utils/file-transforms"
 
 import { handleError } from "../../utils/handle-error"
-import { addSpinner } from "../add"
+
 import { installDeps } from "../../utils/package-management"
 import {
   extractBetweenMatchedLines,
@@ -20,13 +20,8 @@ export const nextAuth = new Command()
   .description("Integrate next-auth into your app")
   .action(async function (this: Command) {
     try {
-      addSpinner.text = "Installing dependencies..."
-      addSpinner.stopAndPersist()
       await installDeps(["next-auth@beta", "@auth/core"])
 
-      addSpinner.succeed("Dependencies successfully installed!")
-
-      addSpinner.start("Injecting files...")
       const authAction = "src/app/_actions/authenticate.ts"
 
       const authRoute = "src/app/api/auth/[...nextauth]/route.ts"
@@ -85,7 +80,7 @@ export const nextAuth = new Command()
           insertContent: demoAuthFunction,
         })
 
-        injectFile({ filePath: mainPagePath, fileContent: localPage })
+        await injectFile({ filePath: mainPagePath, fileContent: localPage })
       }
       const providersPath = "src/components/next-inject-providers.tsx"
       if (fileExists(providersPath)) {
@@ -114,7 +109,10 @@ export const nextAuth = new Command()
           newContent: sessionProvider,
         })
 
-        injectFile({ filePath: providersPath, fileContent: localProvider })
+        await injectFile({
+          filePath: providersPath,
+          fileContent: localProvider,
+        })
       } else {
         handleError(`The file path ${providersPath} does not exist!`)
       }

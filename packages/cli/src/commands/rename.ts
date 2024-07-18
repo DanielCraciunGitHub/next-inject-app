@@ -13,7 +13,7 @@ import { logger } from "../utils/logger"
 import { injectFile } from "../utils/file-injection"
 
 export async function renameNextInjectProject(projectName: string) {
-  const config = getNextInjectConfig()
+  const config = await getNextInjectConfig()
 
   const configFilePath = path.join(cwd, "next-inject.json")
 
@@ -46,7 +46,7 @@ export async function renameNextInjectProject(projectName: string) {
     handleError("")
   }
   const json = JSON.stringify(config)
-  injectFile({ filePath: configFilePath, fileContent: json })
+  await injectFile({ filePath: configFilePath, fileContent: json })
 }
 
 export const rename = new Command()

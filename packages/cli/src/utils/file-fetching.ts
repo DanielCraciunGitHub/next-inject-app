@@ -6,12 +6,14 @@ import { CONFIG_FILE } from "./config-info"
 import dotenv from "dotenv"
 dotenv.config({ path: CONFIG_FILE })
 
-import { branch, cwd } from "../commands/add"
+import { addSpinner, branch, cwd } from "../commands/add"
 import path from "path"
-import fs, { existsSync } from "fs"
+import { existsSync } from "fs"
+import fs from "fs/promises"
+import chalk from "chalk"
 
 export async function fetchLocalAndRemoteFile(filePath: string) {
-  const lc = readFileContent(filePath)
+  const lc = await readFileContent(filePath)
   const rc = await fetchRemoteFile({ filePath })
 
   return { lc, rc } as { lc: string; rc: string }
@@ -32,9 +34,12 @@ export async function fetchRemoteFiles({
 }
 export async function fetchRemoteFile({ filePath }: GithubFunctionProps) {
   try {
+    addSpinner.start(`Fetching ${filePath}...`)
+
     const url = `https://${process.env.ACCESS_KEY}@raw.githubusercontent.com/DanielCraciunGitHub/nextjs-base-template/${branch}/${filePath}`
     const response = await axios.get(url)
 
+    addSpinner.succeed(chalk.bgYellow(`Fetched ${filePath}`))
     return response.data
   } catch (error) {
     handleError(error)
@@ -48,13 +53,13 @@ export function fileExists(filePath: string) {
   }
   return true
 }
-export function readFileContent(filePath: string) {
+export async function readFileContent(filePath: string) {
   if (!existsSync(cwd)) {
     handleError(`The path ${cwd} does not exist. Please try again.`)
   }
 
   const targetPath = path.resolve(cwd, filePath)
 
-  const fileContent = fs.readFileSync(targetPath, "utf-8")
+  const fileContent = await fs.readFile(targetPath, "utf-8")
   return fileContent
 }

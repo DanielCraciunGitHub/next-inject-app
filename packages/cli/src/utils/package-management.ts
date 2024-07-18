@@ -4,16 +4,20 @@ import { execa } from "execa"
 
 import { handleError } from "./handle-error"
 import { cwd } from "../commands/add"
+import ora from "ora"
 
 export async function installDeps(packages: string[]) {
   const packageManager = await getPackageManager(cwd)
-
+  const spinner = ora()
   try {
     const installCommand = packageManager
     const installArgs = [packageManager === "npm" ? "i" : "add", ...packages]
 
-    console.log(cwd)
+    spinner.start(`Installing dependencies...\n`)
+    spinner.stopAndPersist()
+
     await execa(installCommand, installArgs, { cwd, stdio: "inherit" })
+    spinner.succeed(`Dependencies successfully installed!...`)
   } catch (error) {
     handleError(error)
   }

@@ -14,7 +14,7 @@ import {
 } from "@/src/utils/file-fetching"
 import { fetchLocalAndRemoteFile } from "@/src/utils/file-fetching"
 import { handleError } from "../../utils/handle-error"
-import { addSpinner } from "../add"
+
 import { installDeps } from "../../utils/package-management"
 
 export const metadata = new Command()
@@ -22,12 +22,8 @@ export const metadata = new Command()
   .description("Inject metadata into your app")
   .action(async function (this: Command) {
     try {
-      addSpinner.start("Installing dependencies...\n")
-      addSpinner.stopAndPersist()
       await installDeps(["next-seo"])
-      addSpinner.succeed("Dependencies successfully installed!")
 
-      addSpinner.start("Injecting files...")
       const metadataPath = "src/config/metadata.tsx"
       let metadataFile = await fetchRemoteFile({
         filePath: metadataPath,
@@ -36,7 +32,7 @@ export const metadata = new Command()
       // ! THE order here matters, because we search and replace content from start-EOF.
       const manifest = "src/app/manifest.ts"
       if (fileExists(manifest)) {
-        const manifestContent = readFileContent(manifest)
+        const manifestContent = await readFileContent(manifest)
         metadataFile = merge(
           metadataFile,
           `// MOVED FROM ${manifest}`,
@@ -46,7 +42,7 @@ export const metadata = new Command()
 
       const robots = "src/app/robots.ts"
       if (fileExists(robots)) {
-        const robotsContent = readFileContent(robots)
+        const robotsContent = await readFileContent(robots)
         metadataFile = merge(
           metadataFile,
           `// MOVED FROM ${robots}`,
@@ -56,7 +52,7 @@ export const metadata = new Command()
 
       const sitemap = "src/app/sitemap.ts"
       if (fileExists(sitemap)) {
-        const sitemapContent = readFileContent(sitemap)
+        const sitemapContent = await readFileContent(sitemap)
         metadataFile = merge(
           metadataFile,
           `// MOVED FROM ${sitemap}`,
@@ -64,10 +60,11 @@ export const metadata = new Command()
         )
       }
 
+      await injectFile({ fileContent: metadataFile, filePath: metadataPath })
+
       await injectGithubFiles({
         filePaths: [manifest, sitemap, robots],
       })
-      injectFile({ fileContent: metadataFile, filePath: metadataPath })
 
       const mainLayoutPath = "src/app/layout.tsx"
       if (fileExists(mainLayoutPath)) {
@@ -85,7 +82,7 @@ export const metadata = new Command()
 
         localLayout = merge(layoutImports, localLayout, layoutMetadataExports)
 
-        injectFile({ filePath: mainLayoutPath, fileContent: localLayout })
+        await injectFile({ filePath: mainLayoutPath, fileContent: localLayout })
       }
 
       const mainPagePath = "src/app/(Navigation)/page.tsx"
@@ -103,7 +100,7 @@ export const metadata = new Command()
         })
         localPage = merge(pageImports, localPage, pageMetadataExports)
 
-        injectFile({ filePath: mainPagePath, fileContent: localPage })
+        await injectFile({ filePath: mainPagePath, fileContent: localPage })
       }
     } catch (error) {
       handleError(error)

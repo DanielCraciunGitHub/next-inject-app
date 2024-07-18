@@ -4,12 +4,13 @@ import path from "path"
 
 import { fetchRemoteFile } from "@/src/utils/file-fetching"
 import { handleError } from "./handle-error"
-import { cwd } from "../commands/add"
+import { addSpinner, cwd } from "../commands/add"
 import {
   GithubFunctionProps,
   InjectFileProps,
   InjectFilesProps,
 } from "../types"
+import chalk from "chalk"
 
 export async function injectGithubFile({ filePath }: GithubFunctionProps) {
   if (!existsSync(cwd)) {
@@ -17,9 +18,10 @@ export async function injectGithubFile({ filePath }: GithubFunctionProps) {
   }
 
   const targetPath = path.resolve(cwd, filePath)
+
   const fileContent = await fetchRemoteFile({ filePath })
 
-  injectFile({ filePath: targetPath, fileContent })
+  await injectFile({ filePath: targetPath, fileContent })
 }
 export async function injectGithubFiles({
   filePaths,
@@ -30,12 +32,15 @@ export async function injectGithubFiles({
     await injectGithubFile({ filePath })
   }
 }
-export function injectFile({ filePath, fileContent }: InjectFileProps) {
+export async function injectFile({ filePath, fileContent }: InjectFileProps) {
+  addSpinner.start(`Injecting ${filePath}...`)
   const targetPath = path.resolve(cwd, filePath)
 
-  fs.ensureDirSync(path.dirname(targetPath))
+  await fs.ensureDir(path.dirname(targetPath))
 
-  fs.writeFileSync(targetPath, fileContent, "utf-8")
+  await fs.writeFile(targetPath, fileContent, "utf-8")
+
+  addSpinner.succeed(chalk.bgGreen(`Injected ${filePath}`))
 }
 export async function injectFiles({
   filesContent,
@@ -45,6 +50,6 @@ export async function injectFiles({
     handleError("Ensure the injectFiles function takes in equal length arrays!")
   }
   for (let i = 0; i < filePaths.length; i++) {
-    injectFile({ filePath: filePaths[i], fileContent: filesContent[i] })
+    await injectFile({ filePath: filePaths[i], fileContent: filesContent[i] })
   }
 }

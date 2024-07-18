@@ -111,10 +111,11 @@ export const add = new Command()
     }
 
     logger.break()
-    addSpinner.start(`Injecting ${subCommand.name()} plugin...`)
+    addSpinner.start(`Injecting ${chalk.green(subCommand.name())} plugin...`)
     addSpinner.stopAndPersist()
   })
   .hook("postAction", async (thisCommand: Command, subCommand: Command) => {
+    logger.break()
     addSpinner.succeed(
       `⚡ Finished injecting the ${chalk.green(subCommand.name())} plugin!`
     )

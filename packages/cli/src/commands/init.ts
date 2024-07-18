@@ -84,7 +84,7 @@ export const init = new Command()
         recursive: true,
       })
       fs.renameSync(".env.example", ".env.local")
-      initNextInjectConfig({ projectName })
+      await initNextInjectConfig({ projectName })
 
       await git.init()
       await git.add(".")
