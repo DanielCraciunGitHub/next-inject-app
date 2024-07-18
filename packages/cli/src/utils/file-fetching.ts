@@ -39,7 +39,7 @@ export async function fetchRemoteFile({ filePath }: GithubFunctionProps) {
     const url = `https://${process.env.ACCESS_KEY}@raw.githubusercontent.com/DanielCraciunGitHub/nextjs-base-template/${branch}/${filePath}`
     const response = await axios.get(url)
 
-    addSpinner.succeed(chalk.bgYellow(`Fetched ${filePath}`))
+    addSpinner.succeed(chalk.bgYellow(`Fetched ${path.normalize(filePath)}`))
     return response.data
   } catch (error) {
     handleError(error)

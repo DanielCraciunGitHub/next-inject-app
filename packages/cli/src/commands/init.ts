@@ -3,7 +3,7 @@ import { handleError } from "../utils/handle-error"
 import prompts from "prompts"
 import { logger } from "../utils/logger"
 import path from "path"
-import fs from "fs"
+import fs from "fs-extra"
 import simpleGit from "simple-git"
 import ora from "ora"
 import { z } from "zod"
@@ -12,7 +12,7 @@ import dotenv from "dotenv"
 import { CONFIG_FILE } from "../utils/config-info"
 import { cwd, setGlobalCwd } from "./add"
 import { execa } from "execa"
-import { initNextInjectConfig } from "../utils/project-info"
+import { renameNextInjectProject } from "./rename"
 dotenv.config({ path: CONFIG_FILE })
 
 const optionsSchema = z.object({
@@ -36,8 +36,6 @@ export const init = new Command()
       const options = optionsSchema.parse({
         ...opts,
       })
-
-      setGlobalCwd(path.resolve(options.cwd))
 
       const { projectName, packageManager } = await prompts([
         {
@@ -63,12 +61,13 @@ export const init = new Command()
         throw new Error("Project name cannot be empty.")
       }
 
-      setGlobalCwd(path.join(cwd, projectName))
+      // setGlobalCwd(path.join(cwd, projectName))
+      setGlobalCwd(path.resolve(options.cwd, projectName))
 
       if (fs.existsSync(cwd)) {
         throw new Error(`Directory "${projectName}" already exists.`)
       }
-      fs.mkdirSync(cwd)
+      await fs.mkdir(cwd)
 
       spinner.start(`Cloning github repository...`)
       const git = simpleGit({ baseDir: cwd })
@@ -79,12 +78,12 @@ export const init = new Command()
       )
 
       process.chdir(cwd)
-      fs.rmSync(".git", {
+      await fs.rm(".git", {
         force: true,
         recursive: true,
       })
-      fs.renameSync(".env.example", ".env.local")
-      await initNextInjectConfig({ projectName })
+      await fs.rename(".env.example", ".env.local")
+      await renameNextInjectProject(projectName)
 
       await git.init()
       await git.add(".")

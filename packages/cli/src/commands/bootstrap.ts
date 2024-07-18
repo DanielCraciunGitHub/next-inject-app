@@ -6,14 +6,14 @@ import {
   extractBetweenMatchedLines,
   extractMatchedLines,
 } from "../utils/file-extraction"
-import { fetchLocalAndRemoteFile } from "../utils/file-fetching"
+import { fetchLocalAndRemoteFile, fileExists } from "../utils/file-fetching"
 import { handleError } from "../utils/handle-error"
 import { addSpinner, cwd, optionsSchema, setGlobalCwd } from "./add"
 import { installDeps } from "../utils/package-management"
 import path from "path"
 import simpleGit from "simple-git"
-import { initNextInjectConfig } from "../utils/project-info"
 import prompts from "prompts"
+import { renameNextInjectProject } from "./rename"
 
 export const bootstrap = new Command()
   .name("bootstrap")
@@ -49,30 +49,37 @@ export const bootstrap = new Command()
       })
 
       const mainLayoutPath = "src/app/layout.tsx"
-      let { rc: remoteLayout, lc: localLayout } =
-        await fetchLocalAndRemoteFile(mainLayoutPath)
+      if (fileExists(mainLayoutPath)) {
+        let { rc: remoteLayout, lc: localLayout } =
+          await fetchLocalAndRemoteFile(mainLayoutPath)
 
-      const nextInjectImport = extractMatchedLines({
-        fileContent: remoteLayout,
-        searchString: "import { NextInjectProvider",
-      })!
-      localLayout = merge(nextInjectImport, localLayout)
+        const nextInjectImport = extractMatchedLines({
+          fileContent: remoteLayout,
+          searchString: "import { NextInjectProvider",
+        })!
+        localLayout = merge(nextInjectImport, localLayout)
 
-      const layoutProvider = extractBetweenMatchedLines({
-        fileContent: remoteLayout,
-        startString: "<NextInjectProvider",
-        endString: "</NextInjectProvider>",
-      })
+        const layoutProvider = extractBetweenMatchedLines({
+          fileContent: remoteLayout,
+          startString: "<NextInjectProvider",
+          endString: "</NextInjectProvider>",
+        })
 
-      const finalContent = searchAndReplace({
-        fileContent: localLayout,
-        targetString: "{children}",
-        newContent: layoutProvider,
-      })
+        const finalContent = searchAndReplace({
+          fileContent: localLayout,
+          targetString: "{children}",
+          newContent: layoutProvider,
+        })
 
-      await injectFile({ filePath: mainLayoutPath, fileContent: finalContent })
+        await injectFile({
+          filePath: mainLayoutPath,
+          fileContent: finalContent,
+        })
+      } else {
+        handleError(`Please define a root layout in ${mainLayoutPath}`)
+      }
 
-      await initNextInjectConfig({ projectName })
+      await renameNextInjectProject(projectName)
 
       const git = simpleGit({ baseDir: cwd })
       await git.init()

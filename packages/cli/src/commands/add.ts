@@ -12,12 +12,18 @@ import ora from "ora"
 import { reactEmail } from "./plugins/react-email"
 import { z } from "zod"
 import path from "path"
-import { isNextInjectProject, isNextjsProject } from "../utils/project-info"
+import {
+  isNextInjectProject,
+  isNextjsProject,
+  registerNextInjectPlugin,
+} from "../utils/project-info"
 import prompts from "prompts"
 import { bootstrap } from "./bootstrap"
 import { init } from "./init"
 import chalk from "chalk"
 import { nextAuth } from "./plugins/next-auth"
+import simpleGit, { CheckRepoActions } from "simple-git"
+import { existsSync } from "fs"
 
 export const addSpinner = ora()
 export let branch: string = "master"
@@ -47,6 +53,7 @@ export const add = new Command()
       addSpinner.start(
         `Checking for permission to install the ${subCommand.name()} plugin...`
       )
+
       const res = await axios.post(`${NEXTJS_APP_URL}/api/cli`, {
         pluginName: cliNameToStripePluginName(subCommand.name()),
         authKey: loadUserKey(),
@@ -80,6 +87,20 @@ export const add = new Command()
     cwd = path.resolve(options.cwd)
     branch = subCommand.name()
 
+    if (!existsSync(cwd)) {
+      handleError(
+        `The path ${cwd} does not exist!\nRun this command inside a valid directory.`
+      )
+    }
+
+    const git = simpleGit(cwd)
+    const isRepo = await git.checkIsRepo(CheckRepoActions.IS_REPO_ROOT)
+
+    if (!isRepo) {
+      logger.warn(`ERROR: Must have a git repository initialized here:\n${cwd}`)
+      logger.break()
+      handleError(`Do this by running: ${chalk.blue("git init")}`)
+    }
     if (!isNextjsProject()) {
       const { createProject } = await prompts([
         {
@@ -115,6 +136,8 @@ export const add = new Command()
     addSpinner.stopAndPersist()
   })
   .hook("postAction", async (thisCommand: Command, subCommand: Command) => {
+    await registerNextInjectPlugin(subCommand.name())
+
     logger.break()
     addSpinner.succeed(
       `⚡ Finished injecting the ${chalk.green(subCommand.name())} plugin!`

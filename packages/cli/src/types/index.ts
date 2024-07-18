@@ -1,3 +1,6 @@
+import { z } from "zod"
+import { nextInjectConfigSchema } from "../validations"
+
 export type InjectContentProps = {
   insertContent: string
   insertPoint: string | RegExp
@@ -29,3 +32,4 @@ export type ExtractContentBetweenProps = Omit<
   startString?: string | RegExp
   endString?: string | RegExp
 }
+export type NextInjectConfig = z.infer<typeof nextInjectConfigSchema>

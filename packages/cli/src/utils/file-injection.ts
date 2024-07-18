@@ -40,7 +40,9 @@ export async function injectFile({ filePath, fileContent }: InjectFileProps) {
 
   await fs.writeFile(targetPath, fileContent, "utf-8")
 
-  addSpinner.succeed(chalk.bgGreen(`Injected ${filePath}`))
+  addSpinner.succeed(
+    chalk.bgGreen(`Injected ${path.relative(cwd, targetPath)}`)
+  )
 }
 export async function injectFiles({
   filesContent,
