@@ -55,7 +55,7 @@ export const bootstrap = new Command()
 
         const nextInjectImport = extractMatchedLines({
           fileContent: remoteLayout,
-          searchString: "import { NextInjectProvider",
+          searchStrings: ["import { NextInjectProvider"],
         })!
         localLayout = merge(nextInjectImport, localLayout)
 

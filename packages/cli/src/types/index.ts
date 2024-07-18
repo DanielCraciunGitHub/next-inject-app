@@ -1,6 +1,13 @@
 import { z } from "zod"
 import { nextInjectConfigSchema } from "../validations"
 
+export type PluginNames =
+  | "next-auth"
+  | "drizzle-turso"
+  | "metadata"
+  | "stripe"
+  | "trpc"
+
 export type InjectContentProps = {
   insertContent: string
   insertPoint: string | RegExp
@@ -22,12 +29,12 @@ export interface GithubFunctionProps {
 
 export type ExtractContentProps = {
   fileContent: string
-  searchString: RegExp | string
+  searchStrings: (RegExp | string)[]
 }
 
 export type ExtractContentBetweenProps = Omit<
   ExtractContentProps,
-  "searchString"
+  "searchStrings"
 > & {
   startString?: string | RegExp
   endString?: string | RegExp

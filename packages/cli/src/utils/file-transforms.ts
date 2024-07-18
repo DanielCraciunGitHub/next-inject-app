@@ -1,5 +1,6 @@
 import { InjectContentProps, ExtractContentProps } from "../types"
 import { handleError } from "./handle-error"
+import { logger } from "./logger"
 
 export function injectInner({
   insertContent,
@@ -22,7 +23,15 @@ export function injectInner({
 
     insertIndex++
     if (insertIndex === -1) {
-      handleError(`Insert point "${insertPoint}" not found in the file.`)
+      logger.error(
+        `Error inserting content in the correct location. Content inserted at the bottom of the file.`
+      )
+      const modifiedContent = merge(
+        fileContent,
+        "\n====================",
+        insertContent
+      )
+      return modifiedContent
     }
 
     // Insert new content above or below the insert point
@@ -41,23 +50,23 @@ export function injectInner({
   }
 }
 
-export function omitLines({
-  fileContent,
-  searchString,
-}: ExtractContentProps): string {
-  // Split the content into lines
-  const lines = fileContent.split("\n")
+// export function omitLines({
+//   fileContent,
+//   searchStrings,
+// }: ExtractContentProps): string {
+//   // Split the content into lines
+//   const lines = fileContent.split("\n")
 
-  const regex = new RegExp(searchString)
+//   const regex = new RegExp(searchStrings)
 
-  // Filter out lines that contain the search string
-  const filteredLines = lines.filter((line) => regex.test(line))
+//   // Filter out lines that contain the search string
+//   const filteredLines = lines.filter((line) => regex.test(line))
 
-  // Combine the filtered lines into a single string separated by '\n'
-  const result = filteredLines.join("\n")
+//   // Combine the filtered lines into a single string separated by '\n'
+//   const result = filteredLines.join("\n")
 
-  return result
-}
+//   return result
+// }
 
 export function merge(...filesContent: string[]) {
   let finalFileContent: string = ""

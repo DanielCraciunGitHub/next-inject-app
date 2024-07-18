@@ -3,17 +3,22 @@ import { handleError } from "./handle-error"
 import { ExtractContentBetweenProps, ExtractContentProps } from "../types"
 
 export function extractMatchedLines({
-  searchString,
+  searchStrings,
   fileContent,
 }: ExtractContentProps) {
   try {
     // Split the content into lines
     const lines = fileContent.split("\n")
 
-    const regex = new RegExp(searchString)
+    // Convert all search strings to RegExp objects if they are not already
+    const regexes = searchStrings.map((searchString) =>
+      searchString instanceof RegExp ? searchString : new RegExp(searchString)
+    )
 
-    // Filter lines that contain the search string
-    const filteredLines = lines.filter((line) => regex.test(line))
+    // Filter lines that contain any of the search strings
+    const filteredLines = lines.filter((line) =>
+      regexes.some((regex) => regex.test(line))
+    )
 
     // Combine the filtered lines into a single string separated by '\n'
     const result = filteredLines.join("\n")

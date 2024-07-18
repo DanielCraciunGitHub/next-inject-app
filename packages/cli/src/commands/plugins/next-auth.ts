@@ -14,6 +14,8 @@ import { fileExists } from "@/src/utils/file-fetching"
 
 import { fetchLocalAndRemoteFile } from "@/src/utils/file-fetching"
 import { injectInner } from "@/src/utils/file-transforms"
+import { isPluginInstalled } from "@/src/utils/project-info"
+import { patchNextAuthDrizzleTurso } from "../patches/next-auth_drizzle-turso"
 
 export const nextAuth = new Command()
   .name("next-auth")
@@ -50,7 +52,7 @@ export const nextAuth = new Command()
 
         const remotePageImports = extractMatchedLines({
           fileContent: remotePage,
-          searchString: /import/,
+          searchStrings: [/import/],
         })
         localPage = injectOuter({
           fileContent: localPage,
@@ -60,7 +62,7 @@ export const nextAuth = new Command()
 
         const demoAuth = extractMatchedLines({
           fileContent: remotePage,
-          searchString: "<DemoAuthButton />",
+          searchStrings: ["<DemoAuthButton />"],
         })
 
         localPage = injectInner({
@@ -89,7 +91,7 @@ export const nextAuth = new Command()
 
         const sessionImport = extractMatchedLines({
           fileContent: remoteProvider,
-          searchString: "import { SessionProvider",
+          searchStrings: ["import { SessionProvider"],
         })!
         localProvider = injectOuter({
           insertContent: sessionImport,
@@ -113,6 +115,11 @@ export const nextAuth = new Command()
           filePath: providersPath,
           fileContent: localProvider,
         })
+
+        const drizzleTursoInstalled = await isPluginInstalled("drizzle-turso")
+        if (drizzleTursoInstalled) {
+          await patchNextAuthDrizzleTurso()
+        }
       } else {
         handleError(`The file path ${providersPath} does not exist!`)
       }

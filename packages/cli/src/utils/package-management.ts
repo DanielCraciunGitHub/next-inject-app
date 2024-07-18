@@ -24,13 +24,21 @@ export async function installDeps(packages: string[]) {
 }
 export async function installDevDeps(packages: string[]) {
   const packageManager = await getPackageManager(cwd)
+  const spinner = ora()
 
-  const parsedPackages = packages.join(" ")
   try {
-    await execa(
-      `${packageManager} ${packageManager === "yarn" ? "add" : "i"} ${parsedPackages} -D`,
-      { cwd, stdin: "inherit" }
-    )
+    const installCommand = packageManager
+    const installArgs = [
+      packageManager === "npm" ? "i" : "add",
+      ...packages,
+      "-D",
+    ]
+
+    spinner.start(`Installing dev dependencies...\n`)
+    spinner.stopAndPersist()
+
+    await execa(installCommand, installArgs, { cwd, stdio: "inherit" })
+    spinner.succeed(`Dev dependencies successfully installed!...`)
   } catch (error) {
     handleError(error)
   }

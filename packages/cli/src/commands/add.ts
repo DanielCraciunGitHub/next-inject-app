@@ -24,6 +24,7 @@ import chalk from "chalk"
 import { nextAuth } from "./plugins/next-auth"
 import simpleGit, { CheckRepoActions } from "simple-git"
 import { existsSync } from "fs"
+import { drizzleTurso } from "./plugins/drizzle-turso"
 
 export const addSpinner = ora()
 export let branch: string = "master"
@@ -157,6 +158,7 @@ export const add = new Command()
   .addCommand(metadata)
   .addCommand(reactEmail)
   .addCommand(nextAuth)
+  .addCommand(drizzleTurso)
 
 export function cliNameToStripePluginName(name: string): string {
   return (

@@ -5,7 +5,7 @@ import { cwd } from "../commands/add"
 import { injectFile } from "./file-injection"
 import { renameNextInjectProject } from "../commands/rename"
 import { readFileContent } from "./file-fetching"
-import { NextInjectConfig } from "../types"
+import { NextInjectConfig, PluginNames } from "../types"
 
 export function getPackageJsonInfo() {
   const packageJsonPath = path.join("package.json")
@@ -78,7 +78,7 @@ export function isValidConfig(
 ): config is NextInjectConfig {
   return "name" in config
 }
-export async function isPluginInstalled(plugin: string) {
+export async function isPluginInstalled(plugin: PluginNames) {
   const config = await getNextInjectConfig()
 
   if (config.plugins?.includes(plugin)) {

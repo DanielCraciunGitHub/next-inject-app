@@ -40,9 +40,10 @@ export async function fetchRemoteFile({ filePath }: GithubFunctionProps) {
     const response = await axios.get(url)
 
     addSpinner.succeed(chalk.bgYellow(`Fetched ${path.normalize(filePath)}`))
-    return response.data
+    return response.data as string
   } catch (error) {
     handleError(error)
+    return ""
   }
 }
 export function fileExists(filePath: string) {
