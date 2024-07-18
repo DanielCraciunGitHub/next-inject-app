@@ -7,10 +7,10 @@ import { renameNextInjectProject } from "../commands/rename"
 import { readFileContent } from "./file-fetching"
 import { NextInjectConfig, PluginNames } from "../types"
 
-export function getPackageJsonInfo() {
+export async function getPackageJsonInfo() {
   const packageJsonPath = path.join("package.json")
 
-  return fs.readJSONSync(packageJsonPath) as PackageJson
+  return (await fs.readJSON(packageJsonPath)) as PackageJson
 }
 export function isNextjsProject(): boolean {
   const configFiles = ["next.config.js", "next.config.ts", "next.config.mjs"]

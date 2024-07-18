@@ -16,16 +16,10 @@ process.on("SIGTERM", () => process.exit(0))
 console.log(chalk.yellow(figlet.textSync("Next Inject")))
 
 async function main() {
-  const packageJson = getPackageJsonInfo()
-
   const program = new Command()
     .name("next-inject")
     .description("Inject plugins into your next.js project")
-    .version(
-      packageJson.version || "1.1.2",
-      "-v, --version",
-      "display the version number"
-    )
+    .version("1.1.5", "-v, --version", "display the version number")
 
   program
     .addCommand(add)

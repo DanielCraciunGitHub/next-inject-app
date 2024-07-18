@@ -91,29 +91,10 @@ export const init = new Command()
 
       spinner.succeed("Repository cloned successfully!")
 
-      let installCommand: string = "pnpm i"
-      switch (packageManager) {
-        case "pnpm":
-          installCommand = "pnpm i"
-          break
-        case "npm":
-          installCommand = "npm i"
-          break
-        case "yarn":
-          installCommand = "yarn add"
-          break
-        case "bun":
-          installCommand = "bun i"
-          break
-        default:
-          break
-      }
-
       try {
-        spinner.start(`Installing Dependencies...\n`)
-        spinner.stopAndPersist()
+        spinner.info(`Installing Dependencies...\n`)
 
-        await execa(installCommand, { cwd, stdio: "inherit" })
+        await execa(packageManager, ["install"], { cwd, stdio: "inherit" })
 
         spinner.succeed("Dependencies installed successfully.")
       } catch (error: any) {

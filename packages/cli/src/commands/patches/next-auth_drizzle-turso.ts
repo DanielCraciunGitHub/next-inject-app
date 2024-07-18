@@ -19,13 +19,21 @@ export async function patchNextAuthDrizzleTurso() {
     insertContent: drizzleAdapter,
     insertPoint: "providers:",
   })
-  await injectFile({ filePath: authFile, fileContent: authContent })
+  await injectFile({
+    filePath: authFile,
+    fileContent: authContent,
+    successColor: "yellow",
+  })
 
   const schemaFile = "src/db/schema.ts"
   let localSchema = await readFileContent(schemaFile)
 
   localSchema = merge(localSchema, "\n\n// =====NEW CONTENT=====", schema)
-  await injectFile({ filePath: schemaFile, fileContent: localSchema })
+  await injectFile({
+    filePath: schemaFile,
+    fileContent: localSchema,
+    successColor: "red",
+  })
 
   addSpinner.succeed("Peer dependencies patched!")
 }

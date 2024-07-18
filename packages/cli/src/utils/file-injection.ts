@@ -32,7 +32,11 @@ export async function injectGithubFiles({
     await injectGithubFile({ filePath })
   }
 }
-export async function injectFile({ filePath, fileContent }: InjectFileProps) {
+export async function injectFile({
+  filePath,
+  fileContent,
+  successColor = "green",
+}: InjectFileProps) {
   addSpinner.start(`Injecting ${filePath}...`)
   const targetPath = path.resolve(cwd, filePath)
 
@@ -40,8 +44,14 @@ export async function injectFile({ filePath, fileContent }: InjectFileProps) {
 
   await fs.writeFile(targetPath, fileContent, "utf-8")
 
+  const successMessage = `Injected ${path.normalize(targetPath)}`
+
   addSpinner.succeed(
-    chalk.bgGreen(`Injected ${path.relative(cwd, targetPath)}`)
+    successColor === "green"
+      ? chalk.green(successMessage)
+      : successColor === "yellow"
+        ? chalk.yellow(successMessage)
+        : chalk.red(successMessage)
   )
 }
 export async function injectFiles({

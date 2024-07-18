@@ -5,6 +5,7 @@ import { execa } from "execa"
 import { handleError } from "./handle-error"
 import { cwd } from "../commands/add"
 import ora from "ora"
+import { logger } from "./logger"
 
 export async function installDeps(packages: string[]) {
   const packageManager = await getPackageManager(cwd)
@@ -13,11 +14,11 @@ export async function installDeps(packages: string[]) {
     const installCommand = packageManager
     const installArgs = [packageManager === "npm" ? "i" : "add", ...packages]
 
-    spinner.start(`Installing dependencies...\n`)
-    spinner.stopAndPersist()
+    spinner.info(`Installing dependencies...\n`)
 
     await execa(installCommand, installArgs, { cwd, stdio: "inherit" })
-    spinner.succeed(`Dependencies successfully installed!...`)
+    logger.break()
+    spinner.succeed(`Dependencies successfully installed!`)
   } catch (error) {
     handleError(error)
   }
@@ -34,11 +35,11 @@ export async function installDevDeps(packages: string[]) {
       "-D",
     ]
 
-    spinner.start(`Installing dev dependencies...\n`)
-    spinner.stopAndPersist()
+    spinner.info(`Installing dev dependencies...\n`)
 
     await execa(installCommand, installArgs, { cwd, stdio: "inherit" })
-    spinner.succeed(`Dev dependencies successfully installed!...`)
+    logger.break()
+    spinner.succeed(`Dev dependencies successfully installed!`)
   } catch (error) {
     handleError(error)
   }

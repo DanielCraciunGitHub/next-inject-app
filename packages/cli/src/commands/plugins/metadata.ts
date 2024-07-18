@@ -60,7 +60,11 @@ export const metadata = new Command()
         )
       }
 
-      await injectFile({ fileContent: metadataFile, filePath: metadataPath })
+      await injectFile({
+        fileContent: metadataFile,
+        filePath: metadataPath,
+        successColor: "yellow",
+      })
 
       await injectGithubFiles({
         filePaths: [manifest, sitemap, robots],
@@ -82,7 +86,11 @@ export const metadata = new Command()
 
         localLayout = merge(layoutImports, localLayout, layoutMetadataExports)
 
-        await injectFile({ filePath: mainLayoutPath, fileContent: localLayout })
+        await injectFile({
+          filePath: mainLayoutPath,
+          fileContent: localLayout,
+          successColor: "yellow",
+        })
       }
 
       const mainPagePath = "src/app/(Navigation)/page.tsx"
@@ -100,7 +108,11 @@ export const metadata = new Command()
         })
         localPage = merge(pageImports, localPage, pageMetadataExports)
 
-        await injectFile({ filePath: mainPagePath, fileContent: localPage })
+        await injectFile({
+          filePath: mainPagePath,
+          fileContent: localPage,
+          successColor: "yellow",
+        })
       }
     } catch (error) {
       handleError(error)

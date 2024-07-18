@@ -45,7 +45,11 @@ export const drizzleTurso = new Command()
         fileContent: localPackage,
       })
 
-      await injectFile({ filePath: packageJson, fileContent: localPackage })
+      await injectFile({
+        filePath: packageJson,
+        fileContent: localPackage,
+        successColor: "yellow",
+      })
 
       const nextAuthInstalled = await isPluginInstalled("next-auth")
       if (nextAuthInstalled) {

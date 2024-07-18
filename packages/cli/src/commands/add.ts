@@ -40,8 +40,14 @@ export const optionsSchema = z.object({
 
 export const add = new Command()
   .name("add")
-  .description("add a new plugin")
-  .argument("plugin", "the plugin to inject")
+  .description("Inject a new plugin ⚡")
+  .usage("[command] <options>")
+  // ! Add new commands here
+  .addCommand(metadata)
+  .addCommand(reactEmail)
+  .addCommand(nextAuth)
+  .addCommand(drizzleTurso)
+
   .hook("preSubcommand", async (thisCommand: Command, subCommand: Command) => {
     subCommand.addOption(
       new Option(
@@ -133,8 +139,7 @@ export const add = new Command()
     }
 
     logger.break()
-    addSpinner.start(`Injecting ${chalk.green(subCommand.name())} plugin...`)
-    addSpinner.stopAndPersist()
+    addSpinner.info(`Injecting ${chalk.green(subCommand.name())} plugin...`)
   })
   .hook("postAction", async (thisCommand: Command, subCommand: Command) => {
     await registerNextInjectPlugin(subCommand.name())
@@ -143,8 +148,12 @@ export const add = new Command()
     addSpinner.succeed(
       `⚡ Finished injecting the ${chalk.green(subCommand.name())} plugin!`
     )
-    logger.success(
-      `Please review the documentation for this plugin here:\n${NEXTJS_APP_URL}/plugins/${subCommand.name()}`
+    logger.break()
+    addSpinner.info(
+      `Please review any ${chalk.yellow("yellow")} or ${chalk.red("red")} files to ensure everything works as expected.`
+    )
+    addSpinner.info(
+      `Find the documentation for this plugin here:\n${NEXTJS_APP_URL}/plugins/${subCommand.name()}`
     )
   })
   .action(async (plugin, opts) => {
@@ -154,11 +163,6 @@ export const add = new Command()
       handleError(error)
     }
   })
-  // ! Add new commands here
-  .addCommand(metadata)
-  .addCommand(reactEmail)
-  .addCommand(nextAuth)
-  .addCommand(drizzleTurso)
 
 export function cliNameToStripePluginName(name: string): string {
   return (

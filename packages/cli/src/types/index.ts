@@ -17,6 +17,7 @@ export type InjectContentProps = {
 export type InjectFileProps = {
   filePath: string
   fileContent: string
+  successColor?: "green" | "yellow" | "red"
 }
 export type InjectFilesProps = {
   filePaths: string[]

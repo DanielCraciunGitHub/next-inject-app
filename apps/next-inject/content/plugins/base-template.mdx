@@ -8,25 +8,20 @@ import { Callout } from "fumadocs-ui/components/callout"
 
 import { siteConfig } from "../../src/config/index"
 
-import { File, Folder, Files } from 'fumadocs-ui/components/files';
-
+import { File, Files, Folder } from "fumadocs-ui/components/files"
 
 ## The Project Structure 📂
 
 Below is the project structure that we use at _Next Inject⚡_
 
-
-
-
 <Callout title="Info" type="info">
-  This folder structure does **not** contain every file.
-  
-  These are only the most important files, everything else is an added bonus! 😉
+  This folder structure does **not** contain every file. These are only the most
+  important files, everything else is an added bonus! 😉
 </Callout>
 
 <Files>
   <Folder name="public">
-    <File name="site.webmanifest" />
+    <Folder name="images" defaultOpen />
   </Folder>
   <Folder name="src">
     <Folder name="app">
@@ -52,8 +47,8 @@ Below is the project structure that we use at _Next Inject⚡_
       </Folder>
       <Folder name="SVG" defaultOpen />
       <Folder name="ui" defaultOpen />
-        <File name="Footer.tsx" />
-        <File name="providers.tsx" />
+      <File name="Footer.tsx" />
+      <File name="providers.tsx" />
     </Folder>
     <Folder name="config">
       <File name="index.tsx" />
@@ -71,7 +66,7 @@ Below is the project structure that we use at _Next Inject⚡_
       <File name="index.ts" />
     </Folder>
   </Folder>
-  
+
   <File name=".env.local" />
   <File name=".gitignore" />
   <File name="components.json" />
@@ -85,7 +80,8 @@ Below is the project structure that we use at _Next Inject⚡_
 <Callout title="Warning" type="warn">
   We recommend you keep this base structure consistent to ensure full compatibility with all plugins.
 
-  Renaming, relocating, or deleting these files or folders may lead to plugin injection failure.
+Renaming, relocating, or deleting these files or folders may lead to plugin injection failure.
 
-  **If you are encountering issues or have any questions, please [_email us_](mailto:danielcracbusiness@gmail.com) directly.**
+**If you are encountering issues or have any questions, please [_email us_](mailto:danielcracbusiness@gmail.com) directly.**
+
 </Callout>

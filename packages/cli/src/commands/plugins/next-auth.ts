@@ -82,7 +82,11 @@ export const nextAuth = new Command()
           insertContent: demoAuthFunction,
         })
 
-        await injectFile({ filePath: mainPagePath, fileContent: localPage })
+        await injectFile({
+          filePath: mainPagePath,
+          fileContent: localPage,
+          successColor: "yellow",
+        })
       }
       const providersPath = "src/components/next-inject-providers.tsx"
       if (fileExists(providersPath)) {
