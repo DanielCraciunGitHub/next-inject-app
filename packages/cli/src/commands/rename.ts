@@ -1,16 +1,53 @@
 import { Command } from "commander"
 
 import { handleError } from "../utils/handle-error"
-import { optionsSchema, setGlobalCwd } from "./add"
+import { cwd, optionsSchema, setGlobalCwd } from "./add"
 
 import path from "path"
 
 import prompts from "prompts"
-import {
-  isNextInjectProject,
-  renameNextInjectProject,
-} from "../utils/get-package-info"
+import { getNextInjectConfig, isNextInjectProject } from "../utils/project-info"
 import ora from "ora"
+import { replaceInFile } from "replace-in-file"
+import { logger } from "../utils/logger"
+import { injectFile } from "../utils/file-injection"
+
+export async function renameNextInjectProject(projectName: string) {
+  const config = getNextInjectConfig()
+
+  const configFilePath = path.join(cwd, "next-inject.json")
+
+  const [indexConfig] = await replaceInFile({
+    files: [path.join(cwd, "src/config/next-inject.tsx"), configFilePath],
+    from: [
+      new RegExp(
+        `export const projectName = "${config.name ?? "<NEXT-INJECT-NAME>"}"`,
+        "g"
+      ),
+    ],
+    to: [`export const projectName = "${projectName}"`],
+    glob: {
+      windowsPathsNoEscape: true,
+    },
+    countMatches: true,
+  })
+
+  config.name = projectName
+  if (!indexConfig.hasChanged) {
+    logger.error(`\nRenaming failed!`)
+
+    logger.error(`Copy this line into src/config/next-inject.tsx and retry.`)
+    logger.error(`export const projectName = "${config.name}"\n`)
+
+    logger.error(
+      `Also make sure the next-inject.json config matches your project name as follows:`
+    )
+    logger.error(`{ "name": "${config.name}"}`)
+    handleError("")
+  }
+  const json = JSON.stringify(config)
+  injectFile({ filePath: configFilePath, fileContent: json })
+}
 
 export const rename = new Command()
   .name("rename")

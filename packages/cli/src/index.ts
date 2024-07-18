@@ -5,7 +5,7 @@ import figlet from "figlet"
 
 import { add } from "./commands/add"
 import { auth } from "./commands/auth"
-import { getPackageInfo } from "./utils/get-package-info"
+import { getPackageJsonInfo } from "./utils/project-info"
 import { init } from "./commands/init"
 import { bootstrap } from "./commands/bootstrap"
 import { rename } from "./commands/rename"
@@ -16,10 +16,16 @@ process.on("SIGTERM", () => process.exit(0))
 console.log(chalk.yellow(figlet.textSync("Next Inject")))
 
 async function main() {
+  const packageJson = getPackageJsonInfo()
+
   const program = new Command()
     .name("next-inject")
     .description("Inject plugins into your next.js project")
-    .version("1.1.2", "-v, --version", "display the version number")
+    .version(
+      packageJson.version || "1.1.2",
+      "-v, --version",
+      "display the version number"
+    )
 
   program
     .addCommand(add)

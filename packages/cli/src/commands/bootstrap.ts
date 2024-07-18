@@ -1,22 +1,18 @@
 import { Command } from "commander"
 
-import {
-  injectGithubFiles,
-  mergeFileContent,
-  searchAndReplace,
-  injectFile,
-} from "../utils/file-injection"
+import { injectGithubFiles, injectFile } from "../utils/file-injection"
+import { merge, searchAndReplace } from "../utils/file-transforms"
 import {
   extractBetweenMatchedLines,
-  getLocalAndRemoteFile,
   extractMatchedLines,
 } from "../utils/file-extraction"
+import { fetchLocalAndRemoteFile } from "../utils/file-fetching"
 import { handleError } from "../utils/handle-error"
 import { addSpinner, cwd, optionsSchema, setGlobalCwd } from "./add"
 import { installDeps } from "../utils/package-management"
 import path from "path"
 import simpleGit from "simple-git"
-import { initNextInjectConfig } from "../utils/get-package-info"
+import { initNextInjectConfig } from "../utils/project-info"
 import prompts from "prompts"
 
 export const bootstrap = new Command()
@@ -58,13 +54,13 @@ export const bootstrap = new Command()
 
       const mainLayoutPath = "src/app/layout.tsx"
       let { rc: remoteLayout, lc: localLayout } =
-        await getLocalAndRemoteFile(mainLayoutPath)
+        await fetchLocalAndRemoteFile(mainLayoutPath)
 
       const nextInjectImport = extractMatchedLines({
         fileContent: remoteLayout,
         searchString: "import { NextInjectProvider",
       })!
-      localLayout = mergeFileContent(nextInjectImport, localLayout)
+      localLayout = merge(nextInjectImport, localLayout)
 
       const layoutProvider = extractBetweenMatchedLines({
         fileContent: remoteLayout,
@@ -78,7 +74,7 @@ export const bootstrap = new Command()
         newContent: layoutProvider,
       })
 
-      injectFile(mainLayoutPath, finalContent)
+      injectFile({ filePath: mainLayoutPath, fileContent: finalContent })
 
       initNextInjectConfig({ projectName })
 

@@ -1,9 +1,9 @@
 import path from "path"
 import { Command } from "commander"
 
-import { injectGithubFile } from "../utils/file-injection"
-import { handleError } from "../utils/handle-error"
-import { optionsSchema } from "./add"
+import { injectGithubFile } from "../../utils/file-injection"
+import { handleError } from "../../utils/handle-error"
+import { optionsSchema } from "../add"
 
 export const reactEmail = new Command()
   .name("react-email")

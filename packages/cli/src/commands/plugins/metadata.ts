@@ -1,21 +1,21 @@
 import { Command } from "commander"
 
-import {
-  injectGithubFiles,
-  mergeFileContent,
-  injectFile,
-} from "../utils/file-injection"
+import { injectGithubFiles, injectFile } from "../../utils/file-injection"
+import { merge } from "@/src/utils/file-transforms"
 import {
   extractBetweenMatchedLines,
-  fileExists,
-  getLocalAndRemoteFile,
   extractMatchedLines,
-  fetchRawFileFromGithub,
+} from "../../utils/file-extraction"
+
+import {
+  fetchRemoteFile,
+  fileExists,
   readFileContent,
-} from "../utils/file-extraction"
-import { handleError } from "../utils/handle-error"
-import { addSpinner } from "./add"
-import { installDeps } from "../utils/package-management"
+} from "@/src/utils/file-fetching"
+import { fetchLocalAndRemoteFile } from "@/src/utils/file-fetching"
+import { handleError } from "../../utils/handle-error"
+import { addSpinner } from "../add"
+import { installDeps } from "../../utils/package-management"
 
 export const metadata = new Command()
   .name("metadata")
@@ -29,7 +29,7 @@ export const metadata = new Command()
 
       addSpinner.start("Injecting files...")
       const metadataPath = "src/config/metadata.tsx"
-      let metadataFile = await fetchRawFileFromGithub({
+      let metadataFile = await fetchRemoteFile({
         filePath: metadataPath,
       })
 
@@ -37,72 +37,61 @@ export const metadata = new Command()
       const manifest = "src/app/manifest.ts"
       if (fileExists(manifest)) {
         const manifestContent = readFileContent(manifest)
-        metadataFile = mergeFileContent(
+        metadataFile = merge(
           metadataFile,
           `// MOVED FROM ${manifest}`,
           manifestContent
         )
-      } else {
-        await injectGithubFiles({
-          filePaths: [manifest],
-        })
       }
 
       const robots = "src/app/robots.ts"
       if (fileExists(robots)) {
         const robotsContent = readFileContent(robots)
-        metadataFile = mergeFileContent(
+        metadataFile = merge(
           metadataFile,
           `// MOVED FROM ${robots}`,
           robotsContent
         )
-      } else {
-        await injectGithubFiles({
-          filePaths: [robots],
-        })
       }
 
       const sitemap = "src/app/sitemap.ts"
       if (fileExists(sitemap)) {
         const sitemapContent = readFileContent(sitemap)
-        metadataFile = mergeFileContent(
+        metadataFile = merge(
           metadataFile,
           `// MOVED FROM ${sitemap}`,
           sitemapContent
         )
-      } else {
-        await injectGithubFiles({
-          filePaths: [sitemap],
-        })
       }
 
-      injectFile(metadataPath, metadataFile)
+      await injectGithubFiles({
+        filePaths: [manifest, sitemap, robots],
+      })
+      injectFile({ fileContent: metadataFile, filePath: metadataPath })
 
       const mainLayoutPath = "src/app/layout.tsx"
-      let { rc: remoteLayout, lc: localLayout } =
-        await getLocalAndRemoteFile(mainLayoutPath)
+      if (fileExists(mainLayoutPath)) {
+        let { rc: remoteLayout, lc: localLayout } =
+          await fetchLocalAndRemoteFile(mainLayoutPath)
 
-      const layoutImports = extractMatchedLines({
-        fileContent: remoteLayout,
-        searchString: /^import\s+\{.*metadata.*/i,
-      })
-      const layoutMetadataExports = extractBetweenMatchedLines({
-        fileContent: remoteLayout,
-        startString: "export const metadata",
-      })
+        const layoutImports = extractMatchedLines({
+          fileContent: remoteLayout,
+          searchString: /^import\s+\{.*metadata.*/i,
+        })
+        const layoutMetadataExports = extractBetweenMatchedLines({
+          fileContent: remoteLayout,
+          startString: "export const metadata",
+        })
 
-      localLayout = mergeFileContent(
-        layoutImports,
-        localLayout,
-        layoutMetadataExports
-      )
+        localLayout = merge(layoutImports, localLayout, layoutMetadataExports)
 
-      injectFile(mainLayoutPath, localLayout)
+        injectFile({ filePath: mainLayoutPath, fileContent: localLayout })
+      }
 
       const mainPagePath = "src/app/(Navigation)/page.tsx"
       if (fileExists(mainPagePath)) {
         let { rc: remotePage, lc: localPage } =
-          await getLocalAndRemoteFile(mainPagePath)
+          await fetchLocalAndRemoteFile(mainPagePath)
 
         const pageImports = extractMatchedLines({
           fileContent: remotePage,
@@ -112,13 +101,9 @@ export const metadata = new Command()
           fileContent: remotePage,
           startString: "export const metadata",
         })
-        localPage = mergeFileContent(
-          pageImports,
-          localPage,
-          pageMetadataExports
-        )
+        localPage = merge(pageImports, localPage, pageMetadataExports)
 
-        injectFile(mainPagePath, localPage)
+        injectFile({ filePath: mainPagePath, fileContent: localPage })
       }
     } catch (error) {
       handleError(error)

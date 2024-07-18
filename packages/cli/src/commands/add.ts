@@ -2,22 +2,22 @@ import { Command, Option } from "commander"
 
 import { handleError } from "../utils/handle-error"
 
-import { metadata } from "./metadata"
+import { metadata } from "./plugins/metadata"
 
 import { loadUserKey } from "./auth"
 import axios from "axios"
 import { logger } from "../utils/logger"
 import { NEXTJS_APP_URL } from "../utils/config-info"
 import ora from "ora"
-import { reactEmail } from "./react-email"
+import { reactEmail } from "./plugins/react-email"
 import { z } from "zod"
 import path from "path"
-import { isNextInjectProject, isNextjsProject } from "../utils/get-package-info"
+import { isNextInjectProject, isNextjsProject } from "../utils/project-info"
 import prompts from "prompts"
 import { bootstrap } from "./bootstrap"
 import { init } from "./init"
 import chalk from "chalk"
-import { nextAuth } from "./next-auth"
+import { nextAuth } from "./plugins/next-auth"
 
 export const addSpinner = ora()
 export let branch: string = "master"

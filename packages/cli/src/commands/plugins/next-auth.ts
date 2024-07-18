@@ -1,22 +1,19 @@
 import { Command } from "commander"
 
-import {
-  injectContentOuter,
-  injectFile,
-  injectGithubFiles,
-  searchAndReplace,
-} from "../utils/file-injection"
+import { injectFile, injectGithubFiles } from "../../utils/file-injection"
+import { injectOuter, searchAndReplace } from "@/src/utils/file-transforms"
 
-import { handleError } from "../utils/handle-error"
-import { addSpinner } from "./add"
-import { installDeps } from "../utils/package-management"
+import { handleError } from "../../utils/handle-error"
+import { addSpinner } from "../add"
+import { installDeps } from "../../utils/package-management"
 import {
   extractBetweenMatchedLines,
   extractMatchedLines,
-  fileExists,
-  getLocalAndRemoteFile,
-} from "../utils/file-extraction"
-import { injectContentInner, mergeFileContent } from "../utils/file-injection"
+} from "../../utils/file-extraction"
+import { fileExists } from "@/src/utils/file-fetching"
+
+import { fetchLocalAndRemoteFile } from "@/src/utils/file-fetching"
+import { injectInner } from "@/src/utils/file-transforms"
 
 export const nextAuth = new Command()
   .name("next-auth")
@@ -51,16 +48,16 @@ export const nextAuth = new Command()
         ],
       })
 
-      const mainPage = "src/app/(Navigation)/page.tsx"
-      if (fileExists(mainPage)) {
+      const mainPagePath = "src/app/(Navigation)/page.tsx"
+      if (fileExists(mainPagePath)) {
         let { rc: remotePage, lc: localPage } =
-          await getLocalAndRemoteFile(mainPage)
+          await fetchLocalAndRemoteFile(mainPagePath)
 
         const remotePageImports = extractMatchedLines({
           fileContent: remotePage,
           searchString: /import/,
         })
-        localPage = injectContentOuter({
+        localPage = injectOuter({
           fileContent: localPage,
           direction: "above",
           insertContent: remotePageImports,
@@ -71,7 +68,7 @@ export const nextAuth = new Command()
           searchString: "<DemoAuthButton />",
         })
 
-        localPage = injectContentInner({
+        localPage = injectInner({
           insertContent: demoAuth,
           direction: "above",
           fileContent: localPage,
@@ -82,24 +79,24 @@ export const nextAuth = new Command()
           fileContent: remotePage,
           startString: "async function DemoAuthButton()",
         })
-        localPage = injectContentOuter({
+        localPage = injectOuter({
           fileContent: localPage,
           direction: "below",
           insertContent: demoAuthFunction,
         })
 
-        injectFile(mainPage, localPage)
+        injectFile({ filePath: mainPagePath, fileContent: localPage })
       }
-      const providers = "src/components/next-inject-providers.tsx"
-      if (fileExists(providers)) {
+      const providersPath = "src/components/next-inject-providers.tsx"
+      if (fileExists(providersPath)) {
         let { rc: remoteProvider, lc: localProvider } =
-          await getLocalAndRemoteFile(providers)
+          await fetchLocalAndRemoteFile(providersPath)
 
         const sessionImport = extractMatchedLines({
           fileContent: remoteProvider,
           searchString: "import { SessionProvider",
         })!
-        localProvider = injectContentOuter({
+        localProvider = injectOuter({
           insertContent: sessionImport,
           fileContent: localProvider,
           direction: "above",
@@ -117,9 +114,9 @@ export const nextAuth = new Command()
           newContent: sessionProvider,
         })
 
-        injectFile(providers, localProvider)
+        injectFile({ filePath: providersPath, fileContent: localProvider })
       } else {
-        handleError(`The file path ${providers} does not exist!`)
+        handleError(`The file path ${providersPath} does not exist!`)
       }
     } catch (error) {
       handleError(error)

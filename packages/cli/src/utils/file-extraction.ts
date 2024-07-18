@@ -1,60 +1,6 @@
-import axios from "axios"
-
-import dotenv from "dotenv"
-dotenv.config({ path: CONFIG_FILE })
-
 import { handleError } from "./handle-error"
-import { CONFIG_FILE } from "./config-info"
 
-import fs, { existsSync } from "fs"
-
-import path from "path"
-import { branch, cwd } from "../commands/add"
-
-export interface GithubFunctionProps {
-  filePath: string
-}
-
-export type ExtractContentProps = {
-  fileContent: string
-  searchString: RegExp | string
-}
-
-export type ExtractContentBetweenProps = Omit<
-  ExtractContentProps,
-  "searchString"
-> & {
-  startString?: string | RegExp
-  endString?: string | RegExp
-}
-
-export async function fetchRawFileFromGithub({
-  filePath,
-}: GithubFunctionProps) {
-  try {
-    const url = `https://${process.env.ACCESS_KEY}@raw.githubusercontent.com/DanielCraciunGitHub/nextjs-base-template/${branch}/${filePath}`
-    const response = await axios.get(url)
-
-    return response.data
-  } catch (error) {
-    handleError(error)
-  }
-}
-
-export async function fetchRawFilesFromGithub({
-  filePaths,
-}: Omit<GithubFunctionProps, "filePath"> & {
-  filePaths: string[]
-}) {
-  let files: string[] = []
-
-  for (const filePath of filePaths) {
-    const fileContent = await fetchRawFileFromGithub({ filePath })
-    files.push(fileContent)
-  }
-
-  return files
-}
+import { ExtractContentBetweenProps, ExtractContentProps } from "../types"
 
 export function extractMatchedLines({
   searchString,
@@ -78,7 +24,6 @@ export function extractMatchedLines({
     return ""
   }
 }
-
 export function extractBetweenMatchedLines({
   fileContent,
   startString,
@@ -121,32 +66,6 @@ export function extractBetweenMatchedLines({
   }
   return ""
 }
-
-export function readFileContent(filePath: string) {
-  if (!existsSync(cwd)) {
-    handleError(`The path ${cwd} does not exist. Please try again.`)
-  }
-
-  const targetPath = path.resolve(cwd, filePath)
-
-  const fileContent = fs.readFileSync(targetPath)
-
-  return fileContent.toString("utf-8")!
-}
-export function fileExists(filePath: string) {
-  const targetPath = path.resolve(cwd, filePath)
-
-  if (!existsSync(targetPath)) {
-    return false
-  }
-  return true
-}
-export function getLines(fileContent: string): string[] {
+export function extractAllLines(fileContent: string): string[] {
   return fileContent.split(/\r?\n/)
-}
-export async function getLocalAndRemoteFile(filePath: string) {
-  const lc = readFileContent(filePath)
-  const rc = await fetchRawFileFromGithub({ filePath })
-
-  return { lc, rc } as { lc: string; rc: string }
 }
