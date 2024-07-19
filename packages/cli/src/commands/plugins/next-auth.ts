@@ -14,7 +14,7 @@ import { fileExists } from "@/src/utils/file-fetching"
 
 import { fetchLocalAndRemoteFile } from "@/src/utils/file-fetching"
 import { injectInner } from "@/src/utils/file-transforms"
-import { isPluginInstalled } from "@/src/utils/project-info"
+import { patchPeerPlugin } from "@/src/utils/project-info"
 import { patchNextAuthDrizzleTurso } from "../patches/next-auth_drizzle-turso"
 
 export const nextAuth = new Command()
@@ -120,10 +120,7 @@ export const nextAuth = new Command()
           fileContent: localProvider,
         })
 
-        const drizzleTursoInstalled = await isPluginInstalled("drizzle-turso")
-        if (drizzleTursoInstalled) {
-          await patchNextAuthDrizzleTurso()
-        }
+        await patchPeerPlugin("drizzle-turso", patchNextAuthDrizzleTurso)
       } else {
         handleError(`The file path ${providersPath} does not exist!`)
       }

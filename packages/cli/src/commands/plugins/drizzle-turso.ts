@@ -9,7 +9,7 @@ import { extractMatchedLines } from "../../utils/file-extraction"
 
 import { fetchLocalAndRemoteFile } from "@/src/utils/file-fetching"
 import { injectInner } from "@/src/utils/file-transforms"
-import { isPluginInstalled } from "@/src/utils/project-info"
+import { patchPeerPlugin } from "@/src/utils/project-info"
 import { patchNextAuthDrizzleTurso } from "../patches/next-auth_drizzle-turso"
 
 export const drizzleTurso = new Command()
@@ -51,10 +51,7 @@ export const drizzleTurso = new Command()
         successColor: "yellow",
       })
 
-      const nextAuthInstalled = await isPluginInstalled("next-auth")
-      if (nextAuthInstalled) {
-        await patchNextAuthDrizzleTurso()
-      }
+      await patchPeerPlugin("next-auth", patchNextAuthDrizzleTurso)
     } catch (error) {
       handleError(error)
     }

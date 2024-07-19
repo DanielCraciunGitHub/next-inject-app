@@ -1,12 +1,9 @@
 import { installDeps } from "@/src/utils/package-management"
-import { addSpinner } from "../add"
 import { readFileContent } from "@/src/utils/file-fetching"
 import { injectInner, merge } from "@/src/utils/file-transforms"
 import { injectFile } from "@/src/utils/file-injection"
 
 export async function patchNextAuthDrizzleTurso() {
-  addSpinner.info("Peer plugins detected. Patching peer dependencies...")
-
   await installDeps(["@auth/drizzle-adapter"])
 
   const authFile = "src/lib/auth.ts"
@@ -34,8 +31,6 @@ export async function patchNextAuthDrizzleTurso() {
     fileContent: localSchema,
     successColor: "red",
   })
-
-  addSpinner.succeed("Peer dependencies patched!")
 }
 
 const authImports = `import { db } from "@/db"

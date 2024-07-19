@@ -1,11 +1,12 @@
 import path from "path"
 import fs from "fs-extra"
 import { type PackageJson } from "type-fest"
-import { cwd } from "../commands/add"
+import { addSpinner, cwd } from "../commands/add"
 import { injectFile } from "./file-injection"
 import { renameNextInjectProject } from "../commands/rename"
 import { readFileContent } from "./file-fetching"
 import { NextInjectConfig, PluginNames } from "../types"
+import chalk from "chalk"
 
 export async function getPackageJsonInfo() {
   const packageJsonPath = path.join("package.json")
@@ -78,11 +79,17 @@ export function isValidConfig(
 ): config is NextInjectConfig {
   return "name" in config
 }
-export async function isPluginInstalled(plugin: PluginNames) {
+export async function patchPeerPlugin(
+  plugin: PluginNames,
+  patchFunction: () => Promise<void>
+) {
   const config = await getNextInjectConfig()
 
   if (config.plugins?.includes(plugin)) {
-    return true
+    addSpinner.info(
+      `Peer plugin ${chalk.green(plugin)} detected. Patching your project...`
+    )
+    await patchFunction()
+    addSpinner.succeed(`Peer plugin ${chalk.green(plugin)} has been patched!`)
   }
-  return false
 }

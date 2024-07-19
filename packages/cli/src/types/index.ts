@@ -7,6 +7,9 @@ export type PluginNames =
   | "metadata"
   | "stripe"
   | "trpc"
+  | "react-email"
+  | "nodemailer"
+  | "resend"
 
 export type InjectContentProps = {
   insertContent: string

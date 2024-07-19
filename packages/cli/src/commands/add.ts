@@ -25,6 +25,7 @@ import { nextAuth } from "./plugins/next-auth"
 import simpleGit, { CheckRepoActions } from "simple-git"
 import { existsSync } from "fs"
 import { drizzleTurso } from "./plugins/drizzle-turso"
+import { stripe } from "./plugins/stripe"
 
 export const addSpinner = ora()
 export let branch: string = "master"
@@ -47,7 +48,7 @@ export const add = new Command()
   .addCommand(reactEmail)
   .addCommand(nextAuth)
   .addCommand(drizzleTurso)
-
+  .addCommand(stripe)
   .hook("preSubcommand", async (thisCommand: Command, subCommand: Command) => {
     subCommand.addOption(
       new Option(
