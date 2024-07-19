@@ -42,7 +42,7 @@ export async function injectFile({
 
   await fs.ensureDir(path.dirname(targetPath))
 
-  await fs.writeFile(targetPath, fileContent, "utf-8")
+  await fs.writeFile(targetPath, fileContent)
 
   const successMessage = `Injected ${path.normalize(targetPath)}`
 

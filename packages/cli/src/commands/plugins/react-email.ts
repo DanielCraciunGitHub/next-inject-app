@@ -1,28 +1,43 @@
-import path from "path"
 import { Command } from "commander"
 
-import { injectGithubFile } from "../../utils/file-injection"
+import { injectFile, injectGithubFiles } from "../../utils/file-injection"
+
 import { handleError } from "../../utils/handle-error"
-import { optionsSchema } from "../add"
+
+import { installDeps } from "../../utils/package-management"
+
+import { fetchRemoteFile } from "@/src/utils/file-fetching"
+
+import path from "path"
+import { cwd, setGlobalCwd } from "../add"
 
 export const reactEmail = new Command()
   .name("react-email")
-  .description("Inject metadata into your app")
-  .action(async function (this: Command, opts) {
+  .description("Inject react-email into your app")
+  .action(async function (this: Command) {
     try {
-      const options = optionsSchema.parse({
-        ...opts,
+      const email = "src/react-email/emails/welcome.tsx"
+      const templateAsset = "src/react-email/emails/static/next-inject.webp"
+      const gitIgnore = "src/react-email/.gitignore"
+
+      await injectGithubFiles({
+        filePaths: [email, gitIgnore, templateAsset],
       })
 
-      const cwd = path.resolve(options.cwd)
+      const packageJson = "src/react-email/package.json"
+      const packageJsonContent = await fetchRemoteFile({
+        filePath: packageJson,
+      })
+      await injectFile({
+        fileContent: JSON.stringify(packageJsonContent, null, 2),
+        filePath: packageJson,
+      })
 
-      const metadataFile = "src/config/metadata.tsx"
-      const mainPageFile = "src/app/(Navigation)/page.tsx"
-      const mainLayoutFile = "src/app/layout.tsx"
-
-      // await injectGithubFile(cwd, metadataFile, this.name())
-      // await injectGithubFile(cwd, mainPageFile, this.name())
-      // await injectGithubFile(cwd, mainLayoutFile, this.name())
+      const prevCwd = cwd
+      const tempCwd = path.join(cwd, "src/react-email")
+      setGlobalCwd(tempCwd)
+      await installDeps([])
+      setGlobalCwd(prevCwd)
     } catch (error) {
       handleError(error)
     }

@@ -18,7 +18,7 @@ import { patchPeerPlugin } from "@/src/utils/project-info"
 
 export const stripe = new Command()
   .name("stripe")
-  .description("Integrate stripe into your app")
+  .description("Inject stripe into your app")
   .action(async function (this: Command) {
     try {
       await installDeps(["stripe"])

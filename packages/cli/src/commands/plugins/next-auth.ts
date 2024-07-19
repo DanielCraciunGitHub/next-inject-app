@@ -19,7 +19,7 @@ import { patchNextAuthDrizzleTurso } from "../patches/next-auth_drizzle-turso"
 
 export const nextAuth = new Command()
   .name("next-auth")
-  .description("Integrate next-auth into your app")
+  .description("Inject next-auth into your app")
   .action(async function (this: Command) {
     try {
       await installDeps(["next-auth@beta", "@auth/core"])

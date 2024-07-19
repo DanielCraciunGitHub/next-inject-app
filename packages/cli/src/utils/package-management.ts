@@ -12,11 +12,26 @@ export async function installDeps(packages: string[]) {
   const spinner = ora()
   try {
     const installCommand = packageManager
-    const installArgs = [packageManager === "npm" ? "i" : "add", ...packages]
+    const installArgs = [
+      packageManager,
+      !packages.length
+        ? "install"
+        : packageManager === "npm"
+          ? "install"
+          : "add",
+      ...packages,
+    ]
 
     spinner.info(`Installing dependencies...\n`)
 
-    await execa(installCommand, installArgs, { cwd, stdio: "inherit" })
+    await execa(
+      installCommand,
+      !installArgs.length ? ["install"] : installArgs,
+      {
+        cwd,
+        stdio: "inherit",
+      }
+    )
     logger.break()
     spinner.succeed(`Dependencies successfully installed!`)
   } catch (error) {

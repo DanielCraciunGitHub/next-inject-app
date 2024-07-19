@@ -14,7 +14,7 @@ import { patchNextAuthDrizzleTurso } from "../patches/next-auth_drizzle-turso"
 
 export const drizzleTurso = new Command()
   .name("drizzle-turso")
-  .description("Integrate drizzle and turso into your app")
+  .description("Inject drizzle and turso into your app")
   .action(async function (this: Command) {
     try {
       await installDeps(["@libsql/client", "drizzle-orm"])
