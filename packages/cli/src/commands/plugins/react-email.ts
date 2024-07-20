@@ -18,10 +18,9 @@ export const reactEmail = new Command()
     try {
       const email = "src/react-email/emails/welcome.tsx"
       const templateAsset = "src/react-email/emails/static/next-inject.webp"
-      const gitIgnore = "src/react-email/.gitignore"
 
       await injectGithubFiles({
-        filePaths: [email, gitIgnore, templateAsset],
+        filePaths: [email, templateAsset],
       })
 
       const packageJson = "src/react-email/package.json"

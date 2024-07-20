@@ -26,6 +26,7 @@ import simpleGit, { CheckRepoActions } from "simple-git"
 import { existsSync } from "fs"
 import { drizzleTurso } from "./plugins/drizzle-turso"
 import { stripe } from "./plugins/stripe"
+import { resend } from "./plugins/resend"
 
 export const addSpinner = ora()
 export let branch: string = "master"
@@ -41,14 +42,15 @@ export const optionsSchema = z.object({
 
 export const add = new Command()
   .name("add")
-  .description("Inject a new plugin ⚡")
-  .usage("[command] <options>")
+  .description("Inject new plugins ⚡")
+  .usage("[commands...] <options>")
   // ! Add new commands here
   .addCommand(metadata)
   .addCommand(reactEmail)
   .addCommand(nextAuth)
   .addCommand(drizzleTurso)
   .addCommand(stripe)
+  .addCommand(resend)
   .hook("preSubcommand", async (thisCommand: Command, subCommand: Command) => {
     subCommand.addOption(
       new Option(
@@ -61,6 +63,7 @@ export const add = new Command()
       addSpinner.start(
         `Checking for permission to install the ${subCommand.name()} plugin...`
       )
+      logger.break()
 
       const res = await axios.post(`${NEXTJS_APP_URL}/api/cli`, {
         pluginName: cliNameToStripePluginName(subCommand.name()),
@@ -141,6 +144,7 @@ export const add = new Command()
 
     logger.break()
     addSpinner.info(`Injecting ${chalk.green(subCommand.name())} plugin...`)
+    logger.break()
   })
   .hook("postAction", async (thisCommand: Command, subCommand: Command) => {
     await registerNextInjectPlugin(subCommand.name())
@@ -156,6 +160,12 @@ export const add = new Command()
     addSpinner.info(
       `Find the documentation for this plugin here:\n${NEXTJS_APP_URL}/plugins/${subCommand.name()}`
     )
+
+    const [thisArg, nextArg, ...restArgs] = thisCommand.args
+
+    if (restArgs && nextArg !== "-c") {
+      await add.parseAsync([nextArg, ...restArgs], { from: "user" })
+    }
   })
   .action(async (plugin, opts) => {
     try {
