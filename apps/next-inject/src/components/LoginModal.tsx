@@ -1,6 +1,7 @@
 "use client"
 
 import { ReactNode } from "react"
+import { BsGithub } from "react-icons/bs"
 
 import {
   Dialog,
@@ -39,6 +40,14 @@ export const LoginModal = ({ children }: LoginModalProps) => {
         >
           <Google />
           <span>Sign In with Google</span>
+        </Button>
+        <Button
+          variant="secondary"
+          className="space-x-2"
+          onClick={() => authenticate("github")}
+        >
+          <BsGithub size={24} />
+          <span>Sign In with Github</span>
         </Button>
       </DialogContent>
     </Dialog>

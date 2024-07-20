@@ -1,5 +1,7 @@
 "use client"
 
+import { BsGithub } from "react-icons/bs"
+
 import {
   AlertDialog,
   AlertDialogContent,
@@ -34,6 +36,14 @@ export const LoginForm = ({}: LoginFormProps) => {
         >
           <Google />
           <span>Sign In with Google</span>
+        </Button>
+        <Button
+          variant="secondary"
+          className="space-x-2"
+          onClick={() => authenticate("github")}
+        >
+          <BsGithub size={24} />
+          <span>Sign In with Github</span>
         </Button>
       </AlertDialogContent>
     </AlertDialog>

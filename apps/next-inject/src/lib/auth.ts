@@ -4,6 +4,7 @@ import { Adapter } from "@auth/core/adapters"
 import Google from "@auth/core/providers/google"
 import { DrizzleAdapter } from "@auth/drizzle-adapter"
 import NextAuth, { DefaultSession } from "next-auth"
+import GitHub from "next-auth/providers/github"
 
 declare module "@auth/core/types" {
   interface Session extends DefaultSession {
@@ -27,11 +28,13 @@ export const {
   signOut,
 } = NextAuth({
   adapter: DrizzleAdapter(db) as Adapter,
-  providers: [Google],
+  providers: [
+    Google,
+    GitHub({
+      allowDangerousEmailAccountLinking: true,
+    }),
+  ],
   trustHost: true,
-  session: {
-    strategy: "database",
-  },
   callbacks: {
     async session({ session, user }) {
       if (user) {

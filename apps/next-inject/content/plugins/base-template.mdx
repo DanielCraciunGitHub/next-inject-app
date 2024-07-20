@@ -10,18 +10,34 @@ import { siteConfig } from "../../src/config/index"
 
 import { File, Files, Folder } from "fumadocs-ui/components/files"
 
+## Command
+
+```bash
+next-inject init
+```
+
 ## The Project Structure 📂
 
-Below is the project structure that we use at _Next Inject⚡_
+Here is the initial folder structure you receive when you start out with _Next Inject⚡_
 
-<Callout title="Info" type="info">
-  This folder structure does **not** contain every file. These are only the most
-  important files, everything else is an added bonus! 😉
+<Callout title="Note" type="info">
+
+This folder structure does **not** contain every file.
+
+These are only the most important files, any additional files will be explained using comments. 😉
+
 </Callout>
 
 <Files>
   <Folder name="public">
-    <Folder name="images" defaultOpen />
+    <Folder name="images">
+        <File name="icon-192x192.webp" />
+        <File name="icon-512x512.webp" />
+        <File name="icon-72x72.webp" />
+        <File name="icon-96x96.webp" />
+        <File name="next-inject-og.webp" />
+        <File name="next-inject.webp" />
+    </Folder>
   </Folder>
   <Folder name="src">
     <Folder name="app">
@@ -31,9 +47,8 @@ Below is the project structure that we use at _Next Inject⚡_
         <File name="page.tsx" />
       </Folder>
       <Folder name="api" defaultOpen />
+      <File name="favicon.ico" />
       <File name="layout.tsx" />
-      <File name="robots.ts" />
-      <File name="sitemap.ts" />
     </Folder>
     <Folder name="components">
       <Folder name="Buttons">
@@ -48,10 +63,10 @@ Below is the project structure that we use at _Next Inject⚡_
       <Folder name="SVG" defaultOpen />
       <Folder name="ui" defaultOpen />
       <File name="Footer.tsx" />
-      <File name="providers.tsx" />
+      <File name="next-inject-providers.tsx" />
     </Folder>
     <Folder name="config">
-      <File name="index.tsx" />
+      <File name="next-inject.tsx" />
     </Folder>
     <Folder name="db" defaultOpen />
     <Folder name="hooks" defaultOpen />
@@ -63,7 +78,7 @@ Below is the project structure that we use at _Next Inject⚡_
       <File name="globals.css" />
     </Folder>
     <Folder name="types">
-      <File name="index.ts" />
+      <File name="next-inject.ts" />
     </Folder>
   </Folder>
 
@@ -77,11 +92,16 @@ Below is the project structure that we use at _Next Inject⚡_
   <File name="tsconfig.json" />
 </Files>
 
-<Callout title="Warning" type="warn">
-  We recommend you keep this base structure consistent to ensure full compatibility with all plugins.
+<Callout title="Pro Tip" type="info">
+We recommend you keep this base structure consistent to ensure you get the most out of your plugins.
 
-Renaming, relocating, or deleting these files or folders may lead to plugin injection failure.
-
-**If you are encountering issues or have any questions, please [_email us_](mailto:danielcracbusiness@gmail.com) directly.**
+**If you are encountering issues or have any questions about our project structure, please [_contact us_](mailto:danielcracbusiness@gmail.com) directly.**
 
 </Callout>
+
+## Why Do We Enforce This Project Structure?
+
+This structure is based on knowledge acquired from developing Next.js apps since
+the release of the [app router](https://nextjs.org/blog/june-2023-update) in June 2023.
+
+And after 1 year of trial and error, I know what works and what doesn't work.

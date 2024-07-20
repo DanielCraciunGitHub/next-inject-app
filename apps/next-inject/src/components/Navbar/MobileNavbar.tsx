@@ -1,5 +1,6 @@
 import { siteConfig } from "@/config"
 import { Menu } from "lucide-react"
+import { BsLightningChargeFill } from "react-icons/bs"
 
 import {
   Sheet,
@@ -14,12 +15,14 @@ export function MobileNavbar() {
   const [mainItem, ...navItems] = siteConfig.navLinks
 
   return (
-    <div className="flex flex-col items-center py-2 md:hidden">
+    <div className="flex flex-col items-center bg-background py-2 md:hidden">
       <NavItem
         key={mainItem.name}
         page={mainItem.href}
         text={mainItem.name}
-        className="text-4xl"
+        className="text-3xl font-bold"
+        tabIndex={0}
+        icon={<BsLightningChargeFill fill={"green"} size={20} />}
       />
       <Sheet>
         <div className="flex w-full justify-end">

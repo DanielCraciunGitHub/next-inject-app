@@ -1,5 +1,4 @@
 import type { HTMLAttributes } from "react"
-import { useMemo } from "react"
 import * as Base from "fumadocs-ui/components/codeblock"
 import { createHighlighter } from "shiki"
 
@@ -20,31 +19,27 @@ export function CodeBlock({
   wrapper,
   ...props
 }: CodeBlockProps): React.ReactElement {
-  const html = useMemo(
-    () =>
-      highlighter.codeToHtml(code, {
-        lang,
-        defaultColor: false,
-        themes: {
-          light: "github-light",
-          dark: "github-dark",
-        },
-        transformers: [
-          {
-            name: "remove-pre",
-            root: (root) => {
-              if (root.children[0].type !== "element") return
+  const html = highlighter.codeToHtml(code, {
+    lang,
+    defaultColor: false,
+    themes: {
+      light: "github-light",
+      dark: "github-dark",
+    },
+    transformers: [
+      {
+        name: "remove-pre",
+        root: (root) => {
+          if (root.children[0].type !== "element") return
 
-              return {
-                type: "root",
-                children: root.children[0].children,
-              }
-            },
-          },
-        ],
-      }),
-    [code, lang]
-  )
+          return {
+            type: "root",
+            children: root.children[0].children,
+          }
+        },
+      },
+    ],
+  })
 
   return (
     <Base.CodeBlock {...wrapper}>

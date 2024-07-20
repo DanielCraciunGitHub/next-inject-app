@@ -12,38 +12,6 @@ export { withArticle as default } from "fumadocs-ui/page"
 
 <Step>
 
-## Install the CLI 🖥️
-
-```package-install
-npm i -g next-inject
-```
-
-<Callout title="Info" type="info">
-  Restart your terminal after running this command
-</Callout>
-
-</Step>
-<Step>
-
-## Intialize the base template 📰
-
-```bash
-next-inject init
-```
-
-<Accordions>
-<Accordion title="What does this command do?">
-1. You will receive prompts to choose a project name and your preferred package manager.
-2. Install the required dependencies using your package manager.
-3. Initialize a new git repository.
-4. Create an "init" commit.
-
-</Accordion>
-</Accordions>
-
-</Step>
-<Step>
-
 ## Configure your API Key 🔑
 
 <Callout title="Warning" type="warn">
@@ -60,8 +28,15 @@ next-inject init
 <PluginCommands />
 </Step>
 
-<Callout title="Info" type="info">
-  Injecting these plugins will automatically run `git add .`
+<Callout title="Pro Tip" type="info">
+
+`next-inject` supports command chaining.
+
+```bash
+# Example
+next-inject add metadata stripe
+```
+
 </Callout>
 
 <Step>

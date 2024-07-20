@@ -1,4 +1,11 @@
 {
   "root": true,
-  "pages": ["---Guide---", "index", "base-template", "---Plugins---", "..."]
+  "pages": [
+    "---Guide---",
+    "index",
+    "base-template",
+    "---Plugins---",
+    "...",
+    "---Bundles (HOT🔥)---"
+  ]
 }

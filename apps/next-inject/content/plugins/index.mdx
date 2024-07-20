@@ -4,9 +4,10 @@ priceId: Undefined
 ---
 
 import Link from "fumadocs-core/link"
-import { Callout } from "fumadocs-ui/components/callout"
 import { Accordion, Accordions } from "fumadocs-ui/components/accordion"
-import {ApiKeyCommand} from "../../src/app/(Navigation)/dashboard/page.mdx"
+import { Callout } from "fumadocs-ui/components/callout"
+
+import { ApiKeyCommand } from "../../src/app/(Navigation)/dashboard/page.mdx"
 
 import { siteConfig } from "../../src/config/index"
 
@@ -16,9 +17,8 @@ Start Injecting Plugins with **_Next Inject⚡_** by following these steps:
 <Step>
 ## Login 🔑
   
-[**Login here**](/login) to be able to access our wide range of plugins.
+[**Login here**](/login) to access our wide range of plugins.
 
-  
 </Step>
 <Step>
 
@@ -38,7 +38,7 @@ npm i -g next-inject
 <Step>
 ## Download our Base Template 🔽
 
-Download our plugin-compatible [base template](/plugins/base-template) with this simple command:
+Download our 100% plugin-compatible [base template](/plugins/base-template) with this simple command:
 
 ```bash
 next-inject init
@@ -47,12 +47,35 @@ next-inject init
 <Accordions>
 <Accordion title="What does this command do?">
 1. You will receive prompts to select a project name and package manager.
-2. Install the required dependencies with your chosen package manager.
+2. Clone our private base template repository and install any dependencies.
 3. Initialize a new git repository with `git init`.
-4. Run `git commit -m "init"`.
+4. Run `git commit -m "init"` to make this project yours.
 
 </Accordion>
 </Accordions>
+
+Alternatively, you may **bootstrap** an existing Next.js project with Next Inject by running this command:
+
+```bash
+next-inject bootstrap
+```
+
+<Accordions>
+<Accordion title="What does this command do?">
+1. You will receive prompts to select a project name.
+2. Clone only the **required** files from Github.
+
+</Accordion>
+</Accordions>
+
+<Callout title="Warning" type="warn">
+
+Bootstrapped projects naturally suffer from compatibility issues, however we ensure all plugins will work even for bootstrapped projects.
+
+More on bootstrapped projects here.
+
+</Callout>
+
   </Step>
 <Step>
 ## Authenticate with Next Inject 🔑
@@ -62,11 +85,12 @@ Run this command to authenticate with the CLI:
 <Callout title="Warning" type="warn">
   Leaking your API key may lead to security breaches.
 
-  You can find your API key in the [dashboard](/dashboard)
+You can find your API key in the [dashboard](/dashboard)
 
-  ```bash
-    next-inject auth -k API_KEY
-  ```
+```bash
+  next-inject auth -k API_KEY
+```
+
 </Callout>
 
 </Step>
