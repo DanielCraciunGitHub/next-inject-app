@@ -119,11 +119,11 @@ export const nextAuth = new Command()
           filePath: providersPath,
           fileContent: localProvider,
         })
-
-        await patchPeerPlugin("drizzle-turso", patchNextAuthDrizzleTurso)
       } else {
         handleError(`The file path ${providersPath} does not exist!`)
       }
+
+      await patchPeerPlugin("drizzle-turso", patchNextAuthDrizzleTurso)
     } catch (error) {
       handleError(error)
     }

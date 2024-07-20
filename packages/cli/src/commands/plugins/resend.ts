@@ -16,6 +16,8 @@ import {
   extractMatchedLines,
 } from "@/src/utils/file-extraction"
 import { injectInner, injectOuter } from "@/src/utils/file-transforms"
+import { patchResendReactEmail } from "../patches/resend_react-email"
+import { patchPeerPlugin } from "@/src/utils/project-info"
 
 export const resend = new Command()
   .name("resend")
@@ -58,12 +60,14 @@ export const resend = new Command()
           insertPoint: "</section",
         })
 
-        injectFile({
+        await injectFile({
           filePath: mainPagePath,
           fileContent: localPage,
           successColor: "yellow",
         })
       }
+
+      await patchPeerPlugin("react-email", patchResendReactEmail)
     } catch (error) {
       handleError(error)
     }

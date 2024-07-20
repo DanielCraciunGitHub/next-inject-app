@@ -105,7 +105,11 @@ export function injectOuter({
 
     // Find the insert point line
     if (direction === "above") {
-      if (lines[0].includes("use client")) {
+      if (
+        lines[0].includes("use client") ||
+        lines[0].includes("use server") ||
+        lines[0].includes("server only")
+      ) {
         insertIndex = 1
       } else {
         insertIndex = 0

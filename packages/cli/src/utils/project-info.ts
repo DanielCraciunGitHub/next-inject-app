@@ -7,6 +7,7 @@ import { renameNextInjectProject } from "../commands/rename"
 import { readFileContent } from "./file-fetching"
 import { NextInjectConfig, PluginNames } from "../types"
 import chalk from "chalk"
+import { logger } from "./logger"
 
 export async function getPackageJsonInfo() {
   const packageJsonPath = path.join("package.json")
@@ -86,8 +87,11 @@ export async function patchPeerPlugin(
   const config = await getNextInjectConfig()
 
   if (config.plugins?.includes(plugin)) {
+    logger.break()
     addSpinner.info(
-      `Peer plugin ${chalk.green(plugin)} detected. Patching your project...`
+      chalk.blue(
+        `Peer plugin ${chalk.green(plugin)} detected. Patching your project...`
+      )
     )
     await patchFunction()
     addSpinner.succeed(`Peer plugin ${chalk.green(plugin)} has been patched!`)

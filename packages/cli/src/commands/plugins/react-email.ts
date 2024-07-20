@@ -10,6 +10,8 @@ import { fetchRemoteFile } from "@/src/utils/file-fetching"
 
 import path from "path"
 import { cwd, setGlobalCwd } from "../add"
+import { patchResendReactEmail } from "../patches/resend_react-email"
+import { patchPeerPlugin } from "@/src/utils/project-info"
 
 export const reactEmail = new Command()
   .name("react-email")
@@ -37,6 +39,8 @@ export const reactEmail = new Command()
       setGlobalCwd(tempCwd)
       await installDeps([])
       setGlobalCwd(prevCwd)
+
+      await patchPeerPlugin("resend", patchResendReactEmail)
     } catch (error) {
       handleError(error)
     }
