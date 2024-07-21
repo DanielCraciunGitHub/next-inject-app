@@ -2,9 +2,9 @@
 
 import { Session } from "@auth/core/types"
 import { LogOutIcon } from "lucide-react"
-import { signOut } from "next-auth/react"
 
 import { Button } from "@/components/ui/button"
+import { signOutAction } from "@/app/_actions/authenticate"
 
 interface AuthSession {
   session?: Session | null
@@ -13,7 +13,12 @@ interface AuthSession {
 export function LogoutButton({ session }: AuthSession) {
   return session ? (
     <>
-      <Button onClick={async () => await signOut()} variant={"destructive"}>
+      <Button
+        onClick={async () => {
+          await signOutAction({ redirectTo: "/plugins" })
+        }}
+        variant={"destructive"}
+      >
         <LogOutIcon />
       </Button>
     </>

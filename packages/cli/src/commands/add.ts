@@ -163,7 +163,7 @@ export const add = new Command()
 
     const [thisArg, nextArg, ...restArgs] = thisCommand.args
 
-    if (restArgs && nextArg !== "-c") {
+    if (nextArg && restArgs && nextArg !== "-c") {
       await add.parseAsync([nextArg, ...restArgs], { from: "user" })
     }
   })

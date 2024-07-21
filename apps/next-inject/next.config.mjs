@@ -21,6 +21,9 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    serverComponentsExternalPackages: ["shiki", "vscode-oniguruma"],
+  },
 }
 
 export default withMDX(nextConfig)

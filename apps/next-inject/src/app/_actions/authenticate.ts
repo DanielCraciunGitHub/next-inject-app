@@ -10,3 +10,6 @@ export async function authenticate(provider: "google" | "github") {
     await signIn(provider)
   }
 }
+export async function signOutAction({ redirectTo }: { redirectTo: string }) {
+  await signOut({ redirectTo })
+}
