@@ -1,13 +1,16 @@
 {
   "name": "next-inject",
-  "version": "1.1.6",
-  "description": "",
+  "version": "1.1.7",
+  "description": "A modular plugin system for Next.js applications, where you can automate mundane configurations with a single click. E.g. next-inject add metadata",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "author": "Daniel Craciun",
+  "license": "ISC",
+  "homepage": "https://next-inject.vercel.app",
   "type": "module",
   "exports": "./dist/index.js",
   "bin": "./dist/index.js",
@@ -23,8 +26,6 @@
     "release": "changeset version",
     "build": "tsup"
   },
-  "author": "Daniel Craciun",
-  "license": "ISC",
   "devDependencies": {
     "@types/figlet": "^1.5.8",
     "@types/fs-extra": "^11.0.4",
