@@ -15,12 +15,12 @@ export function MobileNavbar() {
   const [mainItem, ...navItems] = siteConfig.navLinks
 
   return (
-    <div className="flex flex-col items-center bg-background py-2 md:hidden">
+    <div className="flex items-center bg-background p-4 md:hidden">
       <NavItem
         key={mainItem.name}
         page={mainItem.href}
         text={mainItem.name}
-        className="text-3xl font-bold"
+        className="text-2xl font-bold"
         tabIndex={0}
         icon={<BsLightningChargeFill fill={"green"} size={20} />}
       />

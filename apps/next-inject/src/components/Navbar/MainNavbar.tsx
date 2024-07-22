@@ -4,7 +4,8 @@ import { BsLightningChargeFill } from "react-icons/bs"
 import { NavItem } from "./NavItem"
 
 export const MainNavbar = () => {
-  const [firstLink, ...restLinks] = siteConfig.navLinks
+  const [firstLink, ...rest] = siteConfig.navLinks
+  const [lastLink, ...restLinks] = rest.reverse()
 
   return (
     <div className="hidden bg-background md:flex md:justify-center md:p-3">
@@ -30,6 +31,16 @@ export const MainNavbar = () => {
               />
             </span>
           ))}
+        </div>
+        <div className="flex divide-x-2 divide-primary">
+          <span key={lastLink.name}>
+            <NavItem
+              page={lastLink.href}
+              text={lastLink.name}
+              className="ml-2 mr-2"
+              tabIndex={0}
+            />
+          </span>
         </div>
       </div>
     </div>

@@ -4,19 +4,24 @@ import { FAQPageJsonLd } from "next-seo"
 
 import { staticMetadata } from "@/config/metadata"
 
+import { Demo } from "./Demo"
+import { FAQ } from "./FAQ"
+import { HeroSection } from "./HeroSection"
+import { Pricing } from "./Pricing"
+
 export const metadata: Metadata = {
   ...staticMetadata.mainPage,
 }
 
 export default async function Home() {
   return (
-    <>
+    <div className="mt-24 w-full">
       <FAQPageJsonLd mainEntity={[...siteConfig.faq]} useAppDir={true} />
-      <section className="flex flex-col">
-        <div className="text-4xl font-extrabold tracking-tight md:text-5xl">
-          Hello world
-        </div>
-      </section>
-    </>
+
+      <HeroSection />
+      <Demo />
+      <Pricing />
+      <FAQ />
+    </div>
   )
 }

@@ -1,3 +1,5 @@
+"server-only"
+
 import type { HTMLAttributes } from "react"
 import * as Base from "fumadocs-ui/components/codeblock"
 

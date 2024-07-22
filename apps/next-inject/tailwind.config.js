@@ -75,6 +75,7 @@ module.exports = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        typewriter: "typewriter 2s steps(11) forwards",
       },
     },
   },
