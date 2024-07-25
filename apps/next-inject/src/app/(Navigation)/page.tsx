@@ -6,8 +6,8 @@ import { staticMetadata } from "@/config/metadata"
 
 import { Demo } from "./Demo"
 import { FAQ } from "./FAQ"
+import { Features } from "./Features"
 import { HeroSection } from "./HeroSection"
-import { Pricing } from "./Pricing"
 
 export const metadata: Metadata = {
   ...staticMetadata.mainPage,
@@ -15,13 +15,19 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   return (
-    <div className="mt-24 w-full">
+    <>
       <FAQPageJsonLd mainEntity={[...siteConfig.faq]} useAppDir={true} />
+      <div className="mx-auto my-24 flex w-full max-w-7xl flex-col space-y-24">
+        <HeroSection />
 
-      <HeroSection />
-      <Demo />
-      <Pricing />
-      <FAQ />
-    </div>
+        <Demo />
+
+        <Features />
+
+        <FAQ />
+
+        {/* <Pricing /> */}
+      </div>
+    </>
   )
 }

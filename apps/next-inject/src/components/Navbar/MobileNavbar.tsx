@@ -9,6 +9,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 
+import { DarkModeButton } from "../Buttons/DarkModeButton"
 import { NavItem } from "./NavItem"
 
 export function MobileNavbar() {
@@ -44,6 +45,9 @@ export function MobileNavbar() {
                 </SheetClose>
               </div>
             ))}
+          </div>
+          <div className="absolute bottom-3 right-3">
+            <DarkModeButton />
           </div>
         </SheetContent>
       </Sheet>

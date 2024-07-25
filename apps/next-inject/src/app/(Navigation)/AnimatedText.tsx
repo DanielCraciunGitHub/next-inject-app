@@ -12,11 +12,10 @@ export const AnimatedText = () => {
     }, 1500) // Change the interval duration (in milliseconds) as desired
 
     return () => clearInterval(interval)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <span className="rounded bg-neutral-500 px-1">
-      {words[currentWordIndex]}
-    </span>
+    <span className="rounded bg-primary px-1">{words[currentWordIndex]}</span>
   )
 }

@@ -1,6 +1,7 @@
 import { siteConfig } from "@/config"
 import { BsLightningChargeFill } from "react-icons/bs"
 
+import { DarkModeButton } from "../Buttons/DarkModeButton"
 import { NavItem } from "./NavItem"
 
 export const MainNavbar = () => {
@@ -21,7 +22,7 @@ export const MainNavbar = () => {
           />
         </div>
         <div className="flex divide-x-2 divide-primary">
-          {restLinks.map((item) => (
+          {restLinks.reverse().map((item) => (
             <span key={item.name}>
               <NavItem
                 page={item.href}
@@ -42,6 +43,9 @@ export const MainNavbar = () => {
             />
           </span>
         </div>
+      </div>
+      <div className="absolute right-3 top-3">
+        <DarkModeButton />
       </div>
     </div>
   )

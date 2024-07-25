@@ -20,12 +20,20 @@ export const siteConfig = {
       href: "/",
     },
     {
-      name: "Pricing",
-      href: "#pricing",
-    },
-    {
       name: "Demo",
       href: "#demo",
+    },
+    {
+      name: "Features",
+      href: "#features",
+    },
+    // {
+    //   name: "Pricing",
+    //   href: "#pricing",
+    // },
+    {
+      name: "FAQ",
+      href: "#faq",
     },
     {
       name: "Plugins",
@@ -63,12 +71,17 @@ export const siteConfig = {
     {
       questionName: "What is Next Inject?",
       acceptedAnswerText:
-        "Next Inject is a website that showcases plugins installable into a Next.js application to provide automatic setup of certain features using a CLI.",
+        "Next Inject is a website that showcases plugins for Next.js applications. Next Inject also comes with a CLI used to inject plugins to configure your Next.js app. (e.g. Stripe, Auth.js)",
+    },
+    {
+      questionName: "How do we compare to shipfast?",
+      acceptedAnswerText:
+        "Shipfast is a boilerplate repository which contains many useful components but at a hefty price. Next Inject solves the hefty price issue and simultaneously promotes freedom of choice; i.e. you are not forced to use MongoDB!",
     },
     {
       questionName: "How do I install a plugin with Next Inject?",
       acceptedAnswerText:
-        "To install a plugin with Next Inject, use our user-friendly CLI tool to automatically configure the desired feature in your Next.js application.",
+        "Run `next-inject add [plugin]` to configure the desired plugin in your Next.js application.",
     },
     {
       questionName: "What types of plugins are available on Next Inject?",
@@ -78,7 +91,7 @@ export const siteConfig = {
     {
       questionName: "Is Next Inject compatible existing Next.js projects?",
       acceptedAnswerText:
-        "Next Inject is designed to be 100% compatible with our base Next.js template, and we are also integrating support for existing Next.js projects.",
+        "Next Inject is 100% compatible with our base Next.js template, and we are incrementally supporting existing Next.js projects.",
     },
   ] as const satisfies FAQ,
   footerText:

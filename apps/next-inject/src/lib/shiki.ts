@@ -1,14 +1,12 @@
 import { createHighlighter, type Highlighter } from "shiki"
 
-export let highlighter: Highlighter
+let highlighter: Highlighter
 
 export async function highlight(code: string, lang: string) {
-  if (!highlighter) {
-    highlighter = await createHighlighter({
-      langs: ["bash", "ts", "tsx"],
-      themes: ["github-light", "github-dark"],
-    })
-  }
+  highlighter = await createHighlighter({
+    langs: ["bash", "ts", "tsx"],
+    themes: ["github-light", "github-dark"],
+  })
 
   const html = highlighter.codeToHtml(code, {
     lang,
@@ -31,6 +29,8 @@ export async function highlight(code: string, lang: string) {
       },
     ],
   })
+
+  highlighter.dispose()
 
   return html
 }

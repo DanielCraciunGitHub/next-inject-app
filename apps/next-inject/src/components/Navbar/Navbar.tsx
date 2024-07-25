@@ -3,7 +3,7 @@ import { MobileNavbar } from "./MobileNavbar"
 
 export default function NavBar() {
   return (
-    <nav className="sticky top-0 z-50">
+    <nav className="top-0 z-50">
       <MainNavbar />
       <MobileNavbar />
     </nav>
