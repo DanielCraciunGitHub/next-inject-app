@@ -40,6 +40,9 @@ export const optionsSchema = z.object({
   cwd: z.string(),
 })
 
+// ! UPDATE THIS WHENEVER YOU ADD A NEW COMMAND
+const freeCommands = ["metadata", "react-email"]
+
 export const add = new Command()
   .name("add")
   .description("Inject new plugins ⚡")
@@ -63,25 +66,28 @@ export const add = new Command()
       addSpinner.start(
         `Checking for permission to install the ${subCommand.name()} plugin...`
       )
-      logger.break()
 
-      const res = await axios.post(`${NEXTJS_APP_URL}/api/cli`, {
-        pluginName: cliNameToStripePluginName(subCommand.name()),
-        authKey: loadUserKey(),
-      })
+      if (!freeCommands.includes(subCommand.name())) {
+        const res = await axios.post(`${NEXTJS_APP_URL}/api/cli`, {
+          pluginName: cliNameToStripePluginName(subCommand.name()),
+          authKey: loadUserKey(),
+        })
+        logger.break()
 
-      if (res.status !== 200) {
-        logger.error(
-          `\nPlease authenticate and purchase this plugin here:\n${NEXTJS_APP_URL}/plugins/${subCommand.name()}`
-        )
-        logger.warn(
-          `Also, find configuration instructions at ${NEXTJS_APP_URL}/dashboard`
-        )
-        handleError(res.statusText)
+        if (res.status !== 200) {
+          logger.error(
+            `\nPlease authenticate and purchase this plugin here:\n${NEXTJS_APP_URL}/plugins/${subCommand.name()}`
+          )
+          logger.warn(
+            `Also, find configuration instructions at ${NEXTJS_APP_URL}/dashboard`
+          )
+          handleError(res.statusText)
+        }
       }
 
       addSpinner.succeed("Permission Granted!")
     } catch (error) {
+      logger.break()
       logger.error(
         `Please purchase this plugin from here: ${NEXTJS_APP_URL}/plugins/${subCommand.name()}`
       )
@@ -158,7 +164,7 @@ export const add = new Command()
       `Please review any ${chalk.yellow("yellow")} or ${chalk.red("red")} files to ensure everything works as expected.`
     )
     addSpinner.info(
-      `Find the documentation for this plugin here:\n${NEXTJS_APP_URL}/plugins/${subCommand.name()}`
+      `Find the documentation for this plugin here:\n${chalk.blue(`${NEXTJS_APP_URL}/plugins/${subCommand.name()}`)}`
     )
 
     const [thisArg, nextArg, ...restArgs] = thisCommand.args

@@ -24,23 +24,25 @@ export const nextAuth = new Command()
     try {
       await installDeps(["next-auth@beta", "@auth/core"])
 
-      const authAction = "src/app/_actions/authenticate.ts"
+      const authActions = "src/app/_actions/authenticate.ts"
 
       const authRoute = "src/app/api/auth/[...nextauth]/route.ts"
 
       const loginForm = "src/components/NextAuth/LoginForm.tsx"
       const loginModal = "src/components/NextAuth/LoginModal.tsx"
-      const authButton = "src/components/NextAuth/AuthButton.tsx"
+      const loginButtons = "src/components/NextAuth/LoginButtons.tsx"
+      const logoutButton = "src/components/NextAuth/LogoutButton.tsx"
 
       const authConfig = "src/lib/auth.ts"
 
       await injectGithubFiles({
         filePaths: [
-          authAction,
+          authActions,
           authRoute,
           loginForm,
           loginModal,
-          authButton,
+          loginButtons,
+          logoutButton,
           authConfig,
         ],
       })
@@ -52,7 +54,7 @@ export const nextAuth = new Command()
 
         const remotePageImports = extractMatchedLines({
           fileContent: remotePage,
-          searchStrings: [/import/],
+          searchStrings: ["import { auth", "import { Log"],
         })
         localPage = injectOuter({
           fileContent: localPage,
@@ -62,7 +64,7 @@ export const nextAuth = new Command()
 
         const demoAuth = extractMatchedLines({
           fileContent: remotePage,
-          searchStrings: ["<DemoAuthButton />"],
+          searchStrings: ["<DemoAuth />"],
         })
 
         localPage = injectInner({
@@ -74,7 +76,7 @@ export const nextAuth = new Command()
 
         const demoAuthFunction = extractBetweenMatchedLines({
           fileContent: remotePage,
-          startString: "async function DemoAuthButton()",
+          startString: "async function DemoAuth()",
         })
         localPage = injectOuter({
           fileContent: localPage,

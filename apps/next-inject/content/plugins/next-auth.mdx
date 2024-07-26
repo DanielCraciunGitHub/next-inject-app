@@ -4,10 +4,81 @@ priceId: price_1PgVAdEPAN9phIe0AsIh030I
 prodId: prod_QRt1u9QKRGO2NN
 ---
 
+import { Tab, Tabs } from "fumadocs-ui/components/tabs"
+
 Configure next-auth with a single click
 
 ## Usage
 
 ```bash
 next-inject add next-auth
+```
+
+## Setup Environment
+
+### Google
+
+1. Start by creating a [google cloud project here](https://console.cloud.google.com/cloud-resource-manager).
+2. In the search bar, search **credentials** and select the option related to **APIs and services**.
+3. Press **Create Credentials** and create an **OAuth client ID**.
+4. Set the **Authorized JavaScript origins** and **Authorized redirect URIs** as follows:
+
+<Tabs items={["JavaScript origins", "Redirect URIs"]}>
+  <Tab value="JavaScript origins">
+  
+  - http://localhost:3000
+  - https://example.com
+
+  </Tab>
+  <Tab value="Redirect URIs">
+  
+  - http://localhost:3000/api/auth/callback/google
+  - https://example.com/api/auth/callback/google
+  
+  </Tab>
+</Tabs>
+
+5. Copy the **Client ID** and **Client Secret** into the `.env.local` file at the root of your Next.js project as follows:
+
+```bash
+# NOTE: you must use this exact naming convention, these
+# are simply new conventions for the new Auth.js version.
+# https://authjs.dev/reference/nextjs#environment-variable-inference
+
+AUTH_GOOGLE_ID=YOUR_GOOGLE_ID
+AUTH_GOOGLE_SECRET=YOUR_GOOGLE_SECRET
+```
+
+### Github
+
+1. Visit [this link](https://github.com/settings/developers) to create an OAuth app.
+2. Rotate between the following **Homepage URLs** and **Authorization callback URLs**:
+
+<Tabs items={["Homepage", "Callback"]}>
+  <Tab value="Homepage">
+  
+  - http://localhost:3000
+  - https://example.com
+
+  </Tab>
+  <Tab value="Callback">
+  
+  - http://localhost:3000/api/auth/callback/github
+  - https://example.com/api/auth/callback/github
+  
+  </Tab>
+</Tabs>
+
+Make sure to use localhost for testing, and switch to your production URL when deploying your code.
+
+3. Copy your **Client ID**, then generate a **Client secret** and copy that too.
+4. Paste your credentials into your `.env.local` file as follows:
+
+```bash
+# NOTE: you must use this exact naming convention, these
+# are simply new conventions for the new Auth.js version.
+# https://authjs.dev/reference/nextjs#environment-variable-inference
+
+AUTH_GITHUB_ID=YOUR_GITHUB_ID
+AUTH_GITHUB_SECRET=YOUR_GITHUB_SECRET
 ```
