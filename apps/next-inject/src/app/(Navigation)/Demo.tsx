@@ -13,6 +13,6 @@ export const Demo = ({}: DemoProps) => {
     </div>
   )
 }
-export const YoutubeDemo = () => {
+const YoutubeDemo = () => {
   return <YouTubeEmbed videoid="bF0WCDBd5x0" />
 }

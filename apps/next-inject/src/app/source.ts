@@ -5,7 +5,10 @@ import { z } from "zod"
 import { map } from "../../.map"
 
 export const frontmatterSchema = defaultSchemas.frontmatter.extend({
-  priceId: z.union([z.string().regex(/^price_.+$/), z.enum(["Undefined"])]),
+  priceId: z.union([
+    z.string().regex(/^price_.+$/),
+    z.enum(["Undefined", "Free"]),
+  ]),
 })
 
 export const plugins = loader({

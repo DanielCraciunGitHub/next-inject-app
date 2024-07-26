@@ -10,3 +10,15 @@ Bootstrap an existing Next.js project with Next Inject.
 ```bash
 next-inject bootstrap
 ```
+
+## Important Caveats
+
+As of now, the following Next.js options must be configured to smoothly bootstrap your Next.js app.
+
+Not following these steps could introduce errors in the injection process.
+
+1. Make sure you create a TypeScript project, [JavaScript support](/plugins/javascript-support) is in the works.
+2. Use **Tailwind CSS**
+3. Use the `src/` directory.
+4. Use the **App Router**.
+5. Use the default import alias `@/`.

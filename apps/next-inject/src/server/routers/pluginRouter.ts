@@ -12,6 +12,9 @@ export const pluginRouter = createTRPCRouter({
     .input(z.object({ priceId: z.string() }))
     .query(async ({ ctx, input }) => {
       try {
+        if (input.priceId === "Free") {
+          return true
+        }
         if (input.priceId !== "Undefined") {
           const transactionForPlugin = await db
             .select()
