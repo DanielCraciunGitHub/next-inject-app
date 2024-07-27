@@ -1,19 +1,41 @@
-# Daniel Craciun's Next.js Template
+# next-inject
 
-## Setup Env
+A modular plugin system for Next.js applications, where you can automate mundane configurations with a single click.
 
-- [Recaptcha v3](https://medium.com/gitconnected/elevate-next-js-13-security-effortlessly-shield-your-website-with-google-recaptcha-v3-in-minutes-9ae1c5009967)
-- [Upstash Rate Limiting](https://levelup.gitconnected.com/secure-your-api-endpoints-in-next-js-13-with-upstash-b305da433e13)
-- [Nodemailer](https://blog.stackademic.com/automate-200-emails-daily-nodemailer-next-js-13-integration-c7773ab63d5d)
-- [Auth.js](https://levelup.gitconnected.com/authentication-in-two-lines-of-code-auth-js-next-js-14-653b252abfd3)
-- [Turso + Drizzle](https://medium.com/gitconnected/setup-turso-drizzle-in-6-minutes-ef5850f29b70)
+To authenticate with our CLI, please follow these steps:
 
-## General Setup
+1. Please [login](https://next-inject.vercel.app/login) to gain access to your personal API key.
 
-1. Add `favicon.ico` in the `app` directory.
-2. Use `Ctrl+Shift+F` in vscode to search-and-replace the following:
+2. Visit the [dashboard](https://next-inject.vercel.app/dashboard) to find your API key.
 
-- `APPNAME` - Related to Metadata and General Website Information
-- `IMAGE` - Related to Image Metadata (Case-Sensitive)
+3. Copy and paste the command from the dashboard, it should look like this:
 
-3. Change `globals.css` Theme [Here.](https://ui.shadcn.com/themes)
+```bash
+next-inject auth -k <KEY> # Where <KEY> is your personal API key.
+```
+
+To create a next-inject project with access to our initial boilerplate, type this command:
+
+```bash
+# Assuming you have globally installed next-inject
+next-inject init
+```
+
+To bootstrap an existing Next.js project with next-inject, type this command:
+
+```bash
+# Assuming you have globally installed next-inject
+next-inject bootstrap
+```
+
+To start injecting plugins, run this command:
+
+```bash
+next-inject add metadata
+```
+
+This will configure static metadata for new and existing Next.js sites for free.
+
+_Note that this command works even if you don't have a project, **next-inject** will take care of everything for you._
+
+Find the rest of our commands here at our [Next Inject site](https://next-inject.vercel.app/plugins), here you will also find documentation for individual plugins to make the injection process smooth.

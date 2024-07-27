@@ -56,7 +56,7 @@ export function extractBetweenMatchedLines({
     endIndex = lines.length - 1
   } else {
     const regex = new RegExp(endString)
-    endIndex = lines.findIndex((line) => regex.test(line))
+    endIndex = lines.findIndex((line, i) => regex.test(line) && i >= startIndex)
   }
 
   // Ensure both strings are found and start index is before end index

@@ -21,11 +21,11 @@ export const siteConfig = {
     },
     {
       name: "Demo",
-      href: "#demo",
+      href: "/#demo",
     },
     {
       name: "Features",
-      href: "#features",
+      href: "/#features",
     },
     // {
     //   name: "Pricing",
@@ -33,7 +33,7 @@ export const siteConfig = {
     // },
     {
       name: "FAQ",
-      href: "#faq",
+      href: "/#faq",
     },
     {
       name: "Plugins",

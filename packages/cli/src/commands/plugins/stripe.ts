@@ -31,6 +31,10 @@ export const stripe = new Command()
       const stripeButton = "src/components/Stripe/StripeButton.tsx"
       const stripeDemo = "src/components/Stripe/StripeDemo.tsx"
 
+      const subCard = "src/components/Stripe/SubscriptionCard.tsx"
+      const oneOffCard = "src/components/Stripe/OneOffCard.tsx"
+      const stripePrices = "src/config/stripe.ts"
+
       await injectGithubFiles({
         filePaths: [
           stripeAction,
@@ -38,6 +42,9 @@ export const stripe = new Command()
           stripeButton,
           stripeDemo,
           stripeConfig,
+          oneOffCard,
+          subCard,
+          stripePrices,
         ],
       })
 
@@ -48,7 +55,7 @@ export const stripe = new Command()
 
         const remotePageImports = extractMatchedLines({
           fileContent: remotePage,
-          searchStrings: ["import { StripeDemo "],
+          searchStrings: ["import { Demo"],
         })
         localPage = injectOuter({
           fileContent: localPage,
@@ -56,9 +63,10 @@ export const stripe = new Command()
           insertContent: remotePageImports,
         })
 
-        const demoStripe = extractMatchedLines({
+        const demoStripe = extractBetweenMatchedLines({
           fileContent: remotePage,
-          searchStrings: ["<StripeDemo />"],
+          startString: `#Demo"`,
+          endString: `</div>`,
         })
 
         localPage = injectInner({
@@ -89,10 +97,10 @@ export const stripe = new Command()
 
         await injectFile({ fileContent: localUtils, filePath: utilsPath })
       } else {
-        let remotePage = await fetchRemoteFile({ filePath: utilsPath })
+        let remoteUtils = await fetchRemoteFile({ filePath: utilsPath })
 
         const formatFunction = extractBetweenMatchedLines({
-          fileContent: remotePage,
+          fileContent: remoteUtils,
           startString: "export function formatProductPrice",
         })
 
