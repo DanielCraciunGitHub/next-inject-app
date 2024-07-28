@@ -135,6 +135,17 @@ export const staticMetadata = {
       title: { absolute: "Next Inject" },
     },
   } satisfies Metadata,
+  dashboard: {
+    title: "Dashboard",
+    openGraph: {
+      ...baseMetadata.openGraph,
+      title: "Dashboard",
+    },
+    twitter: {
+      ...baseMetadata.twitter,
+      title: "Dashboard",
+    },
+  },
   // ! Write page-specific static metadata configurations here...
 }
 
@@ -149,7 +160,7 @@ export async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.9,
       })),
     ...plugins.getPages().map((page) => ({
-      url: siteConfig.url + "/" + page.slugs,
+      url: siteConfig.url + "/plugins/" + page.slugs.join("/"),
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.8,

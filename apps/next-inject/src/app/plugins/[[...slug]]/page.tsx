@@ -1,9 +1,12 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { notFound } from "next/navigation"
 import { api } from "@/server/server"
+import { Callout } from "fumadocs-ui/components/callout"
 import { DocsBody, DocsPage } from "fumadocs-ui/page"
 import { BsLightningChargeFill } from "react-icons/bs"
 
+import { baseMetadata } from "@/config/metadata"
 import StripeButton from "@/components/Buttons/StripeButton"
 import { LoginModal } from "@/components/LoginModal"
 import VerifiedSvg from "@/components/SVG/VerifiedSvg"
@@ -94,6 +97,16 @@ export default async function Page({
           )}
         </div>
         <MDX />
+        <Callout type="info" title="Have another question?">
+          Please don't hesitate to{" "}
+          <Link
+            rel="noopener noreferrer"
+            className="text-blue-500 underline"
+            href="mailto:danielcracbusiness@gmail.com"
+          >
+            contact us
+          </Link>
+        </Callout>
       </DocsBody>
     </DocsPage>
   )
@@ -111,6 +124,7 @@ export function generateMetadata({ params }: { params: { slug?: string[] } }) {
   if (page == null) notFound()
 
   return {
+    ...baseMetadata,
     title: page.data.title,
     description: page.data.description,
   } satisfies Metadata

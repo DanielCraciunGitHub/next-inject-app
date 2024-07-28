@@ -1,10 +1,16 @@
 import { ReactNode } from "react"
+import { Metadata } from "next"
 import { api } from "@/server/server"
 
+import { staticMetadata } from "@/config/metadata"
 import { LogoutButton } from "@/components/LogoutButton"
 
 interface layoutProps {
   children: ReactNode
+}
+
+export const metadata: Metadata = {
+  ...staticMetadata.dashboard,
 }
 
 const layout = async ({ children }: layoutProps) => {

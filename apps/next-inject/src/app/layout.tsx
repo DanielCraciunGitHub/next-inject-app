@@ -1,6 +1,7 @@
 import "@/styles/globals.css"
 
 import { Metadata, Viewport } from "next"
+import { GoogleAnalytics } from "@next/third-parties/google"
 import NextTopLoader from "nextjs-toploader"
 
 import { baseMetadata, baseViewport } from "@/config/metadata"
@@ -25,6 +26,7 @@ export default function RootLayout({
         <Provider attribute="class" defaultTheme="dark" enableSystem>
           {children}
         </Provider>
+        <GoogleAnalytics gaId="G-J8RBM2CRZK" />
       </body>
     </html>
   )

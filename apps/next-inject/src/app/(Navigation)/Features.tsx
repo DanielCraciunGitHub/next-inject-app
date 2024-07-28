@@ -65,9 +65,10 @@ export const Features = ({}: FeaturesProps) => {
         />
         <FeatureCard
           key={1}
-          title={"Efficiency"}
+          title={"Flexibility"}
           icon={<DollarSign className="text-green-400" />}
           features={[
+            "Buy once, use forever. This applies to all of our plugins",
             "Choose only the plugins you need and pay per plugin",
             "No unnecessary boilerplate, what you see is what you get",
           ]}

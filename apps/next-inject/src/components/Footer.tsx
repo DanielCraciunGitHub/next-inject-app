@@ -53,6 +53,10 @@ export const Footer = () => {
               <div className="text-bold text-xl text-muted-foreground">
                 Legal
               </div>
+              <div className="flex flex-col items-center space-y-1 text-center md:items-start">
+                <Link href="/privacy">Privacy policy</Link>
+                <Link href="/tos">Terms of Services</Link>
+              </div>
             </div>
           </div>
         </div>
