@@ -1,8 +1,10 @@
 ---
 title: Drizzle Turso
-priceId: price_1PgVA8EPAN9phIe0Clc0R7B5
+priceId: price_1PgwaiEPAN9phIe0HTp6P82T
 prodId: prod_QRt1u9QKRGO2NN
 ---
+
+import { Callout } from "fumadocs-ui/components/callout"
 
 Configure turso and drizzle with a single click
 
@@ -10,4 +12,61 @@ Configure turso and drizzle with a single click
 
 ```bash
 next-inject add drizzle-turso
+```
+
+## Setup Turso
+
+1. [Create an account](https://accounts.turso.tech/sign-in) with turso
+
+2. Install the Turso CLI by running this command:
+
+```bash
+# Will not work on Windows
+curl -sSfL https://get.tur.so/install.sh | bash
+```
+
+<Callout title="For Windows Users" type="warn">
+  
+If you are on Windows, then you must install `wsl`, which is a Linux environment inside Windows.
+
+To do this, run the following command inside a Command Prompt or Powershell terminal in **Administrator Mode**:
+
+```bash
+wsl --install
+```
+
+After running this command, boot up your Linux terminal and run the installation command specified above.
+
+</Callout>
+
+3. Authenticate with the turso CLI by running the following command:
+
+```bash
+# I use the "--headless" option because I find that it's easier to authenticate,
+# feel free to remove this option if you like.
+turso auth signup --headless
+```
+
+4. Create a new database using this command:
+
+```bash
+turso db create database_name
+```
+
+5. Generate the required environment variables, including the **Database URL** and **Auth Token**:
+
+```bash
+# Get the "Database URL"
+turso db list # copy the "URL" value for your database.
+
+# Generate an "Auth Token"
+turso db tokens create database_name
+```
+
+6. Copy these variables into your `.env.local` file as follows:
+
+```bash title=".env.local"
+# Turso
+TURSO_DATABASE_URL=DB_URL
+TURSO_AUTH_TOKEN=AUTH_TOKEN
 ```

@@ -8,6 +8,12 @@ import { Step, Steps } from "fumadocs-ui/components/steps"
 
 export { withArticle as default } from "fumadocs-ui/page"
 
+<Callout title="Troubleshooting" type="warn">
+
+If you are encountering any problems with your plugins, do not hesitate to [contact us](mailto:danielcracbusiness@gmail.com).
+
+</Callout>
+
 <Steps>
 
 <Step>
@@ -25,12 +31,14 @@ export { withArticle as default } from "fumadocs-ui/page"
 <Step>
 ## Inject your plugins ⚡
 
+<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 <PluginCommands />
+</div>
 </Step>
 
 <Callout title="Pro Tip" type="info">
 
-`next-inject` supports command chaining.
+`next-inject` supports plugin chaining.
 
 ```bash
 # Example
@@ -72,16 +80,11 @@ export async function PluginCommands() {
 return plugins.map(function (plugin) {
 return (
 
-<>
-
 <div key={plugin.originalName}>
   <Link href={`/plugins/${plugin.parsedName}`}>
     <Heading as="h3">{plugin.originalName}</Heading>
   </Link>
   <CodeBlock lang="bash" code={`next-inject add ${plugin.parsedName}`} />
-
-  <hr />
 </div>
 
-</>
 )}) }

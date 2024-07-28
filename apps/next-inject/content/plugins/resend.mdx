@@ -1,6 +1,6 @@
 ---
 title: Resend
-priceId: price_1PgVAxEPAN9phIe0jpavhW13
+priceId: price_1PgwalEPAN9phIe0GBZoxSeg
 prodId: prod_QRt1u9QKRGO2NN
 ---
 
@@ -11,3 +11,19 @@ Configure resend with a single click
 ```bash
 next-inject add resend
 ```
+
+## Setup Environment
+
+1. Visit [resend](https://resend.com/login) and login/signup.
+2. On the sidebar, go to "API Keys" and press **Create API Key**
+3. Copy the API key into your `.env.local` file as follows:
+
+```bash
+# Resend
+RESEND_API_KEY=YOUR_API_KEY
+```
+
+4. On the sidebar, go to "Domains" and press **Add Domain.**
+5. Login to your DNS provider, and locate an "Advanced DNS" option or something similar where you are able to add new DNS records.
+6. Here, create an **MX**, **TXT**, and another **TXT** record with the correct parameters listed inside Resend.
+7. Start sending emails!

@@ -19,7 +19,7 @@ export const paymentRouter = createTRPCRouter({
         const stripeSession = await stripe.checkout.sessions.create({
           success_url: `${siteConfig.url}/dashboard`,
           cancel_url: `${siteConfig.url}${input.pathname}`,
-          payment_method_types: ["card", "paypal"],
+          payment_method_types: ["card"],
           mode: "payment",
           line_items: [
             {

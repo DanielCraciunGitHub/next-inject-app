@@ -1,8 +1,11 @@
 ---
 title: Stripe
-priceId: price_1PgVBkEPAN9phIe0Gonx71My
+priceId: price_1PgwanEPAN9phIe0BSBo83hm
 prodId: prod_QRt1u9QKRGO2NN
 ---
+
+import { Callout } from "fumadocs-ui/components/callout"
+import { Tab, Tabs } from "fumadocs-ui/components/tabs"
 
 Configure stripe with a single click
 
@@ -10,4 +13,93 @@ Configure stripe with a single click
 
 ```bash
 next-inject add stripe
+```
+
+## Setup Stripe Keys
+
+1. Visit your [stripe dashboard](https://dashboard.stripe.com/dashboard).
+2. On your dashboard, you should be able to copy the live **Publishable key** and **Secret key**.
+3. Toggle "test mode", and copy the test **Publishable key** and **Secret key**.
+4. Copy both the live and test keys into your `.env.local` file as follows:
+
+```bash title=".env.local"
+# Stripe (local)
+STRIPE_PUBLIC_TEST_KEY=TEST_PUBLIC_KEY
+STRIPE_SECRET_TEST_KEY=TEST_SECRET_KEY
+
+# Stripe (prod)
+STRIPE_PUBLIC_KEY=PUBLIC_KEY
+STRIPE_SECRET_KEY=SECRET_KEY
+```
+
+<Callout title="Tip" type="info">
+  
+Make sure to replace the **test key** with the **live key** when you are ready to make real money.
+
+```ts title="src/lib/stripe.ts"
+import Stripe from "stripe"
+
+// ! Replace the environment variable when you are done testing.
+const key = process.env.STRIPE_SECRET_TEST_KEY! // process.env.STRIPE_SECRET_KEY!
+
+export const stripe = new Stripe(key, {
+  apiVersion: "2024-06-20",
+  typescript: true,
+})
+```
+
+</Callout>
+
+## Create a Product
+
+1. Visit the [products section of stripe](https://dashboard.stripe.com/products) and create your first product.
+2. Once created, click on your product, and click the three dots under the **Pricing** section to **Copy price ID**.
+3. Inside your project, go to `src/config/stripe.ts` and paste your price ID here:
+
+```ts title="src/config/stripe.ts"
+export const prices = {
+  oneOff: "price_YOUR_PRICE",
+  subscription: "price_YOUR_SUBSCRIPTION_PRICE",
+  // ! We recommend you add new price IDs here to keep them organized.
+} as const
+```
+
+## Configure Webhooks
+
+1. [Follow these instructions](https://stripe.com/docs/stripe-cli) to setup and log in to the Stripe CLI
+2. Now run the following command in your terminal:
+
+```bash
+stripe listen --forward-to localhost:3000/api/webhooks/stripe
+```
+
+3. Copy the **Signing Secret** that appears in your terminal window into your `.env.local` file:
+
+```bash title=".env.local"
+STRIPE_WEBHOOK_TEST_SECRET=TEST_WEBHOOK_SECRET
+```
+
+4. Visit the [stripe webhooks page](https://dashboard.stripe.com/webhooks) and select "Add endpoint"
+5. Set your production domain name as the endpoint URL appended with `/api/webhooks/stripe`:
+
+E.g. https://example.com/api/webhooks/stripe
+
+6. Copy the **Signing Secret** into `.env.local`:
+
+```bash title=".env.local"
+STRIPE_WEBHOOK_SECRET=WEBHOOK_SECRET
+```
+
+14. The final `.env.local` file should now look like this:
+
+```bash title=".env.local"
+# Stripe (local)
+STRIPE_PUBLIC_TEST_KEY=TEST_PUBLIC_KEY
+STRIPE_SECRET_TEST_KEY=TEST_SECRET_KEY
+STRIPE_WEBHOOK_TEST_SECRET=TEST_WEBHOOK_SECRET
+
+# Stripe (prod)
+STRIPE_PUBLIC_KEY=PUBLIC_KEY
+STRIPE_SECRET_KEY=SECRET_KEY
+STRIPE_WEBHOOK_SECRET=WEBHOOK_SECRET
 ```
