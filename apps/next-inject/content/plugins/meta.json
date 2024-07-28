@@ -6,11 +6,11 @@
     "base-template",
     "bootstrapped",
     "javascript-support",
-    "---Free---",
-    "metadata",
-    "react-email",
-    "---Premium 👑---",
-    "...",
-    "---Bundles (HOT🔥)---"
+    "---Plugins⚡---",
+    "payments",
+    "auth",
+    "backend",
+    "emails",
+    "misc"
   ]
 }
