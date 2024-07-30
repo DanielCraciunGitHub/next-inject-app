@@ -62,7 +62,7 @@ export const siteConfig = {
       icon: <BsTwitterX />,
     },
     {
-      href: "https://medium.com/@danielcracbusiness",
+      href: "https://medium.com/@dc0",
       name: "Medium.com",
       icon: <BsMedium />,
     },

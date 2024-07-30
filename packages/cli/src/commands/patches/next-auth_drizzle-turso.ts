@@ -40,17 +40,6 @@ import { DrizzleAdapter } from "@auth/drizzle-adapter"`
 const drizzleAdapter = `adapter: DrizzleAdapter(db) as Adapter,`
 
 const schema = `import type { AdapterAccount } from "@auth/core/adapters"
-import { integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core"
-import { ulid } from "ulid"
-
-export const users = sqliteTable("user", {
-  id: text("id").notNull().primaryKey(),
-  name: text("name"),
-  email: text("email").notNull(),
-  emailVerified: integer("emailVerified", { mode: "timestamp_ms" }),
-  image: text("image"),
-  role: text("role", { enum: ["ADMIN", "USER"] }).default("USER"),
-})
 
 export const accounts = sqliteTable(
   "account",
