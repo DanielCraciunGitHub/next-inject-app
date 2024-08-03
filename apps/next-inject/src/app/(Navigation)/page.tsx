@@ -17,7 +17,7 @@ export default async function Home() {
   return (
     <>
       <FAQPageJsonLd mainEntity={[...siteConfig.faq]} useAppDir={true} />
-      <div className="mx-auto my-24 flex w-full max-w-7xl flex-col space-y-24">
+      <div className="mx-auto flex w-full flex-col font-mono">
         <HeroSection />
 
         <Demo />

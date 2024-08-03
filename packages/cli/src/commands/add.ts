@@ -78,7 +78,7 @@ export const add = new Command()
 
         if (res.status !== 200) {
           logger.error(
-            `\nPlease authenticate and purchase this plugin here:\n${NEXTJS_APP_URL}/plugins/${subCommand.name()}`
+            `\nPlease authenticate and/or purchase this plugin here:\n${NEXTJS_APP_URL}/plugins/${subCommand.name()}`
           )
           logger.warn(
             `Also, find configuration instructions at ${NEXTJS_APP_URL}/dashboard`

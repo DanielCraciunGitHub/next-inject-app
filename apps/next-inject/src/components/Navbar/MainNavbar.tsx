@@ -9,7 +9,7 @@ export const MainNavbar = () => {
   const [lastLink, ...restLinks] = rest.reverse()
 
   return (
-    <div className="hidden bg-background md:flex md:justify-center md:p-3">
+    <div className="hidden  md:flex md:justify-center md:p-3">
       <div className="md:flex md:w-2/3 md:justify-between">
         <div className="flex items-center">
           <NavItem

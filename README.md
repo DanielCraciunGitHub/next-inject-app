@@ -1,81 +1,41 @@
-# Turborepo starter
+# next-inject
 
-This is an official starter Turborepo.
+A modular plugin system for Next.js applications, where you can automate mundane configurations with a single click.
 
-## Using this example
+To authenticate with our CLI, please follow these steps:
 
-Run the following command:
+1. Please [login](https://next-inject.vercel.app/login) to gain access to your personal API key.
 
-```sh
-npx create-turbo@latest
+2. Visit the [dashboard](https://next-inject.vercel.app/dashboard) to find your API key.
+
+3. Copy and paste the command from the dashboard, it should look like this:
+
+```bash
+next-inject auth -k <KEY> # Where <KEY> is your personal API key.
 ```
 
-## What's inside?
+To create a next-inject project with access to our initial boilerplate, type this command:
 
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+```bash
+# Assuming you have globally installed next-inject
+next-inject init
 ```
 
-### Develop
+To bootstrap an existing Next.js project with next-inject, type this command:
 
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
+```bash
+# Assuming you have globally installed next-inject
+next-inject bootstrap
 ```
 
-### Remote Caching
+To start injecting plugins, run this command:
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
+```bash
+next-inject add metadata
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+This will configure static metadata for new and existing Next.js sites for free.
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+_Note that this command works even if you don't have a project, **next-inject** will take care of everything for you._
 
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+Find the rest of our commands here at our [Next Inject site](https://next-inject.vercel.app/plugins), here you will also find documentation for individual plugins to make the injection process smooth.

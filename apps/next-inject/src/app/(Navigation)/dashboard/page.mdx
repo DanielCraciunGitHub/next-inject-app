@@ -81,9 +81,8 @@ return plugins.map(function (plugin) {
 return (
 
 <div key={plugin.originalName}>
-  <Link href={`/plugins/${plugin.parsedName}`}>
-    <Heading as="h3">{plugin.originalName}</Heading>
-  </Link>
+  <Heading as="h3">{plugin.originalName}</Heading>
+
   <CodeBlock lang="bash" code={`next-inject add ${plugin.parsedName}`} />
 </div>
 
