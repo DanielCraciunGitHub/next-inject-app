@@ -14,6 +14,9 @@ import path from "path"
 import simpleGit from "simple-git"
 import prompts from "prompts"
 import { renameNextInjectProject } from "./rename"
+import { logger } from "../utils/logger"
+import { NEXTJS_APP_URL } from "../utils/config-info"
+import chalk from "chalk"
 
 export const bootstrap = new Command()
   .name("bootstrap")
@@ -86,6 +89,10 @@ export const bootstrap = new Command()
       git.add([indexConfig, mainLayoutPath, providers, types, nextInjectConfig])
 
       addSpinner.succeed("Finished bootstrapping next-inject!")
+
+      logger.warn(
+        `Please see the caveats for bootstrapped projects here:\n ${chalk.blue(`${NEXTJS_APP_URL}/plugins/bootstrapped#important-caveats`)}`
+      )
     } catch (error) {
       handleError(error)
     }

@@ -13,25 +13,20 @@ export async function installDeps(packages: string[]) {
   try {
     const installCommand = packageManager
     const installArgs = [
-      packageManager,
       !packages.length
         ? "install"
         : packageManager === "npm"
-          ? "install"
+          ? "install --force"
           : "add",
       ...packages,
     ]
 
     spinner.info(`Installing dependencies...\n`)
 
-    await execa(
-      installCommand,
-      !installArgs.length ? ["install"] : installArgs,
-      {
-        cwd,
-        stdio: "inherit",
-      }
-    )
+    await execa(installCommand, installArgs, {
+      cwd,
+      stdio: "inherit",
+    })
     logger.break()
     spinner.succeed(`Dependencies successfully installed!`)
   } catch (error) {
@@ -45,7 +40,7 @@ export async function installDevDeps(packages: string[]) {
   try {
     const installCommand = packageManager
     const installArgs = [
-      packageManager === "npm" ? "i" : "add",
+      packageManager === "npm" ? "install --force" : "add",
       ...packages,
       "-D",
     ]

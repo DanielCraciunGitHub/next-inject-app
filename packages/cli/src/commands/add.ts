@@ -27,6 +27,7 @@ import { existsSync } from "fs"
 import { drizzleTurso } from "./plugins/drizzle-turso"
 import { stripe } from "./plugins/stripe"
 import { resend } from "./plugins/resend"
+import { sanity } from "./plugins/sanity"
 
 export const addSpinner = ora()
 export let branch: string = "master"
@@ -54,6 +55,7 @@ export const add = new Command()
   .addCommand(drizzleTurso)
   .addCommand(stripe)
   .addCommand(resend)
+  .addCommand(sanity)
   .hook("preSubcommand", async (thisCommand: Command, subCommand: Command) => {
     subCommand.addOption(
       new Option(

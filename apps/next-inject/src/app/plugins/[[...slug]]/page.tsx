@@ -4,10 +4,9 @@ import { notFound } from "next/navigation"
 import { api } from "@/server/server"
 import { Callout } from "fumadocs-ui/components/callout"
 import { DocsBody, DocsPage } from "fumadocs-ui/page"
-import { BsLightningChargeFill } from "react-icons/bs"
 
 import { baseMetadata } from "@/config/metadata"
-import StripeButton from "@/components/Buttons/StripeButton"
+import { PluginCTA } from "@/components/Buttons/PluginCTA"
 import { LoginModal } from "@/components/LoginModal"
 import VerifiedSvg from "@/components/SVG/VerifiedSvg"
 import { Tooltip } from "@/components/Tooltip"
@@ -45,35 +44,11 @@ export default async function Page({
       return null
     }
     if (session) {
-      return (
-        <StripeButton
-          priceId={page.data.priceId}
-          className="space-x-1 bg-muted-foreground"
-        >
-          <BsLightningChargeFill fill={"green"} size={16} />
-          <div>
-            Get Plugin |{" "}
-            <span className="font-bold italic text-green-400 dark:text-green-700">
-              {price}
-            </span>
-          </div>
-        </StripeButton>
-      )
+      return <PluginCTA priceId={page.data.priceId} />
     } else {
       return (
         <LoginModal>
-          <StripeButton
-            priceId={page.data.priceId}
-            className="space-x-1 bg-muted-foreground"
-          >
-            <BsLightningChargeFill fill={"green"} size={16} />
-            <div>
-              Get Plugin |{" "}
-              <span className="font-bold italic text-green-400 dark:text-green-700">
-                {price}
-              </span>
-            </div>
-          </StripeButton>
+          <PluginCTA priceId={page.data.priceId} />
         </LoginModal>
       )
     }
@@ -96,8 +71,11 @@ export default async function Page({
             </Tooltip>
           )}
         </div>
+        <div>{page.data.description}</div>
         <MDX />
-        <Callout type="info" title="Have another question?">
+        {!hasPlugin && <PaymentButton />}
+        <hr />
+        <Callout type="info" title="Have a question about this plugin?">
           Please don't hesitate to{" "}
           <Link
             rel="noopener noreferrer"
@@ -127,5 +105,15 @@ export function generateMetadata({ params }: { params: { slug?: string[] } }) {
     ...baseMetadata,
     title: page.data.title,
     description: page.data.description,
+    openGraph: {
+      ...baseMetadata.openGraph,
+      title: page.data.title,
+      description: page.data.description,
+    },
+    twitter: {
+      ...baseMetadata.twitter,
+      title: page.data.title,
+      description: page.data.description,
+    },
   } satisfies Metadata
 }

@@ -1,0 +1,72 @@
+---
+title: Sanity CMS
+priceId: price_1PjJV5EPAN9phIe0EJbu6Rf7
+prodId: prod_QRt1u9QKRGO2NN
+description: Configure sanity Content Management System with a single click
+---
+
+import { Callout } from "fumadocs-ui/components/callout"
+
+## Usage
+
+```bash
+next-inject add sanity
+```
+
+## Setup Sanity Project
+
+1. Create a [sanity account](https://www.sanity.io/login)
+2. Create a new [sanity project](https://www.sanity.io/manage/personal/projects)
+3. Make sure to select "From scratch with CLI."
+
+## Setup Environment Variables
+
+1. Now we need to find your **projectId** and **dataset**.
+
+- Your `projectId` should be on your new project page,
+  and also in the URL as follows: https://www.sanity.io/manage/personal/project/PROJECT_ID
+- Your `dataset` should be available here: https://www.sanity.io/manage/personal/project/PROJECT_ID/datasets.
+  By default it should be called **production**
+
+2. Paste your **projectId** and **dataset** into your code as follows:
+
+```ts title="src/sanity/env.ts"
+export const apiVersion = "2024-07-31"
+
+export const dataset = "YOUR_DATASET"
+
+export const projectId = "YOUR_PROJECT_ID"
+```
+
+## Configure The Sanity CLI
+
+1. Download the sanity CLI globally:
+
+```package-install
+npm install -g sanity@latest
+```
+
+2. Login with the sanity CLI:
+
+```bash
+sanity login
+```
+
+3. Deploy Sanity Studio locally for testing:
+
+```bash
+sanity dev
+```
+
+4. Once you are ready, you can now deploy your studio to the web:
+
+```bash
+sanity deploy
+```
+
+<Callout type="info" title="Note">
+
+There are many more CLI commands that you may find useful. Visit [the cli reference](https://www.sanity.io/docs/cli-reference) to
+learn more.
+
+</Callout>

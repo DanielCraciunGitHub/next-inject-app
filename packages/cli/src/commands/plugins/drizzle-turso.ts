@@ -17,7 +17,7 @@ export const drizzleTurso = new Command()
   .description("Inject drizzle and turso into your app")
   .action(async function (this: Command) {
     try {
-      await installDeps(["@libsql/client", "drizzle-orm"])
+      await installDeps(["@libsql/client", "drizzle-orm", "ulid", "dotenv"])
       await installDevDeps(["drizzle-kit"])
 
       const drizzleConfig = "drizzle.config.ts"
