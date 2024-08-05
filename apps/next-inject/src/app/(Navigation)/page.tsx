@@ -8,6 +8,7 @@ import { Demo } from "./Demo"
 import { FAQ } from "./FAQ"
 import { Features } from "./Features"
 import { HeroSection } from "./HeroSection"
+import { PriceComparison } from "./PriceComparison"
 
 export const metadata: Metadata = {
   ...staticMetadata.mainPage,
@@ -19,6 +20,8 @@ export default async function Home() {
       <FAQPageJsonLd mainEntity={[...siteConfig.faq]} useAppDir={true} />
       <div className="mx-auto flex w-full flex-col font-mono">
         <HeroSection />
+
+        <PriceComparison />
 
         <Demo />
 
