@@ -20,7 +20,7 @@ export const Features = ({}: FeaturesProps) => {
             icon={<Lock className="text-blue-500" />}
             features={[
               <>
-                The package is publicly listed on the{" "}
+                The CLI is listed on the{" "}
                 <Link
                   href={"https://www.npmjs.com/package/next-inject"}
                   className="text-blue-500 underline"
@@ -29,7 +29,7 @@ export const Features = ({}: FeaturesProps) => {
                 </Link>
               </>,
               <>
-                The source code is also publicly available on{" "}
+                The source code is also available on{" "}
                 <Link
                   href={
                     "https://github.com/DanielCraciunGitHub/next-inject-app"
@@ -39,12 +39,12 @@ export const Features = ({}: FeaturesProps) => {
                   Github
                 </Link>
               </>,
-              "The CLI will always enforce git usage",
-              "Our commands can only inject new code, never delete code",
+              "The CLI enforces git usage",
+              "The CLI will only inject code, never delete code",
             ]}
           />
           <FeatureCard
-            key={1}
+            key={2}
             title={"Lightning-Fast"}
             icon={
               <BsLightningChargeFill className="text-yellow-500" size={24} />
@@ -55,11 +55,10 @@ export const Features = ({}: FeaturesProps) => {
                 <HoursText text="2+ hours" /> saved configuring SEO and metadata
               </>,
               <>
-                <HoursText text="5+ hours" /> saved configuring your UI
+                <HoursText text="5+ hours" /> saved configuring UI
               </>,
               <>
-                <HoursText text="6+ hours" /> saved configuring database
-                providers
+                <HoursText text="6+ hours" /> saved configuring databases
               </>,
               <>
                 <HoursText text="9+ hours" /> saved configuring authentication
@@ -67,13 +66,13 @@ export const Features = ({}: FeaturesProps) => {
             ]}
           />
           <FeatureCard
-            key={1}
+            key={3}
             title={"Flexibility"}
             icon={<DollarSign className="text-green-400" />}
             features={[
               "Buy once, use forever",
-              "Pay-per-plugin model leading to reduced costs",
-              "No confusing boilerplate, what you see is what you get",
+              "Pay-per-plugin model = reduced costs",
+              "No confusing boilerplate, only get what you pay for",
             ]}
           />
         </div>
@@ -81,6 +80,6 @@ export const Features = ({}: FeaturesProps) => {
     </div>
   )
 }
-function HoursText({ text }: { text: string }) {
+export function HoursText({ text }: { text: string }) {
   return <span className="rounded bg-muted px-0.5 text-green-500">{text}</span>
 }

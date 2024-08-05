@@ -9,7 +9,7 @@ interface HeroSectionProps {}
 export const HeroSection = ({}: HeroSectionProps) => {
   return (
     <div className="flex flex-col bg-gray-300 dark:bg-gray-900">
-      <section className="mx-auto my-24 flex max-w-7xl flex-col items-center justify-center gap-16 px-8 py-8 font-mono lg:flex-row lg:items-start lg:gap-20 lg:py-20">
+      <section className="mx-auto my-24 flex max-w-7xl flex-col items-center justify-center gap-16 px-8 py-8 lg:flex-row lg:items-start lg:gap-20 lg:py-20">
         <div className="flex w-full flex-col space-y-10 md:items-start">
           <div className="space-y-3 text-4xl font-bold tracking-tight md:text-6xl">
             <div>Ship code</div>

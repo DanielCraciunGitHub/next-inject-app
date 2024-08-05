@@ -24,7 +24,8 @@
         "STRIPE_WEBHOOK_SECRET",
         "STRIPE_PUBLIC_KEY",
         "STRIPE_SECRET_KEY",
-        "GITHUB_PERSONAL_ACCESS_TOKEN"
+        "GITHUB_PERSONAL_ACCESS_TOKEN",
+        "RESEND_KEY"
       ]
     },
     "lint": {
