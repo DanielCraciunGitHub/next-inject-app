@@ -1,7 +1,6 @@
 "use client"
 
 import { ReactNode } from "react"
-import { BsGithub } from "react-icons/bs"
 
 import {
   Dialog,
@@ -11,11 +10,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { authenticate } from "@/app/_actions/authenticate"
+import { EmailProvider } from "@/app/(Auth)/login/EmailProvider"
+import { SocialProviders } from "@/app/(Auth)/login/SocialProviders"
 
-import { Google } from "./SVG/Google"
-import { Button } from "./ui/button"
-import { Separator } from "./ui/separator"
+import { WordedSeparator } from "./WordedSeparator"
 
 interface LoginModalProps {
   children: ReactNode
@@ -25,30 +23,15 @@ export const LoginModal = ({ children }: LoginModalProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="flex flex-col border-muted">
+      <DialogContent className="flex flex-col space-y-0 border-muted">
         <DialogHeader>
           <DialogTitle className="text-4xl font-bold">Login</DialogTitle>
-          <DialogDescription className="text-lg">
-            Login Today!
-          </DialogDescription>
+          <DialogDescription>Join Next Inject today</DialogDescription>
         </DialogHeader>
-        <Separator />
-        <Button
-          variant="secondary"
-          className="space-x-2"
-          onClick={() => authenticate("google")}
-        >
-          <Google />
-          <span>Sign In with Google</span>
-        </Button>
-        <Button
-          variant="secondary"
-          className="space-x-2"
-          onClick={() => authenticate("github")}
-        >
-          <BsGithub size={24} />
-          <span>Sign In with Github</span>
-        </Button>
+
+        <SocialProviders />
+        <WordedSeparator word="or" />
+        <EmailProvider />
       </DialogContent>
     </Dialog>
   )

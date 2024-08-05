@@ -14,6 +14,8 @@ export const env = createEnv({
     UPSTASH_REDIS_REST_URL: z.string().min(1),
     UPSTASH_REDIS_REST_TOKEN: z.string().min(1),
 
+    RESEND_KEY: z.string().min(1),
+
     NODEMAILER_EMAIL: z.string(),
     NODEMAILER_PASSWORD: z.string(),
 

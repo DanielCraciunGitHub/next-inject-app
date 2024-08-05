@@ -1,8 +1,10 @@
 "use server"
 
+import { BuiltInProviderType } from "@auth/core/providers"
+
 import { auth, signIn, signOut } from "@/lib/auth"
 
-export async function authenticate(provider: "google" | "github") {
+export async function authenticate(provider: BuiltInProviderType) {
   const session = await auth()
   if (session) {
     await signOut()

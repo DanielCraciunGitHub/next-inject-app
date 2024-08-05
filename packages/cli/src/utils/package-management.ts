@@ -16,9 +16,10 @@ export async function installDeps(packages: string[]) {
       !packages.length
         ? "install"
         : packageManager === "npm"
-          ? "install --force"
+          ? "install"
           : "add",
       ...packages,
+      packageManager === "npm" ? "--force" : "",
     ]
 
     spinner.info(`Installing dependencies...\n`)
@@ -40,9 +41,10 @@ export async function installDevDeps(packages: string[]) {
   try {
     const installCommand = packageManager
     const installArgs = [
-      packageManager === "npm" ? "install --force" : "add",
+      packageManager === "npm" ? "install" : "add",
       ...packages,
       "-D",
+      packageManager === "npm" ? "--force" : "",
     ]
 
     spinner.info(`Installing dev dependencies...\n`)

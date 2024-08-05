@@ -1,51 +1,32 @@
 "use client"
 
-import { BsGithub } from "react-icons/bs"
-
 import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
-import { Google } from "@/components/SVG/Google"
-import { authenticate } from "@/app/_actions/authenticate"
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { WordedSeparator } from "@/components/WordedSeparator"
+
+import { EmailProvider } from "./EmailProvider"
+import { SocialProviders } from "./SocialProviders"
 
 interface LoginFormProps {}
 
 export const LoginForm = ({}: LoginFormProps) => {
   return (
-    <AlertDialog open defaultOpen>
-      <AlertDialogContent className="flex flex-col border-muted">
-        <AlertDialogHeader>
-          <AlertDialogTitle className="text-4xl font-bold">
-            Login
-          </AlertDialogTitle>
-          <AlertDialogDescription className="text-lg">
-            Login Today!
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <Separator />
-        <Button
-          variant="secondary"
-          className="space-x-2"
-          onClick={() => authenticate("google")}
-        >
-          <Google />
-          <span>Sign In with Google</span>
-        </Button>
-        <Button
-          variant="secondary"
-          className="space-x-2"
-          onClick={() => authenticate("github")}
-        >
-          <BsGithub size={24} />
-          <span>Sign In with Github</span>
-        </Button>
-      </AlertDialogContent>
-    </AlertDialog>
+    <Card className="w-[400px]">
+      <CardContent className="flex flex-col space-y-2 border-muted">
+        <CardHeader>
+          <CardTitle className="text-4xl font-bold">Login</CardTitle>
+          <CardDescription>Join Next Inject today</CardDescription>
+        </CardHeader>
+
+        <SocialProviders />
+        <WordedSeparator word="or" />
+        <EmailProvider />
+      </CardContent>
+    </Card>
   )
 }

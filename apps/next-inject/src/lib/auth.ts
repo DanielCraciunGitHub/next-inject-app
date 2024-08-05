@@ -2,6 +2,7 @@ import { db } from "@/db"
 import { env } from "@/env.mjs"
 import { Adapter } from "@auth/core/adapters"
 import Google from "@auth/core/providers/google"
+import Resend from "@auth/core/providers/resend"
 import { DrizzleAdapter } from "@auth/drizzle-adapter"
 import NextAuth, { DefaultSession } from "next-auth"
 import GitHub from "next-auth/providers/github"
@@ -32,6 +33,10 @@ export const {
     Google,
     GitHub({
       allowDangerousEmailAccountLinking: true,
+    }),
+    Resend({
+      apiKey: env.RESEND_KEY,
+      from: "auth@danielfullstack.com",
     }),
   ],
   trustHost: true,
