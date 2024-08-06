@@ -1,21 +1,23 @@
 "use client"
 
+import { useState } from "react"
 import { usePathname } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { signIn } from "next-auth/react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 import { emailAuthSchema } from "@/lib/validations"
-import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
 import { toast } from "@/components/ui/use-toast"
+import { SpinnerButton } from "@/components/Buttons/SpinnerButton"
 import Input from "@/components/InputField"
+import { authenticateResend } from "@/app/_actions/authenticate"
 
 type Inputs = z.infer<typeof emailAuthSchema>
 
 export const EmailProvider = () => {
   const pathname = usePathname()
+  const [isLoading, setIsLoading] = useState(false)
   const form = useForm<Inputs>({
     resolver: zodResolver(emailAuthSchema),
     defaultValues: {
@@ -23,12 +25,13 @@ export const EmailProvider = () => {
     },
   })
   async function onSubmit({ email }: Inputs) {
+    setIsLoading(true)
     try {
-      await signIn("resend", {
-        email,
-        redirect: false,
-        callbackUrl: pathname === "/login" ? "/dashboard" : pathname,
-      })
+      const res = await authenticateResend({ email, redirectTo: pathname })
+
+      if (!res.ok) {
+        throw new Error(res.error)
+      }
 
       toast({
         title: "Success",
@@ -42,6 +45,7 @@ export const EmailProvider = () => {
       })
     } finally {
       form.reset()
+      setIsLoading(false)
     }
   }
   return (
@@ -56,7 +60,7 @@ export const EmailProvider = () => {
           placeholder="johndoe@gmail.com"
           label="Login with email"
         />
-        <Button type="submit">Get Magic Link</Button>
+        <SpinnerButton name="Get Magic Link" state={isLoading} type="submit" />
       </form>
     </Form>
   )

@@ -139,7 +139,7 @@ importers:
         specifier: ^1.2.1
         version: 1.2.1
       '@upstash/redis':
-        specifier: ^1.31.5
+        specifier: ^1.32.0
         version: 1.32.0
       class-variance-authority:
         specifier: ^0.7.0
