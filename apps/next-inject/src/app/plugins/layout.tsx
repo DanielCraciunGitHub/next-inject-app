@@ -9,6 +9,8 @@ import { buttonVariants } from "@/components/ui/button"
 import { Toaster } from "@/components/ui/toaster"
 import { plugins } from "@/app/source"
 
+import { Item } from "./PageItem"
+
 export default function RootDocsLayout({ children }: { children: ReactNode }) {
   return (
     <>
@@ -21,6 +23,9 @@ export default function RootDocsLayout({ children }: { children: ReactNode }) {
           icon: link.icon,
         }))}
         sidebar={{
+          components: {
+            Item,
+          },
           banner: (
             <Link
               href={"/dashboard"}

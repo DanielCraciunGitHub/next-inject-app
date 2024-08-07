@@ -101,3 +101,16 @@ export const siteConfig = {
   footerText:
     "© 2024 Next Inject. All Rights Reserved" as const satisfies string,
 } as const
+
+export const plugins = [
+  { name: "Stripe", paid: true },
+  { name: "Next Auth", paid: true },
+  { name: "Drizzle Turso", paid: true },
+  { name: "Sanity CMS", paid: true },
+  { name: "React Email", paid: false },
+  { name: "Resend", paid: true },
+  { name: "Metadata", paid: false },
+] satisfies {
+  name: string
+  paid: boolean
+}[]
