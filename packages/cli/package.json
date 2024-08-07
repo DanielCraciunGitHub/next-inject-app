@@ -1,6 +1,6 @@
 {
   "name": "next-inject",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A modular plugin system for Next.js applications, where you can automate mundane configurations with a single click. E.g. next-inject add metadata",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -10,7 +10,7 @@
   ],
   "author": "Daniel Craciun",
   "license": "ISC",
-  "homepage": "https://next-inject.vercel.app",
+  "homepage": "https://www.nextinject.pro",
   "repository": {
     "url": "https://github.com/DanielCraciunGitHub/next-inject-app",
     "directory": "packages/cli"

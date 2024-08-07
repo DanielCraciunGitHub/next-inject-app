@@ -13,7 +13,7 @@ export const siteConfig = {
   url:
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
-      : `https://next-inject.vercel.app`,
+      : `https://www.nextinject.pro`,
   navLinks: [
     {
       name: "Next Inject",

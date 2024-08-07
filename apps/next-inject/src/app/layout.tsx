@@ -1,7 +1,9 @@
 import "@/styles/globals.css"
 
 import { Metadata, Viewport } from "next"
+import { siteConfig } from "@/config"
 import { GoogleAnalytics } from "@next/third-parties/google"
+import { OrganizationJsonLd } from "next-seo"
 import NextTopLoader from "nextjs-toploader"
 
 import { baseMetadata, baseViewport } from "@/config/metadata"
@@ -27,6 +29,22 @@ export default function RootLayout({
           {children}
         </Provider>
         <GoogleAnalytics gaId="G-J8RBM2CRZK" />
+        <OrganizationJsonLd
+          useAppDir={true}
+          type="Corporation"
+          id={`${siteConfig.url}`}
+          logo={`${siteConfig.url}/images/next-inject.webp`}
+          legalName="Next Inject"
+          name="Next Inject"
+          contactPoint={[
+            {
+              contactType: "customer service",
+              email: siteConfig.email,
+            },
+          ]}
+          sameAs={siteConfig.socialLinks.map((link) => link.href)}
+          url={`${siteConfig.url}`}
+        />
       </body>
     </html>
   )

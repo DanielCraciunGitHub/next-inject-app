@@ -4,9 +4,9 @@ A modular plugin system for Next.js applications, where you can automate mundane
 
 To authenticate with our CLI, please follow these steps:
 
-1. Please [login](https://next-inject.vercel.app/login) to gain access to your personal API key.
+1. Please [login](https://www.nextinject.pro/login) to gain access to your personal API key.
 
-2. Visit the [dashboard](https://next-inject.vercel.app/dashboard) to find your API key.
+2. Visit the [dashboard](https://www.nextinject.pro/dashboard) to find your API key.
 
 3. Copy and paste the command from the dashboard, it should look like this:
 
@@ -38,4 +38,4 @@ This will configure static metadata for new and existing Next.js sites for free.
 
 _Note that this command works even if you don't have a project, **next-inject** will take care of everything for you._
 
-Find the rest of our commands here at our [Next Inject site](https://next-inject.vercel.app/plugins), here you will also find documentation for individual plugins to make the injection process smooth.
+Find the rest of our commands here at our [Next Inject site](https://www.nextinject.pro/plugins), here you will also find documentation for individual plugins to make the injection process smooth.
