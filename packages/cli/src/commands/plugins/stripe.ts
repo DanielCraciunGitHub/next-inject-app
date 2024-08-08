@@ -14,7 +14,6 @@ import { fetchRemoteFile, fileExists } from "@/src/utils/file-fetching"
 
 import { fetchLocalAndRemoteFile } from "@/src/utils/file-fetching"
 import { injectInner } from "@/src/utils/file-transforms"
-import { patchPeerPlugin } from "@/src/utils/project-info"
 
 export const stripe = new Command()
   .name("stripe")
@@ -83,7 +82,7 @@ export const stripe = new Command()
         })
       }
 
-      const utilsPath = "src/lib/utils.tsx"
+      const utilsPath = "src/lib/utils.ts"
       if (fileExists(utilsPath)) {
         let { rc: remoteUtils, lc: localUtils } =
           await fetchLocalAndRemoteFile(utilsPath)
@@ -106,11 +105,6 @@ export const stripe = new Command()
 
         await injectFile({ fileContent: formatFunction, filePath: utilsPath })
       }
-
-      //   const drizzleTursoInstalled = await isPluginInstalled("drizzle-turso")
-      //   if (drizzleTursoInstalled) {
-      //     await patchNextAuthDrizzleTurso()
-      //   }
     } catch (error) {
       handleError(error)
     }

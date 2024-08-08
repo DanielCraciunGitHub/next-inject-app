@@ -17,6 +17,7 @@ import { renameNextInjectProject } from "./rename"
 import { logger } from "../utils/logger"
 import { NEXTJS_APP_URL } from "../utils/config-info"
 import chalk from "chalk"
+import { shadcnInstall } from "../utils/shadcn"
 
 export const bootstrap = new Command()
   .name("bootstrap")
@@ -42,6 +43,7 @@ export const bootstrap = new Command()
       ])
 
       await installDeps(["next-themes", "react-icons"])
+      await shadcnInstall()
 
       const indexConfig = "src/config/next-inject.tsx"
       const providers = "src/components/next-inject-providers.tsx"
