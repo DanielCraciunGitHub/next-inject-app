@@ -6,6 +6,7 @@ import Resend from "@auth/core/providers/resend"
 import { DrizzleAdapter } from "@auth/drizzle-adapter"
 import NextAuth, { DefaultSession } from "next-auth"
 import GitHub from "next-auth/providers/github"
+import GitLab from "next-auth/providers/gitlab"
 
 declare module "@auth/core/types" {
   interface Session extends DefaultSession {
@@ -31,6 +32,9 @@ export const {
   adapter: DrizzleAdapter(db) as Adapter,
   providers: [
     Google,
+    GitLab({
+      allowDangerousEmailAccountLinking: true,
+    }),
     GitHub({
       allowDangerousEmailAccountLinking: true,
     }),

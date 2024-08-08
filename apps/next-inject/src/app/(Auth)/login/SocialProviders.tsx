@@ -1,4 +1,4 @@
-import { BsGithub } from "react-icons/bs"
+import { BsGithub, BsGitlab } from "react-icons/bs"
 
 import { Button } from "@/components/ui/button"
 import { Google } from "@/components/SVG/Google"
@@ -24,6 +24,14 @@ export const SocialProviders = ({}: SocialProvidersProps) => {
       >
         <BsGithub size={24} />
         <span>Login with Github</span>
+      </Button>
+      <Button
+        variant="secondary"
+        className="space-x-2"
+        onClick={() => authenticate("gitlab")}
+      >
+        <BsGitlab size={24} />
+        <span>Login with GitLab</span>
       </Button>
     </>
   )
