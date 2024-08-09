@@ -9,6 +9,7 @@ export const frontmatterSchema = defaultSchemas.frontmatter.extend({
     z.string().regex(/^price_.+$/),
     z.enum(["Undefined", "Free"]),
   ]),
+  benefits: z.array(z.string()).optional(),
 })
 
 export const plugins = loader({

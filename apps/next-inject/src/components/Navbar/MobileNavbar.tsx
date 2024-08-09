@@ -32,7 +32,7 @@ export function MobileNavbar() {
             <span className="sr-only">Open Mobile Menu</span>
           </SheetTrigger>
         </div>
-        <SheetContent className="flex flex-col items-center" side="right">
+        <SheetContent className="flex flex-col items-center" side="top">
           <div className="flex w-full flex-col items-center divide-y-2 divide-primary">
             {navItems.map((item) => (
               <div key={item.name} className="w-full">

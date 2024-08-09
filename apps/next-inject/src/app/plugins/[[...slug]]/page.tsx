@@ -4,12 +4,14 @@ import { notFound } from "next/navigation"
 import { api } from "@/server/server"
 import { Callout } from "fumadocs-ui/components/callout"
 import { DocsBody, DocsPage } from "fumadocs-ui/page"
+import { BsGiftFill } from "react-icons/bs"
 
 import { baseMetadata } from "@/config/metadata"
 import { PluginCTA } from "@/components/Buttons/PluginCTA"
 import { LoginModal } from "@/components/LoginModal"
 import VerifiedSvg from "@/components/SVG/VerifiedSvg"
 import { Tooltip } from "@/components/Tooltip"
+import FeatureCard from "@/app/(Navigation)/FeatureCard"
 import { plugins } from "@/app/source"
 
 export default async function Page({
@@ -72,6 +74,16 @@ export default async function Page({
           )}
         </div>
         <div>{page.data.description}</div>
+        {page.data.benefits ? (
+          <div className="flex w-full justify-center">
+            <FeatureCard
+              title={"Added Benefits"}
+              icon={<BsGiftFill size={24} fill="yellow" />}
+              features={page.data.benefits}
+              className="bg-muted"
+            />
+          </div>
+        ) : null}
         <MDX />
         {!hasPlugin && <PaymentButton />}
         <hr />

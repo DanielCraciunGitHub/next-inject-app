@@ -12,9 +12,9 @@ export const HeroSection = ({}: HeroSectionProps) => {
       <section className="mx-auto my-24 flex max-w-7xl flex-col items-center justify-center gap-16 px-8 py-8 lg:flex-row lg:items-start lg:gap-20 lg:py-20">
         <div className="flex w-full flex-col space-y-10 md:items-start">
           <div className="space-y-3 text-4xl font-bold tracking-tight md:text-6xl">
-            <div>Ship code</div>
+            <div>Skip the setup.</div>
             <div>
-              like a <span className="text-green-500">hacker</span>
+              Code <span className="text-green-500">faster</span>
             </div>
           </div>
           <div className="max-w-2xl tracking-tight text-muted-foreground md:text-xl">

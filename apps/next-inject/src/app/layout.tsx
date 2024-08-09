@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="flex min-h-screen flex-col">
+      <body className="flex min-h-screen flex-col font-mono">
         <NextTopLoader showSpinner={false} color="green" />
         <Provider attribute="class" defaultTheme="dark" enableSystem>
           {children}
