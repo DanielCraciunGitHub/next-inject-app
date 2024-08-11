@@ -1,4 +1,5 @@
 import type { AdapterAccount } from "@auth/core/adapters"
+import { relations } from "drizzle-orm"
 import { integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core"
 import { ulid } from "ulid"
 
@@ -62,3 +63,10 @@ export const transactions = sqliteTable("transactions", {
   priceId: text("priceId").notNull(),
   productName: text("productName").notNull(),
 })
+
+export const transactionRelations = relations(transactions, ({ one }) => ({
+  user: one(users, {
+    fields: [transactions.userId],
+    references: [users.id],
+  }),
+}))

@@ -1,13 +1,20 @@
 import "@/styles/globals.css"
 
 import { Metadata, Viewport } from "next"
+import { Inter } from "next/font/google"
 import { siteConfig } from "@/config"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { OrganizationJsonLd } from "next-seo"
 import NextTopLoader from "nextjs-toploader"
 
 import { baseMetadata, baseViewport } from "@/config/metadata"
+import { cn } from "@/lib/utils"
 import { Provider } from "@/components/providers"
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+})
 
 export const metadata: Metadata = {
   ...baseMetadata,
@@ -23,7 +30,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="flex min-h-screen flex-col font-mono">
+      <body className={cn("flex min-h-screen flex-col", inter.className)}>
         <NextTopLoader showSpinner={false} color="green" />
         <Provider attribute="class" defaultTheme="dark" enableSystem>
           {children}

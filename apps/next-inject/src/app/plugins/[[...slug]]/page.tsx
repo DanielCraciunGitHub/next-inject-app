@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
+import { siteConfig } from "@/config"
 import { api } from "@/server/server"
 import { Callout } from "fumadocs-ui/components/callout"
 import { DocsBody, DocsPage } from "fumadocs-ui/page"
@@ -74,27 +75,40 @@ export default async function Page({
           )}
         </div>
         <div>{page.data.description}</div>
+        <MDX />
         {page.data.benefits ? (
-          <div className="flex w-full justify-center">
+          <div className="mb-4 flex w-full">
             <FeatureCard
-              title={"Added Benefits"}
+              title={"Bonus Features"}
               icon={<BsGiftFill size={24} fill="yellow" />}
               features={page.data.benefits}
-              className="bg-muted"
+              className="w-full bg-muted"
             />
           </div>
         ) : null}
-        <MDX />
         {!hasPlugin && <PaymentButton />}
         <hr />
-        <Callout type="info" title="Have a question about this plugin?">
-          Please don't hesitate to{" "}
+        <Callout
+          type="info"
+          title={`Have a question about the ${page.data.title} Plugin?`}
+        >
+          Please do not hesitate to contact us by{" "}
           <Link
             rel="noopener noreferrer"
             className="text-blue-500 underline"
-            href="mailto:danielcracbusiness@gmail.com"
+            // ! My X handle.
+            href={`mailto:${siteConfig.email}`}
           >
-            contact us
+            email
+          </Link>{" "}
+          or{" "}
+          <Link
+            rel="noopener noreferrer"
+            className="text-blue-500 underline"
+            // ! My X handle.
+            href={siteConfig.socialLinks[3].href}
+          >
+            twitter
           </Link>
         </Callout>
       </DocsBody>

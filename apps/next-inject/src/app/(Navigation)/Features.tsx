@@ -8,28 +8,20 @@ interface FeaturesProps {}
 
 export const Features = ({}: FeaturesProps) => {
   return (
-    <div id="benefits" className="bg-gray-500 dark:bg-gray-600">
+    <div id="benefits" className="bg-gray-400 dark:bg-gray-800">
       <div className="my-24 space-y-4">
-        <div className="text-center text-3xl tracking-tight text-white md:text-5xl">
-          Benefits
+        <div className="text-center text-4xl font-bold tracking-tight text-white md:text-6xl">
+          No Fuss. Only{" "}
+          <span className="text-green-600 dark:text-green-500">Benefits</span>
         </div>
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-10 md:items-stretch xl:flex-row">
+        <div className="mx-auto flex max-w-6xl flex-col flex-wrap items-center justify-center gap-10 md:flex-row md:items-stretch">
           <FeatureCard
             key={1}
             title={"100% Secure"}
             icon={<Lock className="text-blue-500" />}
             features={[
               <>
-                The CLI is listed on the{" "}
-                <Link
-                  href={"https://www.npmjs.com/package/next-inject"}
-                  className="text-blue-500 underline"
-                >
-                  npm registry
-                </Link>
-              </>,
-              <>
-                The source code is also available on{" "}
+                The source code is available on{" "}
                 <Link
                   href={
                     "https://github.com/DanielCraciunGitHub/next-inject-app"
@@ -40,19 +32,19 @@ export const Features = ({}: FeaturesProps) => {
                 </Link>
               </>,
               "The CLI enforces git usage",
-              "The CLI will only inject code, never delete code",
+              "The CLI can only add code, never delete code",
             ]}
           />
           <FeatureCard
             key={2}
-            title={"Lightning-Fast"}
+            title={"Lightning Fast"}
             icon={
               <BsLightningChargeFill className="text-yellow-500" size={24} />
             }
             features={[
-              "One-click configuration for all plugins",
+              "One-click configuration",
               <>
-                <HoursText text="2+ hours" /> saved configuring SEO and metadata
+                <HoursText text="2+ hours" /> saved configuring SEO
               </>,
               <>
                 <HoursText text="5+ hours" /> saved configuring UI
@@ -61,13 +53,13 @@ export const Features = ({}: FeaturesProps) => {
                 <HoursText text="6+ hours" /> saved configuring databases
               </>,
               <>
-                <HoursText text="9+ hours" /> saved configuring authentication
+                <HoursText text="9+ hours" /> saved configuring auth
               </>,
             ]}
           />
           <FeatureCard
             key={3}
-            title={"Flexibility"}
+            title={"Flexible"}
             icon={<DollarSign className="text-green-400" />}
             features={[
               "Buy once, use forever",

@@ -17,7 +17,7 @@ const layout = async ({ children }: layoutProps) => {
   const session = await api.authRouter.getSession()
 
   return (
-    <div className="mt-2 flex w-full max-w-2xl flex-col items-center font-mono">
+    <div className="mt-2 flex w-full max-w-2xl flex-col items-center ">
       <div className="mb-1 flex items-center justify-center space-x-2 self-end rounded bg-muted p-2">
         <h1 className="tracking-tight text-muted-foreground">Logout</h1>
         <LogoutButton session={session} />

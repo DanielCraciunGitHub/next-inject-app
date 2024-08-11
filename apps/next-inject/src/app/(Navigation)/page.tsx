@@ -18,7 +18,7 @@ export default async function Home() {
   return (
     <>
       <FAQPageJsonLd mainEntity={[...siteConfig.faq]} useAppDir={true} />
-      <div className="mx-auto flex w-full flex-col font-mono">
+      <div className="mx-auto flex w-full flex-col ">
         <HeroSection />
 
         <PriceComparison />

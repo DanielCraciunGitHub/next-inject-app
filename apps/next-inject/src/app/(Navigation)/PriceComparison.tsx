@@ -7,17 +7,28 @@ interface PriceComparisonProps {}
 
 export const PriceComparison = ({}: PriceComparisonProps) => {
   return (
-    <div id="pricing" className="bg-neutral-400 dark:bg-neutral-800">
-      <div className="my-12 space-y-4">
-        <div className="text-center text-3xl tracking-tight text-white md:text-5xl">
-          Price Comparison
+    <div id="pricing" className="bg-gray-400 dark:bg-gray-800">
+      <div className="mx-auto my-12 max-w-6xl space-y-4">
+        <div className="space-y-3 text-center text-4xl font-bold tracking-tight md:text-6xl">
+          <div>
+            Save{" "}
+            <span className="text-green-600 dark:text-green-500">$250</span>.
+            Get the same result.
+          </div>
         </div>
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-16 px-8 py-8 lg:flex-row lg:items-start lg:gap-20 lg:py-20">
+        <p className="text-center text-lg text-muted-foreground">
+          Using our pay-per-plugin model, you save{" "}
+          <span className="font-bold text-green-600 dark:text-green-500">
+            6x
+          </span>{" "}
+          more.
+        </p>
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-16 px-8 py-8 lg:flex-row lg:items-start lg:gap-20 lg:py-12">
           <div className="space-y-2">
             <FeatureCard
               key={3}
               title={"Next Inject"}
-              icon={<BsLightningChargeFill fill="green" />}
+              icon={<BsLightningChargeFill fill="green" size={24} />}
               features={[
                 <>
                   Emails ~ <HoursText text="$5" />
@@ -39,15 +50,15 @@ export const PriceComparison = ({}: PriceComparisonProps) => {
                 </>,
               ]}
             />
-            <div className="text-center text-2xl tracking-tight text-white md:text-3xl">
-              Total: <span className="text-green-500">$50</span>
+            <div className="text-center text-2xl tracking-tight text-white md:text-4xl">
+              = <span className="text-green-600 dark:text-green-500">$50</span>
             </div>
           </div>
           <div className="space-y-2">
             <FeatureCard
               key={3}
               title={"Shipfast"}
-              icon={<BsLightningChargeFill fill="yellow" />}
+              icon={<BsLightningChargeFill fill="yellow" size={24} />}
               features={[
                 "Emails",
                 "Payments",
@@ -57,8 +68,8 @@ export const PriceComparison = ({}: PriceComparisonProps) => {
                 "Styling",
               ]}
             />
-            <div className="text-center text-2xl tracking-tight text-white md:text-3xl">
-              Total: <span className="text-red-500">$299</span>
+            <div className="text-center text-2xl tracking-tight text-white md:text-4xl">
+              = <span className="text-red-500">$299</span>
             </div>
           </div>
         </div>
