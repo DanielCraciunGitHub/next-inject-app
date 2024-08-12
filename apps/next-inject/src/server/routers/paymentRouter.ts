@@ -31,7 +31,11 @@ export const paymentRouter = createTRPCRouter({
             userId: ctx.session.user.id,
           },
           customer_email: ctx.session.user.email!,
-          allow_promotion_codes: true,
+          discounts: [
+            {
+              promotion_code: "promo_1PjJZ6EPAN9phIe0KT29Z2K8",
+            },
+          ],
         })
         return stripeSession.url!
       } catch (error) {

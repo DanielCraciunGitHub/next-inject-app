@@ -44,9 +44,9 @@ export const MainNavbar = () => {
           </span>
         </div>
       </div>
-      <div className="absolute right-3 top-3">
+      {/* <div className="absolute right-3 top-3">
         <DarkModeButton />
-      </div>
+      </div> */}
     </div>
   )
 }

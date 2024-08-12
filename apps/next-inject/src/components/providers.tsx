@@ -12,7 +12,7 @@ export function Provider({ children, ...props }: ThemeProviderProps) {
   return (
     <TrpcProvider>
       <SessionProvider refetchOnWindowFocus={false}>
-        <NextThemesProvider {...props}>
+        <NextThemesProvider {...props} enableSystem={false} defaultTheme="dark">
           <GoogleReCaptchaProvider
             reCaptchaKey={env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
           >

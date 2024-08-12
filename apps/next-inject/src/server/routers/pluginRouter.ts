@@ -65,7 +65,7 @@ export const pluginRouter = createTRPCRouter({
 
       const count = purchaseUsers.length
 
-      return { count, users: purchaseUsers.slice(6) }
+      return { count, users: purchaseUsers.slice(6, 12) }
     } catch (error) {
       console.error(error)
       return { count: 0, users: null }
