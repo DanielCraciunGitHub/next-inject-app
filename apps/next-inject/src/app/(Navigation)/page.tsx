@@ -18,7 +18,7 @@ export default async function Home() {
   return (
     <>
       <FAQPageJsonLd mainEntity={[...siteConfig.faq]} useAppDir={true} />
-      <div className="mx-auto flex w-full flex-col ">
+      <div className="mx-auto flex w-full flex-col">
         <HeroSection />
 
         <PriceComparison />
@@ -28,8 +28,6 @@ export default async function Home() {
         <Features />
 
         <FAQ />
-
-        {/* <Pricing /> */}
       </div>
     </>
   )

@@ -3,7 +3,7 @@ import { siteConfig } from "@/config"
 import { BsLightningChargeFill } from "react-icons/bs"
 
 import { NavItem } from "./Navbar/NavItem"
-import { buttonVariants } from "./ui/button"
+import { StartInjectingCTA } from "./StartInjectingCTA"
 
 export const Footer = () => {
   const [mainItem, ...navItems] = siteConfig.navLinks
@@ -25,16 +25,7 @@ export const Footer = () => {
               {siteConfig.footerText}
             </div>
             <div className="pt-2">
-              <Link
-                href="/plugins"
-                rel="noopener noreferrer"
-                className={buttonVariants({
-                  size: "lg",
-                  className: "bg-primary text-white",
-                })}
-              >
-                Start Injecting <BsLightningChargeFill fill="white" />
-              </Link>
+              <StartInjectingCTA size="lg" />
             </div>
           </div>
           <div className="-mb-10 mt-10 flex flex-grow flex-wrap text-center md:mt-0 md:pl-24 md:text-left lg:pl-48">
@@ -55,8 +46,8 @@ export const Footer = () => {
                 Legal
               </div>
               <div className="flex flex-col items-center space-y-1 text-center md:items-start">
-                <Link href="/privacy">Privacy policy</Link>
-                <Link href="/tos">Terms of Services</Link>
+                <Link href="/privacy">Privacy</Link>
+                <Link href="/tos">TOS</Link>
               </div>
             </div>
           </div>

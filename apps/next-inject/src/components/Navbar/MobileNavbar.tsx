@@ -46,9 +46,9 @@ export function MobileNavbar() {
               </div>
             ))}
           </div>
-          <div className="absolute bottom-3 right-3">
+          {/* <div className="absolute bottom-3 right-3">
             <DarkModeButton />
-          </div>
+          </div> */}
         </SheetContent>
       </Sheet>
     </div>
