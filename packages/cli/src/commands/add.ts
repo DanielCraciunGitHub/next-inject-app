@@ -7,7 +7,11 @@ import { metadata } from "./plugins/metadata"
 import { loadUserKey } from "./auth"
 import axios from "axios"
 import { logger } from "../utils/logger"
-import { NEXTJS_APP_URL } from "../utils/config-info"
+import {
+  commandToUrl,
+  freeCommands,
+  NEXTJS_APP_URL,
+} from "../utils/config-info"
 import ora from "ora"
 import { reactEmail } from "./plugins/react-email"
 import { z } from "zod"
@@ -40,9 +44,6 @@ export function setGlobalCwd(inputCwd: string) {
 export const optionsSchema = z.object({
   cwd: z.string(),
 })
-
-// ! UPDATE THIS WHENEVER YOU ADD A NEW COMMAND
-const freeCommands = ["metadata", "react-email"]
 
 export const add = new Command()
   .name("add")
@@ -166,7 +167,7 @@ export const add = new Command()
       `Please review any ${chalk.yellow("yellow")} or ${chalk.red("red")} files to ensure everything works as expected.`
     )
     addSpinner.info(
-      `Find the documentation for this plugin here:\n${chalk.blue(`${NEXTJS_APP_URL}/plugins/${subCommand.name()}`)}`
+      `Find the documentation for this plugin here:\n${chalk.blue(`${NEXTJS_APP_URL}/plugins/${commandToUrl[subCommand.name()]}`)}`
     )
 
     const [thisArg, nextArg, ...restArgs] = thisCommand.args

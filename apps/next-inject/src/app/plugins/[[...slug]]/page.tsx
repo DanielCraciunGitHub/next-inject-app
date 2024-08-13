@@ -96,7 +96,6 @@ export default async function Page({
           <Link
             rel="noopener noreferrer"
             className="text-blue-500 underline"
-            // ! My X handle.
             href={`mailto:${siteConfig.email}`}
           >
             email

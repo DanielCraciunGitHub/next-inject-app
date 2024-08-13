@@ -21,12 +21,7 @@ export const Demo = ({}: DemoProps) => {
   )
 }
 const YoutubeDemo = () => {
-  const opts = {
-    playerVars: {
-      // https://developers.google.com/youtube/player_parameters
-      autoplay: 1,
-    },
-  }
+  const opts = {}
   return (
     <div className="relative aspect-video w-full overflow-hidden">
       <YouTube

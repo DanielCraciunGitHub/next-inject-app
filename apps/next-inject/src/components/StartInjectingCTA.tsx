@@ -11,7 +11,7 @@ export const StartInjectingCTA = ({
   size = "default",
 }: StartInjectingCTAProps) => {
   return (
-    <div className="pt-2">
+    <div className="flex justify-center pt-2">
       <Link
         href="/plugins"
         rel="noopener noreferrer"

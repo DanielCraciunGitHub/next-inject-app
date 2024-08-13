@@ -19,9 +19,9 @@ export const PriceComparison = ({}: PriceComparisonProps) => {
         <div className="mx-10 text-center text-lg text-muted-foreground">
           Using our pay-per-plugin model, you save{" "}
           <span className="font-bold text-green-600 dark:text-green-500">
-            6x
+            5x
           </span>{" "}
-          more.
+          the cost.
         </div>
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-16 px-8 py-8 lg:flex-row lg:items-start lg:gap-20 lg:py-12">
           <div className="space-y-2">

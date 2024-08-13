@@ -28,7 +28,7 @@ export const HeroSection = async ({}: HeroSectionProps) => {
             our powerful Next.js CLI.
           </div>
           <StartInjectingCTA size="xl" />
-          <div className="flex space-x-1 text-sm">
+          <div className="flex justify-center space-x-1 text-sm">
             <div className="flex items-center space-x-0.5">
               <Gift className="text-green-500" />
               <span className="font-bold text-green-500">50% off</span>
