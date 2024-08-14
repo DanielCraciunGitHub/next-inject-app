@@ -24,9 +24,6 @@ export const Footer = () => {
             <div className="ml-3 text-sm text-foreground/50">
               {siteConfig.footerText}
             </div>
-            <div className="pt-2">
-              <StartInjectingCTA size="lg" />
-            </div>
           </div>
           <div className="-mb-10 mt-10 flex flex-grow flex-wrap text-center md:mt-0 md:pl-24 md:text-left lg:pl-48">
             <div className="w-full px-4 md:w-1/2 lg:w-1/3">

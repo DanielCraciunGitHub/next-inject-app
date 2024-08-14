@@ -49,6 +49,9 @@
     --ring: 142.4 71.8% 29.2%;
   }
 }
+.sj-powered-by {
+  visibility: hidden;
+}
 .grecaptcha-badge {
   visibility: hidden;
 }

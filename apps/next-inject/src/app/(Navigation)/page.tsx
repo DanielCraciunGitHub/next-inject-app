@@ -3,6 +3,8 @@ import { siteConfig } from "@/config"
 import { FAQPageJsonLd } from "next-seo"
 
 import { staticMetadata } from "@/config/metadata"
+import { LandingCTA } from "@/components/LandingCTA"
+import { WallOfLove } from "@/components/WallOfLove"
 
 import { Demo } from "./Demo"
 import { FAQ } from "./FAQ"
@@ -28,6 +30,10 @@ export default async function Home() {
         <Features />
 
         <FAQ />
+
+        <WallOfLove />
+
+        <LandingCTA />
       </div>
     </>
   )

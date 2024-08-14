@@ -31,13 +31,13 @@ export const siteConfig = {
       name: "Benefits",
       href: "/#benefits",
     },
-    // {
-    //   name: "Pricing",
-    //   href: "#pricing",
-    // },
     {
       name: "FAQ",
       href: "/#faq",
+    },
+    {
+      name: "Wall of Love",
+      href: "/#wol",
     },
     {
       name: "Plugins",

@@ -9,7 +9,7 @@ interface FeaturesProps {}
 export const Features = ({}: FeaturesProps) => {
   return (
     <div id="benefits" className="bg-gray-400 dark:bg-gray-800">
-      <div className="my-24 space-y-4">
+      <div className="mx-2 my-24 space-y-4">
         <div className="text-center text-4xl font-bold tracking-tight text-white md:text-6xl">
           No Fuss. Only{" "}
           <span className="text-green-600 dark:text-green-500">Benefits</span>

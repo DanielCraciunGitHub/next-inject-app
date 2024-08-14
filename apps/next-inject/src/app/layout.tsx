@@ -1,7 +1,7 @@
 import "@/styles/globals.css"
 
 import { Metadata, Viewport } from "next"
-import { Inter } from "next/font/google"
+import { Bricolage_Grotesque, Inter } from "next/font/google"
 import { siteConfig } from "@/config"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { OrganizationJsonLd } from "next-seo"
@@ -11,7 +11,7 @@ import { baseMetadata, baseViewport } from "@/config/metadata"
 import { cn } from "@/lib/utils"
 import { Provider } from "@/components/providers"
 
-const inter = Inter({
+const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
   display: "swap",
 })
@@ -30,7 +30,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={cn("flex min-h-screen flex-col", inter.className)}>
+      <body className={cn("flex min-h-screen flex-col", bricolage.className)}>
         <NextTopLoader showSpinner={false} color="green" />
         <Provider attribute="class" defaultTheme="dark" enableSystem>
           {children}
