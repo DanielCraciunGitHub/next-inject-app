@@ -31,7 +31,9 @@ export const {
 } = NextAuth({
   adapter: DrizzleAdapter(db) as Adapter,
   providers: [
-    Google,
+    Google({
+      allowDangerousEmailAccountLinking: true,
+    }),
     GitLab({
       allowDangerousEmailAccountLinking: true,
     }),

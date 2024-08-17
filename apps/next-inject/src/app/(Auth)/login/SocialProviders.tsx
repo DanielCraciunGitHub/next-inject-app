@@ -1,3 +1,5 @@
+"use client"
+
 import { BsGithub, BsGitlab } from "react-icons/bs"
 
 import { Button } from "@/components/ui/button"

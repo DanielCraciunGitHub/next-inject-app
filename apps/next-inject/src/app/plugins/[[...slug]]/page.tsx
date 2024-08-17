@@ -88,10 +88,7 @@ export default async function Page({
         ) : null}
         {!hasPlugin && <PaymentButton />}
         <hr />
-        <Callout
-          type="info"
-          title={`Have a question about the ${page.data.title} Plugin?`}
-        >
+        <Callout type="info" title={`Any further questions?`}>
           Please do not hesitate to contact us by{" "}
           <Link
             rel="noopener noreferrer"

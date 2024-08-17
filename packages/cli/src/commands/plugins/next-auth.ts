@@ -33,6 +33,7 @@ export const nextAuth = new Command()
       const loginButtons = "src/components/NextAuth/SocialProviders.tsx"
       const logoutButton = "src/components/NextAuth/LogoutButton.tsx"
       const separator = "src/components/NextAuth/WordedSeparator.tsx"
+      const google = "src/components/SVG/Google.tsx"
 
       const authConfig = "src/lib/auth.ts"
       const demo = "src/components/NextAuth/Demo.tsx"
@@ -40,6 +41,7 @@ export const nextAuth = new Command()
       await injectGithubFiles({
         filePaths: [
           authActions,
+          google,
           demo,
           separator,
           authRoute,

@@ -22,9 +22,7 @@ export const Item: FC<{ item: PageTree.Item }> = ({ item }) => {
       >
         {item.name}
         {isFree ? (
-          <Badge className="absolute right-0 bg-yellow-700 text-white">
-            free
-          </Badge>
+          <Badge className="absolute right-0 text-white">Free</Badge>
         ) : null}
       </Link>
     </>
