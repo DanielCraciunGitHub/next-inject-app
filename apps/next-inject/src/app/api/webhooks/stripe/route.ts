@@ -1,10 +1,13 @@
+import { randomUUID } from "crypto"
 import { headers } from "next/headers"
 import { db } from "@/db"
-import { transactions } from "@/db/schema"
+import { transactions, users } from "@/db/schema"
 import { env } from "@/env.mjs"
 import Stripe from "stripe"
 
+import { auth } from "@/lib/auth"
 import { stripe } from "@/lib/stripe"
+import { sendWelcomeEmail } from "@/app/_actions/email"
 
 export const dynamic = "force-dynamic"
 
@@ -30,6 +33,7 @@ export async function POST(req: Request) {
 
   if (event.type === "checkout.session.completed") {
     const { data } = await stripe.checkout.sessions.listLineItems(session.id)
+    const paymentIntent = session.payment_intent!.toString()
 
     let productData: { priceId: string; productName: string }[] = []
     for (const item of data) {
@@ -40,28 +44,34 @@ export async function POST(req: Request) {
       productData.push({ priceId, productName })
     }
 
-    const userId = session.metadata!.userId
-    const paymentIntent = session.payment_intent!.toString()
+    const email = session.customer_details!.email!
+    const name = session.customer_details!.name!
 
-    console.log(
-      productData.map(({ priceId, productName }) => ({
-        paymentIntent,
-        userId,
-        priceId,
-        productName,
-      }))
-    )
+    const userSession = await auth()
 
+    let id: string
+    if (userSession) {
+      id = userSession.user.id
+    } else {
+      id = (
+        await db
+          .insert(users)
+          .values({ email, name, id: randomUUID() })
+          .returning()
+      )[0].id
+    }
     await db.transaction(async (tx) => {
       for (const { priceId, productName } of productData) {
         await tx.insert(transactions).values({
           paymentIntent,
-          userId,
+          userId: id,
           priceId,
           productName,
         })
       }
     })
+
+    await sendWelcomeEmail({ name, email })
   }
 
   return new Response(null, { status: 200 })

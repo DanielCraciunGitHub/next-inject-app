@@ -13,12 +13,17 @@ const ratelimit = new Ratelimit({
   limiter: Ratelimit.slidingWindow(2, "60 m"),
 })
 
-export async function authenticate(provider: BuiltInProviderType) {
+export async function authenticate(
+  provider: BuiltInProviderType,
+  pathname: string
+) {
   const session = await auth()
   if (session) {
     await signOut()
   } else {
-    await signIn(provider)
+    await signIn(provider, {
+      redirectTo: pathname === "/login" ? "/dashboard" : pathname,
+    })
   }
 }
 export async function signOutAction({ redirectTo }: { redirectTo: string }) {

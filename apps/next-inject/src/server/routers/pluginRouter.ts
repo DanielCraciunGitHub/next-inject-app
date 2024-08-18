@@ -9,24 +9,25 @@ import { stripePluginNameToCliName } from "@/lib/utils"
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc"
 
 export const pluginRouter = createTRPCRouter({
-  hasPlugin: protectedProcedure
+  hasPlugin: publicProcedure
     .input(z.object({ priceId: z.string().optional() }))
     .query(async ({ ctx, input }) => {
       try {
         if (!input.priceId) return false
         if (input.priceId.includes("Free")) return true
 
-        const transactionForPlugin = await db
-          .select()
-          .from(transactions)
-          .where(
-            and(
-              eq(transactions.priceId, input.priceId),
-              eq(transactions.userId, ctx.session.user.id)
+        if (ctx.session) {
+          const transactionForPlugin = await db
+            .select()
+            .from(transactions)
+            .where(
+              and(
+                eq(transactions.priceId, input.priceId),
+                eq(transactions.userId, ctx.session.user.id)
+              )
             )
-          )
-
-        return transactionForPlugin.length === 1 ? true : false
+          return transactionForPlugin.length === 1 ? true : false
+        }
       } catch (error) {
         return false
       }

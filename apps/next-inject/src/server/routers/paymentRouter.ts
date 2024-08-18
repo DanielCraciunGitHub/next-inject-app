@@ -4,10 +4,10 @@ import { z } from "zod"
 import { stripe } from "@/lib/stripe"
 import { formatPluginPrice } from "@/lib/utils"
 
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc"
+import { createTRPCRouter, publicProcedure } from "../trpc"
 
 export const paymentRouter = createTRPCRouter({
-  getStripeUrl: protectedProcedure
+  getStripeUrl: publicProcedure
     .input(
       z.object({
         priceIds: z.array(z.string()),
@@ -25,10 +25,6 @@ export const paymentRouter = createTRPCRouter({
             price: priceId,
             quantity: 1,
           })),
-          metadata: {
-            userId: ctx.session.user.id,
-          },
-          customer_email: ctx.session.user.email!,
 
           discounts:
             input.priceIds.length === 1

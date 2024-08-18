@@ -9,9 +9,7 @@ import { BsGiftFill } from "react-icons/bs"
 
 import { baseMetadata } from "@/config/metadata"
 import { priceIds } from "@/config/pricing"
-import { stripePluginNameToCliName } from "@/lib/utils"
 import { BundleCTA, PluginCTA } from "@/components/Buttons/PluginCTA"
-import { LoginModal } from "@/components/LoginModal"
 import VerifiedSvg from "@/components/SVG/VerifiedSvg"
 import { Tooltip } from "@/components/Tooltip"
 import FeatureCard from "@/app/(Navigation)/FeatureCard"
@@ -34,8 +32,6 @@ export default async function Page({
 
   const MDX = page.data.exports.default
 
-  const session = await api.authRouter.getSession()
-
   let hasPlugin
   try {
     hasPlugin = await api.pluginRouter.hasPlugin({
@@ -55,13 +51,7 @@ export default async function Page({
             .map(([key, value]) => value.priceId as string)}
         />
       )
-    if (session) return <PluginCTA priceIds={[command.priceId]} />
-
-    return (
-      <LoginModal>
-        <PluginCTA priceIds={[command.priceId]} />
-      </LoginModal>
-    )
+    return <PluginCTA priceIds={[command.priceId]} />
   }
 
   return (

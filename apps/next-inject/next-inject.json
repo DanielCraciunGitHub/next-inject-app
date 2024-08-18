@@ -1,3 +1,6 @@
 {
-  "name": "Next Inject"
+  "name": "Next Inject",
+  "plugins": [
+    "resend"
+  ]
 }
