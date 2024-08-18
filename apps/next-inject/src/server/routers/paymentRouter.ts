@@ -10,7 +10,7 @@ export const paymentRouter = createTRPCRouter({
   getStripeUrl: protectedProcedure
     .input(
       z.object({
-        priceId: z.string(),
+        priceIds: z.array(z.string()),
         pathname: z.string(),
       })
     )
@@ -21,21 +21,23 @@ export const paymentRouter = createTRPCRouter({
           cancel_url: `${siteConfig.url}${input.pathname}`,
           payment_method_types: ["card"],
           mode: "payment",
-          line_items: [
-            {
-              price: input.priceId,
-              quantity: 1,
-            },
-          ],
+          line_items: input.priceIds.map((priceId) => ({
+            price: priceId,
+            quantity: 1,
+          })),
           metadata: {
             userId: ctx.session.user.id,
           },
           customer_email: ctx.session.user.email!,
-          discounts: [
-            {
-              promotion_code: "promo_1PjJZ6EPAN9phIe0KT29Z2K8",
-            },
-          ],
+
+          discounts:
+            input.priceIds.length === 1
+              ? [
+                  {
+                    promotion_code: "promo_1PjJZ6EPAN9phIe0KT29Z2K8",
+                  },
+                ]
+              : [],
         })
         return stripeSession.url!
       } catch (error) {
@@ -43,10 +45,10 @@ export const paymentRouter = createTRPCRouter({
       }
     }),
   getPluginPrice: publicProcedure
-    .input(z.object({ priceId: z.string() }))
+    .input(z.object({ priceId: z.string().optional() }))
     .query(async ({ input }) => {
       try {
-        if (input.priceId === "Undefined") {
+        if (!input.priceId) {
           return undefined
         } else {
           const price = await stripe.prices.retrieve(input.priceId)

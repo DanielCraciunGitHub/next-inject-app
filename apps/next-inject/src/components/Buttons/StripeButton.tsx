@@ -9,20 +9,20 @@ import { Button, ButtonProps } from "@/components/ui/button"
 
 interface StripeButtonProps extends ButtonProps {
   children: ReactNode
-  priceId: string
+  priceIds: string[]
 }
 
 const StripeButton = ({
   className,
   children,
-  priceId,
+  priceIds,
   ...restProps
 }: StripeButtonProps) => {
   const router = useRouter()
   const pathname = usePathname()
 
   const { data: url } = api.paymentRouter.getStripeUrl.useQuery(
-    { priceId, pathname },
+    { priceIds, pathname },
     {
       refetchOnMount: false,
       refetchOnReconnect: false,

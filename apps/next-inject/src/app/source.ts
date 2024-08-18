@@ -5,10 +5,6 @@ import { z } from "zod"
 import { map } from "../../.map"
 
 export const frontmatterSchema = defaultSchemas.frontmatter.extend({
-  priceId: z.union([
-    z.string().regex(/^price_.+$/),
-    z.enum(["Undefined", "Free"]),
-  ]),
   benefits: z.array(z.string()).optional(),
 })
 

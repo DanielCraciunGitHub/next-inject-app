@@ -8,7 +8,9 @@ import { DocsBody, DocsPage } from "fumadocs-ui/page"
 import { BsGiftFill } from "react-icons/bs"
 
 import { baseMetadata } from "@/config/metadata"
-import { PluginCTA } from "@/components/Buttons/PluginCTA"
+import { priceIds } from "@/config/pricing"
+import { stripePluginNameToCliName } from "@/lib/utils"
+import { BundleCTA, PluginCTA } from "@/components/Buttons/PluginCTA"
 import { LoginModal } from "@/components/LoginModal"
 import VerifiedSvg from "@/components/SVG/VerifiedSvg"
 import { Tooltip } from "@/components/Tooltip"
@@ -26,35 +28,40 @@ export default async function Page({
     notFound()
   }
 
+  const commandName = page.url.split("/").pop()!
+
+  const command = priceIds[commandName]
+
   const MDX = page.data.exports.default
 
-  const price = await api.paymentRouter.getPluginPrice({
-    priceId: page.data.priceId,
-  })
   const session = await api.authRouter.getSession()
 
   let hasPlugin
   try {
     hasPlugin = await api.pluginRouter.hasPlugin({
-      priceId: page.data.priceId,
+      priceId: command?.priceId,
     })
   } catch (error) {
     hasPlugin = false
   }
 
   const PaymentButton = () => {
-    if (!price) {
-      return null
-    }
-    if (session) {
-      return <PluginCTA priceId={page.data.priceId} />
-    } else {
+    if (!command?.priceId) return null
+    if (command.priceId === "Bundle")
       return (
-        <LoginModal>
-          <PluginCTA priceId={page.data.priceId} />
-        </LoginModal>
+        <BundleCTA
+          priceIds={Object.entries(priceIds)
+            .filter(([key, value]) => value.bundle === "pro")
+            .map(([key, value]) => value.priceId as string)}
+        />
       )
-    }
+    if (session) return <PluginCTA priceIds={[command.priceId]} />
+
+    return (
+      <LoginModal>
+        <PluginCTA priceIds={[command.priceId]} />
+      </LoginModal>
+    )
   }
 
   return (

@@ -2,14 +2,19 @@
 
 import { FC } from "react"
 import Link from "next/link"
-import { plugins } from "@/config"
 import { PageTree } from "fumadocs-core/server"
 
+import { priceIds } from "@/config/pricing"
 import { Badge } from "@/components/ui/badge"
 
 export const Item: FC<{ item: PageTree.Item }> = ({ item }) => {
-  const isFree = plugins.some(
-    (plugin) => item.name === plugin.name && !plugin.paid
+  const isFree = Object.entries(priceIds).some(
+    ([key, value]) =>
+      key === item.url.split("/").pop() && value.priceId === "Free"
+  )
+
+  const isHot = Object.entries(priceIds).some(
+    ([key, value]) => key === item.url.split("/").pop() && value.hot
   )
 
   return (
@@ -23,6 +28,11 @@ export const Item: FC<{ item: PageTree.Item }> = ({ item }) => {
         {item.name}
         {isFree ? (
           <Badge className="absolute right-0 text-white">Free</Badge>
+        ) : null}
+        {isHot ? (
+          <Badge className="absolute right-0 bg-orange-500 text-white">
+            Hot
+          </Badge>
         ) : null}
       </Link>
     </>

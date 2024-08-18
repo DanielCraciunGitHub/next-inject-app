@@ -56,7 +56,10 @@ export const verificationTokens = sqliteTable(
   })
 )
 export const transactions = sqliteTable("transactions", {
-  paymentIntent: text("paymentIntent").notNull().primaryKey(),
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => ulid()),
+  paymentIntent: text("paymentIntent").notNull(),
   userId: text("userId")
     .notNull()
     .references(() => users.id),

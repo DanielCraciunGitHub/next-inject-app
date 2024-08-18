@@ -31,7 +31,7 @@ export default async function Home() {
 
         <FAQ />
 
-        <WallOfLove />
+        {/* <WallOfLove /> */}
 
         <LandingCTA />
       </div>

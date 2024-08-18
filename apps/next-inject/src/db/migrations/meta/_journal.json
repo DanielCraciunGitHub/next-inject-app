@@ -29,6 +29,48 @@
       "when": 1720705110752,
       "tag": "0003_left_squadron_sinister",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1724011882734,
+      "tag": "0004_aberrant_the_fallen",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1724012928524,
+      "tag": "0005_youthful_sphinx",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1724012946772,
+      "tag": "0006_daily_wild_pack",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1724013031755,
+      "tag": "0007_unknown_violations",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1724013102352,
+      "tag": "0008_loud_puff_adder",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1724013216967,
+      "tag": "0009_nostalgic_war_machine",
+      "breakpoints": true
     }
   ]
 }

@@ -10,30 +10,23 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc"
 
 export const pluginRouter = createTRPCRouter({
   hasPlugin: protectedProcedure
-    .input(z.object({ priceId: z.string() }))
+    .input(z.object({ priceId: z.string().optional() }))
     .query(async ({ ctx, input }) => {
       try {
-        if (input.priceId === "Free") {
-          return true
-        }
-        if (input.priceId !== "Undefined") {
-          const transactionForPlugin = await db
-            .select()
-            .from(transactions)
-            .where(
-              and(
-                eq(transactions.priceId, input.priceId),
-                eq(transactions.userId, ctx.session.user.id)
-              )
+        if (!input.priceId) return false
+        if (input.priceId.includes("Free")) return true
+
+        const transactionForPlugin = await db
+          .select()
+          .from(transactions)
+          .where(
+            and(
+              eq(transactions.priceId, input.priceId),
+              eq(transactions.userId, ctx.session.user.id)
             )
-          if (transactionForPlugin.length === 1) {
-            return true
-          } else {
-            return false
-          }
-        } else {
-          return false
-        }
+          )
+
+        return transactionForPlugin.length === 1 ? true : false
       } catch (error) {
         return false
       }

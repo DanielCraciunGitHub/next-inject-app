@@ -46,7 +46,7 @@ export const PriceComparison = ({}: PriceComparisonProps) => {
                   SEO ~ <HoursText text="$0" />
                 </>,
                 <>
-                  Styling ~ <HoursText text="$10" />
+                  Styling ~ <HoursText text="$11" />
                 </>,
               ]}
             />
