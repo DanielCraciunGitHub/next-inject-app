@@ -1,8 +1,9 @@
 "use server"
 
 import { env } from "@/env.mjs"
-import WelcomeEmail from "@/react-email/emails/welcome"
 import { Resend } from "resend"
+
+import WelcomeEmail from "@/components/Emails/welcome"
 
 const resend = new Resend(env.RESEND_KEY)
 
