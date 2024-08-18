@@ -17,7 +17,7 @@ export const StartInjectingCTA = ({
   return (
     <div className="flex justify-center pt-2">
       <Link
-        href="/plugins"
+        href="/plugins/bundles/pro"
         rel="noopener noreferrer"
         className={buttonVariants({
           size,

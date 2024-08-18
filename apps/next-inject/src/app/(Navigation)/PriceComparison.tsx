@@ -1,4 +1,7 @@
+import Link from "next/link"
 import { BsLightningChargeFill } from "react-icons/bs"
+
+import { buttonVariants } from "@/components/ui/button"
 
 import FeatureCard from "./FeatureCard"
 import { HoursText } from "./Features"
@@ -22,6 +25,18 @@ export const PriceComparison = ({}: PriceComparisonProps) => {
             5x
           </span>{" "}
           the cost.
+        </div>
+        <div className="flex justify-center">
+          <Link
+            className={buttonVariants({
+              size: "lg",
+              className: "bg-green-500 text-white",
+            })}
+            href="/plugins/bundles/pro"
+          >
+            Get Bundle
+            <BsLightningChargeFill />
+          </Link>
         </div>
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-16 px-8 py-8 lg:flex-row lg:items-start lg:gap-20 lg:py-12">
           <div className="space-y-2">
