@@ -34,36 +34,24 @@ STRIPE_PUBLIC_KEY=PUBLIC_KEY
 STRIPE_SECRET_KEY=SECRET_KEY
 ```
 
-<Callout title="Tip" type="info">
-  
-Make sure to replace the **test key** with the **live key** when you are ready to make real money.
-
-```ts title="src/lib/stripe.ts"
-import Stripe from "stripe"
-
-// ! Replace the environment variable when you are done testing.
-const key = process.env.STRIPE_SECRET_TEST_KEY! // process.env.STRIPE_SECRET_KEY!
-
-export const stripe = new Stripe(key, {
-  apiVersion: "2024-06-20",
-  typescript: true,
-})
-```
-
-</Callout>
-
 ## Create a Product
 
 1. Visit the [products section of stripe](https://dashboard.stripe.com/products) and create your first product.
 2. Once created, click on your product, and click the three dots under the **Pricing** section to **Copy price ID**.
-3. Inside your project, go to `src/config/stripe.ts` and paste your price ID here:
+3. Inside your project, go to `src/lib/stripe.ts` and paste your price ID here:
 
-```ts title="src/config/stripe.ts"
-export const prices = {
-  oneOff: "price_YOUR_PRICE",
-  subscription: "price_YOUR_SUBSCRIPTION_PRICE",
-  // ! We recommend you add new price IDs here to keep them organized.
-} as const
+```ts title="src/lib/stripe.ts"
+export const prices = isLiveMode
+  ? ({
+      // ! Live Price Ids
+      oneOff: "price_YOUR_PRICE",
+      subscription: "price_YOUR_SUBSCRIPTION_PRICE",
+    } as const)
+  : ({
+      // ! Test Price Ids
+      oneOff: "price_YOUR_TEST_PRICE",
+      subscription: "price_YOUR_TEST_SUBSCRIPTION_PRICE",
+    } as const)
 ```
 
 ## Configure Webhooks
@@ -92,7 +80,7 @@ E.g. https://example.com/api/webhooks/stripe
 STRIPE_WEBHOOK_SECRET=WEBHOOK_SECRET
 ```
 
-14. The final `.env.local` file should now look like this:
+14. Here is how the final `.env.local` file should look:
 
 ```bash title=".env.local"
 # Stripe (local)

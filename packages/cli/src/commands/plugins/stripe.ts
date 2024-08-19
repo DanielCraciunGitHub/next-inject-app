@@ -32,7 +32,6 @@ export const stripe = new Command()
 
       const subCard = "src/components/Stripe/SubscriptionCard.tsx"
       const oneOffCard = "src/components/Stripe/OneOffCard.tsx"
-      const stripePrices = "src/config/stripe.ts"
 
       await injectGithubFiles({
         filePaths: [
@@ -43,7 +42,6 @@ export const stripe = new Command()
           stripeConfig,
           oneOffCard,
           subCard,
-          stripePrices,
         ],
       })
 
@@ -62,10 +60,9 @@ export const stripe = new Command()
           insertContent: remotePageImports,
         })
 
-        const demoStripe = extractBetweenMatchedLines({
+        const demoStripe = extractMatchedLines({
           fileContent: remotePage,
-          startString: `#Demo"`,
-          endString: `</div>`,
+          searchStrings: ["<Demo />"],
         })
 
         localPage = injectInner({
