@@ -49,15 +49,19 @@ export const PricingCard = ({
           <span className="text-5xl font-extrabold">{price}</span>
         </div>
       </CardHeader>
-      <CardContent className="flex flex-col space-y-4">
-        {features.map((feature, i) => (
-          <div key={i} className="flex items-center space-x-4">
-            <Tick />
-            <div>{feature}</div>
-          </div>
-        ))}
-        {cta}
-        <p className="text-center text-sm">{footnote}</p>
+      <CardContent className="flex h-full flex-col space-y-8">
+        <div className="flex flex-1 flex-col space-y-4">
+          {features.map((feature, i) => (
+            <div key={i} className="flex items-center space-x-4">
+              <Tick />
+              <div>{feature}</div>
+            </div>
+          ))}
+        </div>
+        <div className="flex flex-col space-y-1">
+          {cta}
+          <p className="text-center text-sm">{footnote}</p>
+        </div>
       </CardContent>
     </Card>
   )

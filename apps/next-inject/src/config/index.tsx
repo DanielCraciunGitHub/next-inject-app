@@ -24,12 +24,12 @@ export const siteConfig = {
       href: "/#demo",
     },
     {
-      name: "Benefits",
-      href: "/#benefits",
-    },
-    {
       name: "Pricing",
       href: "/#pricing",
+    },
+    {
+      name: "Benefits",
+      href: "/#benefits",
     },
     {
       name: "FAQ",

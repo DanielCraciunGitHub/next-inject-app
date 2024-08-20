@@ -25,9 +25,9 @@ export default async function Home() {
 
         <Demo />
 
-        <Features />
-
         <PriceComparison />
+
+        <Features />
 
         <FAQ />
 
