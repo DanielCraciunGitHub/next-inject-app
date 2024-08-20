@@ -1,10 +1,11 @@
 import Link from "next/link"
-import { BsLightningChargeFill } from "react-icons/bs"
 
-import { buttonVariants } from "@/components/ui/button"
+import { priceIds } from "@/config/pricing"
+import { BundleCTA } from "@/components/Buttons/PluginCTA"
+import { StartInjectingCTA } from "@/components/StartInjectingCTA"
 
-import FeatureCard from "./FeatureCard"
 import { HoursText } from "./Features"
+import { PricingCard } from "./PricingCard"
 
 interface PriceComparisonProps {}
 
@@ -24,69 +25,67 @@ export const PriceComparison = ({}: PriceComparisonProps) => {
           <span className="font-bold text-green-600 dark:text-green-500">
             5x
           </span>{" "}
-          the cost.
-        </div>
-        <div className="flex justify-center">
+          the cost compared to{" "}
           <Link
-            className={buttonVariants({
-              size: "lg",
-              className: "bg-green-500 text-white",
-            })}
-            href="/plugins/bundles/pro"
+            href={"https://shipfa.st/#pricing"}
+            className="text-blue-500 underline"
           >
-            Get Bundle
-            <BsLightningChargeFill />
+            Shipfast.
           </Link>
         </div>
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-16 px-8 py-8 lg:flex-row lg:items-start lg:gap-20 lg:py-12">
-          <div className="space-y-2">
-            <FeatureCard
-              key={3}
-              title={"Next Inject"}
-              icon={<BsLightningChargeFill fill="green" size={24} />}
-              features={[
-                <>
-                  Emails ~ <HoursText text="$5" />
-                </>,
-                <>
-                  Payments ~ <HoursText text="$13" />
-                </>,
-                <>
-                  Auth ~ <HoursText text="$10" />
-                </>,
-                <>
-                  Database ~ <HoursText text="$11" />
-                </>,
-                <>
-                  SEO ~ <HoursText text="$0" />
-                </>,
-                <>
-                  Styling ~ <HoursText text="$11" />
-                </>,
-              ]}
-            />
-            <div className="text-center text-2xl tracking-tight text-white md:text-4xl">
-              = <span className="text-green-600 dark:text-green-500">$50</span>
-            </div>
-          </div>
-          <div className="space-y-2">
-            <FeatureCard
-              key={3}
-              title={"Shipfast"}
-              icon={<BsLightningChargeFill fill="yellow" size={24} />}
-              features={[
-                "Emails",
-                "Payments",
-                "Auth",
-                "Database",
-                "SEO",
-                "Styling",
-              ]}
-            />
-            <div className="text-center text-2xl tracking-tight text-white md:text-4xl">
-              = <span className="text-red-500">$299</span>
-            </div>
-          </div>
+        <div className="mx-auto flex max-w-7xl flex-col items-stretch justify-center gap-16 px-8 py-8 lg:flex-row lg:items-start lg:gap-20 lg:py-12">
+          <PricingCard
+            key={1}
+            ogPrice="$299"
+            price="$50"
+            title={"Next Inject Pro"}
+            hot
+            features={[
+              <>
+                Emails with <HoursText text="Resend" />
+              </>,
+              <>
+                Payments with <HoursText text="Stripe" />
+              </>,
+              <>
+                Auth with <HoursText text="Next Auth" />
+              </>,
+              <>
+                Databases with <HoursText text="Drizzle + Turso" />
+              </>,
+              <>
+                CMS with <HoursText text="Sanity" />
+              </>,
+              <>Plugin documentation included</>,
+              <>SEO included</>,
+              <>Styling included</>,
+            ]}
+            cta={
+              <BundleCTA
+                priceIds={Object.entries(priceIds)
+                  .filter(([key, value]) => value.bundle === "pro")
+                  .map(([key, value]) => value.priceId as string)}
+              />
+            }
+            footnote="Save $250. Get the same result."
+          />
+          <PricingCard
+            key={2}
+            price="$0"
+            title={"Explore"}
+            features={[
+              <>Emails</>,
+              <>Payments</>,
+              <>Auth</>,
+              <>Databases</>,
+              <>CMS</>,
+              <>Plugin documentation</>,
+              <>SEO </>,
+              <>Styling</>,
+            ]}
+            cta={<StartInjectingCTA size="lg" className="w-full" />}
+            footnote="Inject individual plugins. Get the same result."
+          />
         </div>
       </div>
     </div>

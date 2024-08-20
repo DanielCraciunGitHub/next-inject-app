@@ -20,16 +20,16 @@ export const siteConfig = {
       href: "/",
     },
     {
-      name: "Pricing",
-      href: "/#pricing",
-    },
-    {
       name: "Demo",
       href: "/#demo",
     },
     {
       name: "Benefits",
       href: "/#benefits",
+    },
+    {
+      name: "Pricing",
+      href: "/#pricing",
     },
     {
       name: "FAQ",

@@ -1,7 +1,7 @@
 import "@/styles/globals.css"
 
 import { Metadata, Viewport } from "next"
-import { Bricolage_Grotesque, Inter } from "next/font/google"
+import { Bricolage_Grotesque } from "next/font/google"
 import { siteConfig } from "@/config"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { OrganizationJsonLd } from "next-seo"

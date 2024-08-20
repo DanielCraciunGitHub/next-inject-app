@@ -13,8 +13,13 @@ interface FeaturesProps {
 
 const FeatureCard = ({ title, features, icon, className }: FeaturesProps) => {
   return (
-    <Card className={cn("mt-8 flex w-[22rem] flex-col  text-sm", className)}>
-      <CardHeader className="space-y-4">
+    <Card
+      className={cn(
+        "relative flex w-full flex-col self-stretch rounded-lg border-muted-foreground bg-muted ring-1 ring-muted-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 dark:border-muted dark:ring-muted",
+        className
+      )}
+    >
+      <CardHeader className="flex flex-col space-y-4">
         <div className="flex flex-row items-center justify-between">
           <div className="text-2xl font-bold">{title}</div>
           <div>{icon}</div>

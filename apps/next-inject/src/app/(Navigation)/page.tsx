@@ -23,11 +23,11 @@ export default async function Home() {
       <div className="mx-auto flex w-full flex-col">
         <HeroSection />
 
-        <PriceComparison />
-
         <Demo />
 
         <Features />
+
+        <PriceComparison />
 
         <FAQ />
 

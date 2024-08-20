@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 import { buttonVariants } from "./ui/button"
 
 interface StartInjectingCTAProps {
-  size: "lg" | "xl" | "default"
+  size?: "lg" | "xl" | "default"
   className?: string
 }
 
@@ -15,16 +15,17 @@ export const StartInjectingCTA = ({
   className,
 }: StartInjectingCTAProps) => {
   return (
-    <div className="flex justify-center pt-2">
+    <div className="flex justify-center">
       <Link
         href="/plugins/bundles/pro"
         rel="noopener noreferrer"
         className={buttonVariants({
           size,
-          className: cn("bg-primary text-white", className),
+          className: cn("space-x-1 bg-primary text-white", className),
         })}
       >
-        Start Injecting <BsLightningChargeFill fill="white" />
+        <BsLightningChargeFill size={16} fill="white" />
+        <div className="text-lg">Start Injecting</div>{" "}
       </Link>
     </div>
   )
