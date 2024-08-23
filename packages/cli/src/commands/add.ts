@@ -32,6 +32,7 @@ import { drizzleTurso } from "./plugins/drizzle-turso"
 import { stripe } from "./plugins/stripe"
 import { resend } from "./plugins/resend"
 import { sanity } from "./plugins/sanity"
+import { lp } from "./plugins/lp"
 
 export const addSpinner = ora()
 export let branch: string = "master"
@@ -50,6 +51,7 @@ export const add = new Command()
   .description("Inject new plugins ⚡")
   .usage("[commands...] <options>")
   // ! Add new commands here
+  .addCommand(lp)
   .addCommand(metadata)
   .addCommand(reactEmail)
   .addCommand(nextAuth)

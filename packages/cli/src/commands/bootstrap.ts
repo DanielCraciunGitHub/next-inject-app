@@ -1,7 +1,7 @@
 import { Command } from "commander"
 
-import { injectGithubFiles, injectFile } from "../utils/file-injection"
-import { merge, searchAndReplace } from "../utils/file-transforms"
+import { injectGithubFiles, injectFile, injectGithubFile } from "../utils/file-injection"
+import { injectOuter, merge, searchAndReplace } from "../utils/file-transforms"
 import {
   extractBetweenMatchedLines,
   extractMatchedLines,
@@ -82,6 +82,25 @@ export const bootstrap = new Command()
         })
       } else {
         handleError(`Please define a root layout in ${mainLayoutPath}`)
+      }
+      const utils = "src/lib/utils.ts"
+      if (fileExists(utils)) {
+        let { rc: remoteUtils, lc: localUtils } =
+          await fetchLocalAndRemoteFile(utils)
+        
+        localUtils = injectOuter({
+          direction: "below",
+          fileContent: localUtils,
+          insertContent: remoteUtils,
+        })
+
+        await injectFile({
+          fileContent: localUtils,
+          filePath: utils,
+          successColor: "red",
+        })
+      } else {
+        await injectGithubFile({ filePath: utils })
       }
 
       await renameNextInjectProject(projectName)

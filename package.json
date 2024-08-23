@@ -17,11 +17,9 @@
     "base:dev": "turbo --filter=next-base-template dev",
     "base:build": "turbo --filter=next-base-template build",
     "base:start": "turbo --filter=next-base-template start",
-    "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "lint": "turbo lint"
   },
   "devDependencies": {
-    "prettier": "^3.3.2",
     "turbo": "^2.0.6",
     "typescript": "^5.5.3"
   },

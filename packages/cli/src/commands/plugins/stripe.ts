@@ -55,8 +55,8 @@ export const stripe = new Command()
           searchStrings: ["import { Demo"],
         })
         localPage = injectOuter({
-          fileContent: localPage,
           direction: "above",
+          fileContent: localPage,
           insertContent: remotePageImports,
         })
 

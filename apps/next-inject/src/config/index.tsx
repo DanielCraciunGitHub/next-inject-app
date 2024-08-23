@@ -43,7 +43,7 @@ export const siteConfig = {
       name: "Plugins",
       href: "/plugins",
     },
-  ] satisfies NavItem[],
+  ] as const satisfies NavItem[],
   socialLinks: [
     {
       href: "https://discord.gg/C2PXBMqpuV",

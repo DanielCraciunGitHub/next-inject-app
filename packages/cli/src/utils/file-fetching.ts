@@ -64,3 +64,14 @@ export async function readFileContent(filePath: string) {
   const fileContent = await fs.readFile(targetPath, "utf-8")
   return fileContent
 }
+export async function fetchRemoteFolderFiles({ filePath }: GithubFunctionProps) {
+  const url = `https://api.github.com/repos/DanielCraciunGitHub/nextjs-base-template/contents/${filePath}?ref=${branch}`;
+
+  const {data: files}: {data: Array<{path: string}>} = await axios.get(url, {
+    headers: {
+      'Authorization': `token ${process.env.ACCESS_KEY}`
+    }
+  })
+  
+  return files.map((file) => file.path)
+}

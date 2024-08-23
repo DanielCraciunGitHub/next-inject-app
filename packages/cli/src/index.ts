@@ -26,6 +26,15 @@ async function main() {
     .addCommand(init)
     .addCommand(bootstrap)
     .addCommand(rename)
+    // .hook("preSubcommand", async function (thisCommand: Command) {
+    //   const thisVersion = thisCommand.version()
+    //   const realVersion = await latestVersion('next-inject')
+    //   if (thisVersion !== realVersion) {
+        
+    //   }
+    //   console.log(`This version: ${thisVersion}`)
+    //   console.log(`Real version: ${realVersion}`)
+    // })
 
   program.parse()
 }

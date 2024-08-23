@@ -7,6 +7,7 @@ export function injectInner({
   insertPoint,
   direction = "below",
   fileContent,
+  offset
 }: InjectContentProps) {
   try {
     const lines = fileContent.split("\n")
@@ -36,9 +37,9 @@ export function injectInner({
 
     // Insert new content above or below the insert point
     if (direction === "above") {
-      lines.splice(insertIndex - 1, 0, insertContent)
+      lines.splice(insertIndex - (offset ?? 1), 0, insertContent)
     } else {
-      lines.splice(insertIndex, 0, insertContent)
+      lines.splice(insertIndex + (offset ? offset - 1 : 0), 0, insertContent)
     }
 
     const modifiedContent = lines.join("\n")
@@ -49,24 +50,6 @@ export function injectInner({
     return ""
   }
 }
-
-// export function omitLines({
-//   fileContent,
-//   searchStrings,
-// }: ExtractContentProps): string {
-//   // Split the content into lines
-//   const lines = fileContent.split("\n")
-
-//   const regex = new RegExp(searchStrings)
-
-//   // Filter out lines that contain the search string
-//   const filteredLines = lines.filter((line) => regex.test(line))
-
-//   // Combine the filtered lines into a single string separated by '\n'
-//   const result = filteredLines.join("\n")
-
-//   return result
-// }
 
 export function merge(...filesContent: string[]) {
   let finalFileContent: string = ""

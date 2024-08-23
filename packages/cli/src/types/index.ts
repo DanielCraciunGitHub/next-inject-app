@@ -16,6 +16,7 @@ export type InjectContentProps = {
   insertPoint: string | RegExp
   direction: "above" | "below"
   fileContent: string
+  offset?: number
 }
 export type InjectFileProps = {
   filePath: string
